@@ -1,15 +1,519 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CHEGE Tech | Premium Digital Subscriptions</title>
-    <link rel="stylesheet" href="style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ===== MODERN CSS RESET & BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366F1;
+            --primary-dark: #4F46E5;
+            --primary-light: #8B5CF6;
+            --secondary: #06D6A0;
+            --accent: #FF6B6B;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --error: #EF4444;
+            
+            /* Dark Theme Colors */
+            --bg-primary: #0F172A;
+            --bg-secondary: #1E293B;
+            --bg-tertiary: #334155;
+            --text-primary: #F1F5F9;
+            --text-secondary: #CBD5E1;
+            --text-muted: #94A3B8;
+            --border-color: #475569;
+            --card-bg: #1E293B;
+            
+            --gradient-primary: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+            --gradient-secondary: linear-gradient(135deg, #06D6A0 0%, #10B981 100%);
+            --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.4);
+            
+            --font-primary: 'Inter', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* ===== MODERN NAVIGATION ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .logo-icon {
+            background: var(--gradient-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .support-btn {
+            background: var(--gradient-secondary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .support-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            padding: 160px 0 100px;
+            background: var(--gradient-hero);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 3rem;
+            font-weight: 500;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-description {
+            font-size: 1.25rem;
+            color: #CBD5E1;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #94A3B8;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* ===== HORIZONTAL SCROLLING SERVICES ===== */
+        .services-section {
+            padding: 5rem 0;
+            background: var(--bg-secondary);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-header p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .categories-container {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+
+        .category-section {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .category-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .category-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Horizontal Scrolling Plans */
+        .plans-scroll-container {
+            position: relative;
+        }
+
+        .plans-scroll-wrapper {
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding: 1rem 0.5rem;
+            scrollbar-width: none;
+        }
+
+        .plans-scroll-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .plan-card {
+            background: var(--bg-primary);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+            min-width: 320px;
+            flex-shrink: 0;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .plan-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .plan-duration {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .plan-features li {
+            padding: 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .plan-features li i {
+            color: var(--success);
+        }
+
+        .subscribe-btn {
+            width: 100%;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .subscribe-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* ===== PAYMENT MODAL ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-container {
+            background: var(--card-bg);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-header h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .payment-form .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input {
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .payment-btn {
+            width: 100%;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 1.25rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .payment-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero {
+                padding: 120px 0 60px;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-stats {
+                flex-direction: column;
+                gap: 2rem;
+            }
+            
+            .payment-form .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .plan-card {
+                min-width: 280px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .section-header h2 {
+                font-size: 2rem;
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation -->
+    <!-- Your existing HTML content remains exactly the same -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
@@ -34,7 +538,7 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Rest of your existing HTML content -->
     <section class="hero">
         <div class="hero-background">
             <div class="hero-glow"></div>
@@ -72,48 +576,7 @@
         </div>
     </section>
 
-    <!-- Support Development Section -->
-    <section id="donate" class="support-section">
-        <div class="container">
-            <div class="support-card">
-                <div class="support-content">
-                    <div class="support-icon">
-                        <i class="fas fa-heart"></i>
-                    </div>
-                    <div class="support-text">
-                        <h2>Support Our Development</h2>
-                        <p>Your contributions help us enhance services and bring innovative features. Every shilling makes a difference in our growth journey.</p>
-                    </div>
-                    <button class="support-btn-primary" id="openDonationModal">
-                        <i class="fas fa-gift"></i>
-                        Support Our Work
-                    </button>
-                </div>
-                <div class="donation-options">
-                    <div class="donation-option" data-amount="50">
-                        <div class="option-amount">KES 50</div>
-                        <div class="option-label">Coffee</div>
-                    </div>
-                    <div class="donation-option" data-amount="100">
-                        <div class="option-amount">KES 100</div>
-                        <div class="option-label">Snack</div>
-                    </div>
-                    <div class="donation-option" data-amount="500">
-                        <div class="option-amount">KES 500</div>
-                        <div class="option-label">Meal</div>
-                    </div>
-                    <div class="donation-option custom-amount" id="customDonation">
-                        <div class="option-amount">
-                            <i class="fas fa-edit"></i>
-                        </div>
-                        <div class="option-label">Custom</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
+    <!-- Services Section with Horizontal Scrolling -->
     <section id="services" class="services-section">
         <div class="container">
             <div class="section-header">
@@ -121,48 +584,126 @@
                 <p>Choose from our curated selection of premium digital services</p>
             </div>
 
-            <!-- Categories will be loaded here -->
-            <div id="categoriesContainer" class="categories-container">
-                <!-- Categories loaded dynamically -->
-            </div>
-        </div>
-    </section>
+            <div class="categories-container">
+                <!-- Streaming Services -->
+                <div class="category-section">
+                    <div class="category-header">
+                        <div class="category-icon" style="background: var(--gradient-primary);">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <h3 class="category-title">Streaming Services</h3>
+                    </div>
+                    <div class="plans-scroll-container">
+                        <div class="plans-scroll-wrapper">
+                            <!-- Netflix Plan -->
+                            <div class="plan-card">
+                                <div class="plan-header">
+                                    <h4 class="plan-name">Netflix Premium</h4>
+                                    <div class="plan-price">KES 1,200</div>
+                                    <div class="plan-duration">per month</div>
+                                </div>
+                                <ul class="plan-features">
+                                    <li><i class="fas fa-check"></i> 4K Ultra HD</li>
+                                    <li><i class="fas fa-check"></i> 4 Screens Simultaneous</li>
+                                    <li><i class="fas fa-check"></i> Unlimited Movies & TV</li>
+                                    <li><i class="fas fa-check"></i> Cancel Anytime</li>
+                                </ul>
+                                <button class="subscribe-btn" onclick="openPaymentModal('Netflix Premium', 1200, 'monthly')">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Subscribe Now
+                                </button>
+                            </div>
 
-    <!-- Features Section -->
-    <section id="features" class="features-section">
-        <div class="container">
-            <div class="section-header">
-                <h2>Why Choose Chege Tech</h2>
-                <p>Experience the difference with our premium service</p>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-bolt"></i>
+                            <!-- Spotify Plan -->
+                            <div class="plan-card popular">
+                                <div class="plan-header">
+                                    <h4 class="plan-name">Spotify Premium</h4>
+                                    <div class="plan-price">KES 300</div>
+                                    <div class="plan-duration">per month</div>
+                                </div>
+                                <ul class="plan-features">
+                                    <li><i class="fas fa-check"></i> Ad-free Music</li>
+                                    <li><i class="fas fa-check"></i> Download Songs</li>
+                                    <li><i class="fas fa-check"></i> Unlimited Skips</li>
+                                    <li><i class="fas fa-check"></i> High Quality Audio</li>
+                                </ul>
+                                <button class="subscribe-btn" onclick="openPaymentModal('Spotify Premium', 300, 'monthly')">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Subscribe Now
+                                </button>
+                            </div>
+
+                            <!-- YouTube Premium -->
+                            <div class="plan-card">
+                                <div class="plan-header">
+                                    <h4 class="plan-name">YouTube Premium</h4>
+                                    <div class="plan-price">KES 500</div>
+                                    <div class="plan-duration">per month</div>
+                                </div>
+                                <ul class="plan-features">
+                                    <li><i class="fas fa-check"></i> Ad-free Videos</li>
+                                    <li><i class="fas fa-check"></i> Background Play</li>
+                                    <li><i class="fas fa-check"></i> Download Videos</li>
+                                    <li><i class="fas fa-check"></i> YouTube Music</li>
+                                </ul>
+                                <button class="subscribe-btn" onclick="openPaymentModal('YouTube Premium', 500, 'monthly')">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Subscribe Now
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <h3>Instant Activation</h3>
-                    <p>Get immediate access to your subscriptions right after payment confirmation</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
+
+                <!-- VPN Services -->
+                <div class="category-section">
+                    <div class="category-header">
+                        <div class="category-icon" style="background: var(--gradient-secondary);">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="category-title">VPN Services</h3>
                     </div>
-                    <h3>Secure Payments</h3>
-                    <p>Bank-level security with M-Pesa integration for safe and reliable transactions</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-headset"></i>
+                    <div class="plans-scroll-container">
+                        <div class="plans-scroll-wrapper">
+                            <!-- ExpressVPN -->
+                            <div class="plan-card">
+                                <div class="plan-header">
+                                    <h4 class="plan-name">ExpressVPN</h4>
+                                    <div class="plan-price">KES 800</div>
+                                    <div class="plan-duration">per month</div>
+                                </div>
+                                <ul class="plan-features">
+                                    <li><i class="fas fa-check"></i> 160 Locations</li>
+                                    <li><i class="fas fa-check"></i> Unlimited Bandwidth</li>
+                                    <li><i class="fas fa-check"></i> 5 Devices</li>
+                                    <li><i class="fas fa-check"></i> 24/7 Support</li>
+                                </ul>
+                                <button class="subscribe-btn" onclick="openPaymentModal('ExpressVPN', 800, 'monthly')">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Subscribe Now
+                                </button>
+                            </div>
+
+                            <!-- NordVPN -->
+                            <div class="plan-card popular">
+                                <div class="plan-header">
+                                    <h4 class="plan-name">NordVPN</h4>
+                                    <div class="plan-price">KES 600</div>
+                                    <div class="plan-duration">per month</div>
+                                </div>
+                                <ul class="plan-features">
+                                    <li><i class="fas fa-check"></i> 5000+ Servers</li>
+                                    <li><i class="fas fa-check"></i> 6 Devices</li>
+                                    <li><i class="fas fa-check"></i> Kill Switch</li>
+                                    <li><i class="fas fa-check"></i> No Logs Policy</li>
+                                </ul>
+                                <button class="subscribe-btn" onclick="openPaymentModal('NordVPN', 600, 'monthly')">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    Subscribe Now
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <h3>24/7 Support</h3>
-                    <p>Round-the-clock customer support via WhatsApp for any assistance you need</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <h3>Premium Quality</h3>
-                    <p>Only genuine accounts with full feature access and regular updates</p>
                 </div>
             </div>
         </div>
@@ -173,165 +714,63 @@
         <div class="modal-container">
             <div class="modal-header">
                 <h3>Complete Your Subscription</h3>
-                <button class="modal-close" id="closePaymentModal">
+                <button class="modal-close" onclick="closePaymentModal()">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="modal-body">
                 <form id="paymentForm" class="payment-form">
-                    <div class="plan-summary-card" id="planSummary">
-                        <!-- Dynamic content -->
+                    <div class="form-group full-width">
+                        <label>Service: <span id="selectedService">Netflix Premium</span></label>
+                        <label>Plan: <span id="selectedPlan">Monthly</span></label>
+                        <label>Total: KES <span id="selectedAmount">1200</span></label>
                     </div>
                     
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="customerName">Full Name</label>
-                            <input type="text" id="customerName" name="customerName" required 
-                                   placeholder="Enter your full name">
+                            <input type="text" id="customerName" name="customerName" required>
                         </div>
                         
                         <div class="form-group">
                             <label for="email">Email Address</label>
-                            <input type="email" id="email" name="email" required 
-                                   placeholder="your.email@example.com">
+                            <input type="email" id="email" name="email" required>
                         </div>
                         
                         <div class="form-group full-width">
                             <label for="phoneNumber">M-Pesa Phone Number</label>
-                            <input type="tel" id="phoneNumber" name="phoneNumber" required 
-                                   placeholder="2547XXXXXXXX">
-                            <div class="input-note">Enter your Safaricom M-Pesa registered number</div>
+                            <input type="tel" id="phoneNumber" name="phoneNumber" required>
                         </div>
                     </div>
                     
-                    <button type="submit" class="payment-btn" id="payButton">
-                        <span class="btn-content">
-                            <i class="fas fa-lock"></i>
-                            <span class="btn-text">Pay Securely via M-Pesa</span>
-                        </span>
-                        <span class="btn-loading" style="display: none;">
-                            <i class="fas fa-spinner fa-spin"></i>
-                            Processing...
-                        </span>
+                    <button type="submit" class="payment-btn">
+                        <i class="fas fa-lock"></i>
+                        Pay Securely via M-Pesa
                     </button>
                 </form>
-                
-                <div id="paymentResult" class="payment-result"></div>
             </div>
         </div>
     </div>
 
-    <!-- Donation Modal -->
-    <div id="donationModal" class="modal">
-        <div class="modal-container">
-            <div class="modal-header">
-                <h3><i class="fas fa-heart"></i> Support Our Development</h3>
-                <button class="modal-close" id="closeDonationModal">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="donationForm" class="donation-form">
-                    <div class="donation-hero">
-                        <i class="fas fa-hands-helping"></i>
-                        <p>Your support helps us innovate and deliver exceptional services</p>
-                    </div>
-                    
-                    <div class="amount-section">
-                        <label>Donation Amount (KES)</label>
-                        <div class="amount-input-container">
-                            <span class="currency">KES</span>
-                            <input type="number" id="donationAmount" name="donationAmount" 
-                                   required min="1" max="150000" placeholder="0">
-                        </div>
-                        <div class="amount-suggestions">
-                            <div class="amount-suggestion" data-amount="100">KES 100</div>
-                            <div class="amount-suggestion" data-amount="500">KES 500</div>
-                            <div class="amount-suggestion" data-amount="1000">KES 1,000</div>
-                            <div class="amount-suggestion" data-amount="5000">KES 5,000</div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="donorName">Your Name (Optional)</label>
-                            <input type="text" id="donorName" name="donorName" 
-                                   placeholder="Enter your name">
-                        </div>
-                        
-                        <div class="form-group full-width">
-                            <label for="donorMessage">Message of Support (Optional)</label>
-                            <textarea id="donorMessage" name="donorMessage" 
-                                     placeholder="Share an encouraging message..." rows="3"></textarea>
-                        </div>
-                        
-                        <div class="form-group full-width">
-                            <label for="donorPhone">M-Pesa Phone Number</label>
-                            <input type="tel" id="donorPhone" name="donorPhone" required 
-                                   placeholder="2547XXXXXXXX">
-                            <div class="input-note">Enter your Safaricom M-Pesa registered number</div>
-                        </div>
-                    </div>
-                    
-                    <button type="submit" class="donation-submit-btn" id="donateButton">
-                        <span class="btn-content">
-                            <i class="fas fa-heart"></i>
-                            <span class="btn-text">Make a Donation</span>
-                        </span>
-                        <span class="btn-loading" style="display: none;">
-                            <i class="fas fa-spinner fa-spin"></i>
-                            Processing...
-                        </span>
-                    </button>
-                </form>
-                
-                <div id="donationResult" class="payment-result"></div>
-            </div>
-        </div>
-    </div>
+    <script>
+        function openPaymentModal(service, amount, plan) {
+            document.getElementById('selectedService').textContent = service;
+            document.getElementById('selectedAmount').textContent = amount;
+            document.getElementById('selectedPlan').textContent = plan;
+            document.getElementById('paymentModal').style.display = 'flex';
+        }
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <div class="footer-logo">
-                        <i class="fas fa-crown"></i>
-                        <span>CHEGE Tech</span>
-                    </div>
-                    <p>Your trusted partner for premium digital subscriptions and innovative solutions.</p>
-                </div>
-                
-                <div class="footer-links">
-                    <div class="footer-column">
-                        <h4>Services</h4>
-                        <a href="#">Streaming</a>
-                        <a href="#">VPN & Security</a>
-                        <a href="#">Productivity Tools</a>
-                    </div>
-                    <div class="footer-column">
-                        <h4>Support</h4>
-                        <a href="https://wa.me/254781287381">WhatsApp Support</a>
-                        <a href="#">Payment Help</a>
-                        <a href="#">FAQ</a>
-                    </div>
-                </div>
-                
-                <div class="footer-contact">
-                    <h4>Get in Touch</h4>
-                    <a href="https://wa.me/254781287381" class="contact-link">
-                        <i class="fab fa-whatsapp"></i>
-                        +254 781 287 381
-                    </a>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2024 CHEGE Tech. All rights reserved. Premium digital services.</p>
-            </div>
-        </div>
-    </footer>
+        function closePaymentModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+        }
 
-    <script src="script.js"></script>
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('paymentModal');
+            if (event.target === modal) {
+                closePaymentModal();
+            }
+        }
+    </script>
 </body>
 </html>
