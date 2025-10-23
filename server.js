@@ -104,7 +104,7 @@ app.post('/api/initiate-payment', async (req, res) => {
     }
 
     // Generate unique reference
-    const reference = `BERA-${planId.toUpperCase()}-${Date.now()}`;
+    const reference = `CHEGE-${planId.toUpperCase()}-${Date.now()}`;
 
     // Initiate STK Push
     const stkPayload = {
@@ -113,7 +113,7 @@ app.post('/api/initiate-payment', async (req, res) => {
       provider: 'm-pesa',
       channel_id: process.env.CHANNEL_ID,
       external_reference: reference,
-      customer_name: customerName || 'Bera Tech Customer'
+      customer_name: customerName || 'CHEGE Tech Customer'
     };
 
     console.log('🔄 Initiating payment for:', plan.name);
@@ -194,7 +194,7 @@ app.post('/api/donate', async (req, res) => {
       provider: 'm-pesa',
       channel_id: process.env.CHANNEL_ID,
       external_reference: reference,
-      customer_name: customerName || 'Bera Tech Supporter'
+      customer_name: customerName || 'CHEGE Tech Supporter'
     };
 
     console.log('💝 Processing donation:', { amount: donationAmount, phone: formattedPhone });
@@ -292,7 +292,7 @@ app.get('/api/health', async (req, res) => {
 
 // Start server
 app.listen(port, () => {
-  console.log('🚀 Bera Tech Premium Service Started');
+  console.log('🚀 CHEGE Tech Premium Service Started');
   console.log('📍 Port:', port);
   console.log('🔑 Account ID:', process.env.CHANNEL_ID);
   console.log('🌐 URL: http://localhost:' + port);
