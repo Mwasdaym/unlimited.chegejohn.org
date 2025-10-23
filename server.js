@@ -232,9 +232,9 @@ app.get('/api/check-payment/:reference', async (req, res) => {
       let whatsappUrl = '';
       
       if (isDonation) {
-        whatsappUrl = `https://wa.me/254743982206?text=Thank%20you%20for%20your%20donation%20${reference}!%20Your%20support%20means%20a%20lot.`;
+        whatsappUrl = `https://wa.me/254781287381?text=Thank%20you%20for%20your%20donation%20${reference}!%20Your%20support%20means%20a%20lot.`;
       } else {
-        whatsappUrl = `https://wa.me/254743982206?text=Payment%20Successful%20for%20${reference}.%20Please%20provide%20my%20account%20details.`;
+        whatsappUrl = `https://wa.me/254781287381?text=Payment%20Successful%20for%20${reference}.%20Please%20provide%20my%20account%20details.`;
       }
       
       return res.json({
