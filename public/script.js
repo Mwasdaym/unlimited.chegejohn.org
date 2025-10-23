@@ -493,7 +493,7 @@ async function pollPaymentStatus(reference) {
                         <p style="margin-top: 0.5rem; color: var(--gray-600);">
                             Please contact support if payment was made
                         </p>
-                        <a href="https://wa.me/254743982206" 
+                        <a href="https://wa.me/254781297381" 
                            style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1rem; background: var(--success); color: white; text-decoration: none; border-radius: 8px;">
                             Contact Support
                         </a>
