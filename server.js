@@ -33,7 +33,7 @@ const subscriptionPlans = {
         price: 500,
         duration: '1 Month',
         features: ['4K Ultra HD', '4 Screens', 'Unlimited Content'],
-        logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg',
+        logo: '/logos/netflix.png',  // <-- updated,
         popular: true
       },
       'spotify': {
