@@ -26,7 +26,7 @@ const subscriptionPlans = {
     icon: 'fas fa-play-circle',
     color: '#FF6B6B',
     plans: {
-      'netflix': { name: 'Netflix Premium', price: 220, duration: '1 Month', features: ['4K Ultra HD', '4 Screens', 'Unlimited Content'], popular: true },
+      'netflix': { name: 'Netflix Premium', price: 500, duration: '1 Month', features: ['4K Ultra HD', '4 Screens', 'Unlimited Content'], popular: true },
       'spotify': { name: 'Spotify Premium', price: 180, duration: '1 Month', features: ['Ad-free Music', 'Offline Downloads', 'High Quality Audio'] },
       'showmax': { name: 'Showmax Pro', price: 150, duration: '1 Month', features: ['Live Sports', 'Showmax Originals', 'Multiple Devices'] },
       'primevideo': { name: 'Prime Video', price: 200, duration: '1 Month', features: ['4K Streaming', 'Amazon Originals', 'Offline Viewing'] },
@@ -63,6 +63,7 @@ const subscriptionPlans = {
     }
   }
 };
+
 
   'productivity': {
     category: 'Productivity Tools',
