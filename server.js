@@ -19,6 +19,20 @@ const client = new PayHeroClient({
   authToken: process.env.AUTH_TOKEN
 });
 
+const bcrypt = require('bcrypt');
+const session = require('express-session');
+
+// Session middleware
+app.use(session({
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: true
+}));
+
+// Temporary user store (replace with a database later)
+const users = [];
+
+
 // ======================
 // Subscription Plans Data
 // ======================
@@ -261,6 +275,33 @@ app.post('/api/initiate-payment', async (req, res) => {
     res.status(500).json({ success: false, error: error.message || 'Failed to initiate payment' });
   }
 });
+
+app.post('/signup', async (req, res) => {
+  const { username, email, password } = req.body;
+
+  const existingUser = users.find(u => u.username === username);
+  if (existingUser) {
+    return res.send('Username already exists. <a href="/signup.html">Try again</a>');
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  users.push({ username, email, password: hashedPassword });
+  res.send('Account created successfully! <a href="/login.html">Login now</a>');
+});
+
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  const user = users.find(u => u.username === username);
+
+  if (user && await bcrypt.compare(password, user.password)) {
+    req.session.user = username;
+    res.send(`Welcome, ${username}! <a href="/">Go to homepage</a>`);
+  } else {
+    res.send('Invalid credentials. <a href="/login.html">Try again</a>');
+  }
+});
+
+
 
 // ======================
 // Server Start
