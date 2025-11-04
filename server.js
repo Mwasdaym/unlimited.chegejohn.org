@@ -74,6 +74,21 @@ const subscriptionPlans = {
       'canvapro': { name: 'Canva Pro', price: 80, duration: '1 Month', features: ['Premium Templates', 'Background Remover', 'Magic Resize'] },
       'capcutpro': { name: 'CapCut Pro', price: 300, duration: '1 Month', features: ['Premium Effects', 'No Watermark', 'Cloud Storage'], popular: true },
       'chatgptpremium': { name: 'ChatGPT Premium', price: 350, duration: '1 Month', features: ['Priority Access', 'Faster Responses', 'GPT-4 Access'] },
+      'tradingview': { name: 'TradingView Premium', price: 300, duration: '1 Month', features: ['Real-Time Data', 'Advanced Charts', 'Multiple Layouts'], popular: true }
+    }
+  }
+};
+
+  'productivity': {
+    category: 'Productivity Tools',
+    icon: 'fas fa-briefcase',
+    color: '#45B7D1',
+    plans: {
+      'whatsappbot': { name: 'WhatsApp Bot', price: 60, duration: 'Lifetime', features: ['Auto Replies', 'Bulk Messaging', '24/7 Support'] },
+      'unlimitedpanels': { name: 'Unlimited Panels', price: 100, duration: 'Lifetime', features: ['All Services', 'Auto Updates', 'Premium Support'] },
+      'canvapro': { name: 'Canva Pro', price: 80, duration: '1 Month', features: ['Premium Templates', 'Background Remover', 'Magic Resize'] },
+      'capcutpro': { name: 'CapCut Pro', price: 300, duration: '1 Month', features: ['Premium Effects', 'No Watermark', 'Cloud Storage'], popular: true },
+      'chatgptpremium': { name: 'ChatGPT Premium', price: 350, duration: '1 Month', features: ['Priority Access', 'Faster Responses', 'GPT-4 Access'] },
       'tradingview': { name: 'TradingView Premium', price: 300, duration: '1 Month', features: ['Real-Time Data', 'Advanced Charts', 'Multiple Layouts'] }
     }
   }
