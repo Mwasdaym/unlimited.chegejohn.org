@@ -192,6 +192,31 @@ const subscriptionPlans = {
     }
   }
 };
+// Rendering Section
+const categoriesContainer = document.getElementById('categories');
+
+categoriesContainer.innerHTML = Object.entries(subscriptionPlans).map(([key, category]) => `
+  <div class="mb-8">
+    <h2 class="text-2xl font-bold mb-4 text-white">
+      <i class="${category.icon} mr-2" style="color:${category.color}"></i>
+      ${category.category}
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      ${Object.entries(category.plans).map(([planKey, plan]) => `
+        <div class="bg-gray-800 p-4 rounded-2xl shadow-md hover:shadow-lg transition">
+          <div class="flex items-center space-x-3 mb-2">
+            <img src="${plan.logo}" alt="${plan.name}" class="w-8 h-8 rounded-md bg-white p-1">
+            <h4 class="text-lg font-semibold text-white">${plan.name}</h4>
+          </div>
+          <p class="text-gray-300 text-sm mb-2">Ksh ${plan.price} - ${plan.duration}</p>
+          <ul class="text-gray-400 text-xs list-disc ml-5">
+            ${plan.features.map(feature => `<li>${feature}</li>`).join('')}
+          </ul>
+        </div>
+      `).join('')}
+    </div>
+  </div>
+`).join('');
 
 
 // ======================
