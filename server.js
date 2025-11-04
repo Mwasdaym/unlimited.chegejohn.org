@@ -41,28 +41,28 @@ const subscriptionPlans = {
         price: 180,
         duration: '1 Month',
         features: ['Ad-free Music', 'Offline Downloads', 'High Quality Audio'],
-        logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/spotify.svg'
+        logo: '/logos/spotify.png'  // <-- updated path
       },
       'showmax': {
         name: 'Showmax Pro',
         price: 150,
         duration: '1 Month',
         features: ['Live Sports', 'Showmax Originals', 'Multiple Devices'],
-        logo: 'https://upload.wikimedia.org/wikipedia/commons/8/87/Showmax_logo.svg'
+        logo: '/logos/showmax.png'  // <-- updated path
       },
       'primevideo': {
         name: 'Prime Video',
         price: 200,
         duration: '1 Month',
         features: ['4K Streaming', 'Amazon Originals', 'Offline Viewing'],
-        logo: 'https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/primevideo.svg'
+        logo: '/logos/primevideo.png'  // <-- updated path
       },
       'hdopremium': {
         name: 'HDO Box Premium',
         price: 150,
         duration: '1 Month',
         features: ['No Ads', 'All Content Unlocked', 'HD Streaming'],
-        logo: 'https://cdn-icons-png.flaticon.com/512/3097/3097073.png'
+        logo: '/logos/hdopremium.png'  // <-- updated path
       },
       'disney': {
         name: 'Disney+',
