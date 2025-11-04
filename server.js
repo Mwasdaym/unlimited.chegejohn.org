@@ -33,7 +33,8 @@ const subscriptionPlans = {
       'hdopremium': { name: 'HDO Box Premium', price: 150, duration: '1 Month', features: ['No Ads', 'All Content Unlocked', 'HD Streaming'] },
       'disney': { name: 'Disney+', price: 500, duration: '1 Year', features: ['Family Entertainment', 'Marvel, Pixar, Star Wars', 'Offline Downloads'] },
       'ytpremium': { name: 'YouTube Premium', price: 80, duration: '1 Month', features: ['Ad-Free Videos', 'Background Play', 'Offline Viewing'] },
-      'crunchyroll': { name: 'Crunchyroll Premium', price: 400, duration: '1 Year', features: ['All Anime Unlocked', 'Simulcasts', 'No Ads'] }
+      'crunchyroll': { name: 'Crunchyroll Premium', price: 400, duration: '1 Year', features: ['All Anime Unlocked', 'Simulcasts', 'No Ads'] },
+      'dstv': { name: 'DStv Premium', price: 800, duration: '1 Month', features: ['Live TV', 'Sports & Movies', 'HD Channels', 'Catch-Up Shows'], popular: true }
     }
   },
   'security': {
