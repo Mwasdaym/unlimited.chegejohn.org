@@ -7,7 +7,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- External Scripts -->
+    <!-- Chatbot Scripts -->
     <script src="https://cdn.botpress.cloud/webchat/v3.3/inject.js" defer></script>
     <script src="https://files.bpcontent.cloud/2025/11/04/16/20251104164803-6LBBK64W.js" defer></script>
 
@@ -29,7 +29,6 @@
             --warning: #F59E0B;
             --error: #EF4444;
 
-            /* Dark Theme Colors */
             --bg-primary: #0F172A;
             --bg-secondary: #1E293B;
             --bg-tertiary: #334155;
@@ -65,7 +64,7 @@
             padding: 0 2rem;
         }
 
-        /* ===== MODERN NAVIGATION ===== */
+        /* ===== NAVIGATION ===== */
         .navbar {
             position: fixed;
             top: 0;
@@ -227,361 +226,140 @@
             font-weight: 500;
         }
 
-        /* ===== SUPPORT DEVELOPMENT SECTION ===== */
-        .support-section {
-            padding: 5rem 0;
-            background: var(--bg-secondary);
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--bg-tertiary);
+            padding: 4rem 0 2rem;
         }
 
-        .support-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
-        }
-
-        .support-content {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .support-icon {
-            width: 80px;
-            height: 80px;
-            background: var(--gradient-accent);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 2rem;
-        }
-
-        .support-text h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-        }
-
-        .support-text p {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-
-        .support-btn-primary {
-            background: var(--gradient-accent);
-            color: white;
-            border: none;
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-left: auto;
-        }
-
-        .support-btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-
-        .donation-options {
+        .footer-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 1rem;
-        }
-
-        .donation-option {
-            background: var(--bg-primary);
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .donation-option:hover {
-            border-color: var(--primary);
-            transform: translateY(-2px);
-        }
-
-        .donation-option.active {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: white;
-        }
-
-        .option-amount {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .option-label {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .donation-option.active .option-label {
-            color: white;
-        }
-
-        /* ===== HORIZONTAL SCROLLING SERVICES ===== */
-        .services-section {
-            padding: 5rem 0;
-            background: var(--bg-primary);
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-header h2 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .section-header p {
-            font-size: 1.25rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .categories-container {
-            display: flex;
-            flex-direction: column;
+            grid-template-columns: 2fr 1fr 1fr;
             gap: 3rem;
+            margin-bottom: 3rem;
         }
 
-        .category-section {
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
-        }
-
-        .category-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .category-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-        }
-
-        .category-title {
-            font-size: 2rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        /* Horizontal Scrolling Plans */
-        .plans-scroll-container {
-            position: relative;
-        }
-
-        .plans-scroll-wrapper {
-            display: flex;
-            gap: 1.5rem;
-            overflow-x: auto;
-            scroll-behavior: smooth;
-            padding: 1rem 0.5rem;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-
-        .plans-scroll-wrapper::-webkit-scrollbar {
-            display: none;
-        }
-
-        .plan-card {
-            background: var(--bg-primary);
-            border-radius: 16px;
-            padding: 2rem;
-            border: 2px solid var(--border-color);
-            transition: all 0.3s ease;
-            min-width: 320px;
-            flex-shrink: 0;
-            position: relative;
-        }
-
-        .plan-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--gradient-primary);
-        }
-
-        .plan-card.popular {
-            border-color: var(--primary);
-            transform: scale(1.02);
-            box-shadow: var(--shadow-xl);
-        }
-
-        .plan-card.popular::after {
-            content: 'Most Popular';
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: var(--gradient-primary);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .plan-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .plan-header {
-            margin-bottom: 1.5rem;
-        }
-
-        .plan-name {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .plan-price {
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 0.25rem;
-        }
-
-        .plan-duration {
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .plan-features {
-            list-style: none;
-            margin-bottom: 2rem;
-        }
-
-        .plan-features li {
-            padding: 0.75rem 0;
+        .footer-logo {
             display: flex;
             align-items: center;
             gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand p {
             color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 300px;
         }
 
-        .plan-features li i {
-            color: var(--success);
-            font-size: 0.875rem;
-        }
-
-        .subscribe-btn {
-            width: 100%;
-            background: var(--gradient-primary);
-            color: white;
-            border: none;
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .subscribe-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-
-        .scroll-controls {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .scroll-btn {
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
+        .footer-column h4 {
             color: var(--text-primary);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
         }
 
-        .scroll-btn:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
+        .footer-column a {
+            display: block;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 0;
+            transition: color 0.3s ease;
         }
 
-        /* Features Section */
-        .features-section {
-            padding: 5rem 0;
-            background: var(--bg-secondary);
+        .footer-column a:hover {
+            color: var(--primary);
         }
 
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 16px;
+        .footer-bottom {
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
             text-align: center;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
+            color: var(--text-muted);
         }
 
-        .feature-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow);
+        html {
+            scroll-behavior: smooth;
         }
 
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            background: var(--gradient-primary);
-            border
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-icon">C</div>
+                CHEGE Tech
+            </div>
+            <div class="nav-links">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#pricing" class="nav-link">Pricing</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <a href="#support" class="support-btn">
+                <i class="fas fa-headset"></i> Support
+            </a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-background"></div>
+        <div class="hero-content container">
+            <div class="hero-badge">Premium Digital Subscriptions</div>
+            <h1 class="hero-title">Welcome to <span class="gradient-text">CHEGE Tech</span></h1>
+            <p class="hero-description">
+                Access your favorite services instantly. Premium accounts for streaming, software, gaming, and more—all in one place.
+            </p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Services</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">10k+</div>
+                    <div class="stat-label">Users</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">99.9%</div>
+                    <div class="stat-label">Uptime</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CHATBOT CONTAINER -->
+    <div id="chatbot-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;"></div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <div class="logo-icon">C</div>
+                    CHEGE Tech
+                </div>
+                <p>Premium digital subscriptions and accounts delivered instantly. Trusted by thousands worldwide.</p>
+            </div>
+            <div class="footer-column">
+                <h4>Quick Links</h4>
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="footer-column">
+                <h4>Resources</h4>
+                <a href="#support">Support</a>
+                <a href="#faq">FAQ</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2025 CHEGE Tech. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>
