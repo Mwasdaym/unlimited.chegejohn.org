@@ -192,32 +192,6 @@ const subscriptionPlans = {
     }
   }
 };
-// Rendering Section
-const categoriesContainer = document.getElementById('categories');
-
-categoriesContainer.innerHTML = Object.entries(subscriptionPlans).map(([key, category]) => `
-  <div class="mb-8">
-    <h2 class="text-2xl font-bold mb-4 text-white">
-      <i class="${category.icon} mr-2" style="color:${category.color}"></i>
-      ${category.category}
-    </h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      ${Object.entries(category.plans).map(([planKey, plan]) => `
-        <div class="bg-gray-800 p-4 rounded-2xl shadow-md hover:shadow-lg transition">
-          <div class="flex items-center space-x-3 mb-2">
-            <img src="${plan.logo}" alt="${plan.name}" class="w-8 h-8 rounded-md bg-white p-1">
-            <h4 class="text-lg font-semibold text-white">${plan.name}</h4>
-          </div>
-          <p class="text-gray-300 text-sm mb-2">Ksh ${plan.price} - ${plan.duration}</p>
-          <ul class="text-gray-400 text-xs list-disc ml-5">
-            ${plan.features.map(feature => `<li>${feature}</li>`).join('')}
-          </ul>
-        </div>
-      `).join('')}
-    </div>
-  </div>
-`).join('');
-
 
 // ======================
 // Routes
@@ -236,7 +210,6 @@ app.get('/api/plans', (req, res) => {
 app.post('/api/initiate-payment', async (req, res) => {
   try {
     const { planId, phoneNumber, customerName, email } = req.body;
-
     let plan = null;
     let categoryName = '';
 
@@ -248,18 +221,15 @@ app.post('/api/initiate-payment', async (req, res) => {
       }
     }
 
-    if (!plan) {
-      return res.status(400).json({ success: false, error: 'Invalid subscription plan' });
-    }
+    if (!plan) return res.status(400).json({ success: false, error: 'Invalid subscription plan' });
 
     // Format phone
     let formattedPhone = phoneNumber.trim();
     if (formattedPhone.startsWith('0')) formattedPhone = '254' + formattedPhone.substring(1);
     else if (formattedPhone.startsWith('+')) formattedPhone = formattedPhone.substring(1);
 
-    if (!formattedPhone.startsWith('254') || formattedPhone.length !== 12) {
+    if (!formattedPhone.startsWith('254') || formattedPhone.length !== 12)
       return res.status(400).json({ success: false, error: 'Phone number must be in format 2547XXXXXXXX' });
-    }
 
     const reference = `CHEGE-${planId.toUpperCase()}-${Date.now()}`;
     const stkPayload = {
@@ -272,7 +242,7 @@ app.post('/api/initiate-payment', async (req, res) => {
     };
 
     console.log('🔄 Initiating payment for:', plan.name);
-    const response = await client.stkPush(stkPayload);
+    await client.stkPush(stkPayload);
 
     res.json({
       success: true,
@@ -286,7 +256,6 @@ app.post('/api/initiate-payment', async (req, res) => {
         checkoutMessage: `You will receive an M-Pesa prompt to pay KES ${plan.price} for ${plan.name}`
       }
     });
-
   } catch (error) {
     console.error('❌ Payment initiation error:', error);
     res.status(500).json({ success: false, error: error.message || 'Failed to initiate payment' });
@@ -294,119 +263,7 @@ app.post('/api/initiate-payment', async (req, res) => {
 });
 
 // ======================
-// Donation Endpoint
-// ======================
-app.post('/api/donate', async (req, res) => {
-  try {
-    const { phoneNumber, amount, customerName } = req.body;
-
-    if (!phoneNumber || !amount) {
-      return res.status(400).json({ success: false, error: 'Phone number and amount are required' });
-    }
-
-    let formattedPhone = phoneNumber.trim();
-    if (formattedPhone.startsWith('0')) formattedPhone = '254' + formattedPhone.substring(1);
-    else if (formattedPhone.startsWith('+')) formattedPhone = formattedPhone.substring(1);
-
-    if (!formattedPhone.startsWith('254') || formattedPhone.length !== 12) {
-      return res.status(400).json({ success: false, error: 'Phone number must be in format 2547XXXXXXXX' });
-    }
-
-    const donationAmount = parseFloat(amount);
-    if (donationAmount < 1) return res.status(400).json({ success: false, error: 'Minimum donation is KES 1' });
-    if (donationAmount > 150000) return res.status(400).json({ success: false, error: 'Maximum donation is KES 150,000' });
-
-    const reference = `DONATION-${Date.now()}`;
-    const stkPayload = {
-      phone_number: formattedPhone,
-      amount: donationAmount,
-      provider: 'm-pesa',
-      channel_id: process.env.CHANNEL_ID,
-      external_reference: reference,
-      customer_name: customerName || 'CHEGE Tech Supporter'
-    };
-
-    console.log('💝 Processing donation:', { amount: donationAmount, phone: formattedPhone });
-    const response = await client.stkPush(stkPayload);
-
-    res.json({
-      success: true,
-      message: `Donation of KES ${donationAmount} initiated successfully`,
-      data: {
-        reference,
-        amount: donationAmount,
-        checkoutMessage: `You will receive an M-Pesa prompt to donate KES ${donationAmount}`,
-        thankYouMessage: 'Thank you for supporting Chege Tech!',
-        isDonation: true
-      }
-    });
-
-  } catch (error) {
-    console.error('❌ Donation error:', error);
-    res.status(500).json({ success: false, error: 'Failed to process donation' });
-  }
-});
-
-// ======================
-// Check Payment Status
-// ======================
-app.get('/api/check-payment/:reference', async (req, res) => {
-  try {
-    const { reference } = req.params;
-    const status = await client.transactionStatus(reference);
-
-    if (status.status === 'success') {
-      const isDonation = reference.startsWith('DONATION');
-      const whatsappUrl = isDonation
-        ? `https://wa.me/254781287381?text=Thank%20you%20for%20your%20donation%20${reference}!`
-        : `https://wa.me/254781287381?text=Payment%20Successful%20for%20${reference}.%20Please%20provide%20my%20account%20details.`;
-
-      return res.json({
-        success: true,
-        status: 'success',
-        whatsappUrl,
-        isDonation,
-        message: isDonation
-          ? 'Donation confirmed! Thank you for your support.'
-          : 'Payment confirmed! Redirecting to WhatsApp...'
-      });
-    }
-
-    res.json({ success: true, status: status.status, message: `Payment status: ${status.status}` });
-
-  } catch (error) {
-    console.error('❌ Payment check error:', error);
-    res.status(500).json({ success: false, error: 'Failed to check payment status' });
-  }
-});
-
-// ======================
-// Health Check
-// ======================
-app.get('/api/health', async (req, res) => {
-  try {
-    const balance = await client.serviceWalletBalance();
-    res.json({
-      success: true,
-      message: 'Chege Tech Premium Service is running optimally',
-      data: {
-        account_id: process.env.CHANNEL_ID,
-        timestamp: new Date().toISOString(),
-        status: 'operational',
-        uptime: process.uptime()
-      }
-    });
-  } catch (error) {
-    res.status(503).json({
-      success: false,
-      message: 'Service experiencing issues',
-      error: error.message
-    });
-  }
-});
-
-// ======================
-// Start Server
+// Server Start
 // ======================
 app.listen(port, () => {
   console.log('🚀 CHEGE Tech Premium Service Started');
