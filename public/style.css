@@ -1028,13 +1028,31 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-body {
-  background-color: #ffffff;
-  color: #000000;
-}
-
+/* Dark Theme Styles */
 body.dark-mode {
   background-color: #121212;
-  color: #ffffff;
+  color: #f0f0f0;
+}
+
+/* Dark sections */
+.navbar,
+.footer,
+.modal,
+.hero,
+.services-section,
+.features-section,
+.support-section {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode .navbar,
+body.dark-mode .footer,
+body.dark-mode .modal,
+body.dark-mode .hero,
+body.dark-mode .services-section,
+body.dark-mode .features-section,
+body.dark-mode .support-section {
+  background-color: #1e1e1e;
+  color: #f0f0f0;
 }
 }
