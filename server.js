@@ -30,8 +30,14 @@ const subscriptionPlans = {
       'spotify': { name: 'Spotify Premium', price: 180, duration: '1 Month', features: ['Ad-free Music', 'Offline Downloads', 'High Quality Audio'] },
       'showmax': { name: 'Showmax Pro', price: 150, duration: '1 Month', features: ['Live Sports', 'Showmax Originals', 'Multiple Devices'] },
       'primevideo': { name: 'Prime Video', price: 200, duration: '1 Month', features: ['4K Streaming', 'Amazon Originals', 'Offline Viewing'] },
-      'hdopremium': { name: 'HDO Box Premium', price: 150, duration: '1 Month', features: ['No Ads', 'All Content Unlocked', 'HD Streaming'] }
-    }
+      'hdopremium': { name: 'HDO Box Premium', price: 150, duration: '1 Month', features: ['No Ads', 'All Content Unlocked', 'HD Streaming'] },
+      'dstv': { name: 'DStv Premium', price: 800, duration: '1 Month', features: ['Live Sports', 'Movies & Series', 'Kids Channels', 'HD Streaming'], popular: true },
+      'peacock': { name: 'Peacock', price: 150, duration: '1 Month', features: ['Full HD Streaming', 'Exclusive NBC Content', 'No Ads Plan'], popular: false },
+      'pornhubpremium': { name: 'Pornhub Premium', price: 200, duration: '1 Month', features: ['HD Videos', 'No Ads', 'Full Access to Premium Content'], popular: true },
+      'urbanvpn': { name: 'Urban VPN', price: 100, duration: '1 Month', features: ['Unlimited Bandwidth', 'Global Servers', 'Fast & Secure Connection'], popular: false },
+      'brazzers': { name: 'Brazzers', price: 900, duration: 'Lifetime', features: ['Full Access', 'HD Videos', 'Exclusive Content'], popular: false },
+      'disney': { name: 'Disney+', price: 200, duration: '1 Month', yearly: 1000, features: ['HD Streaming', 'Disney Originals', 'Marvel, Pixar & Star Wars'], popular: false }
+      }
   },
   'security': {
     category: 'VPN & Security',
@@ -40,7 +46,8 @@ const subscriptionPlans = {
     plans: {
       'expressvpn': { name: 'ExpressVPN', price: 150, duration: '1 Month', features: ['Lightning Fast', 'Secure Browsing', 'Global Servers'] },
       'nordvpn': { name: 'NordVPN', price: 250, duration: '1 Month', features: ['Military Encryption', '6 Devices', 'No Logs Policy'], popular: true },
-      'surfshark': { name: 'Surfshark VPN', price: 300, duration: '1 Month', features: ['Unlimited Devices', 'CleanWeb', 'Whitelister'] }
+      'surfshark': { name: 'Surfshark VPN', price: 300, duration: '1 Month', features: ['Unlimited Devices', 'CleanWeb', 'Whitelister'] },
+      'chatgptpremium': { name: 'ChatGPT Premium', price: 500, duration: '1 Month', features: ['Priority Access', 'Faster Responses', 'GPT-4 Access', '24/7 Availability'], popular: true }
     }
   },
   'productivity': {
