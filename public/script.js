@@ -672,13 +672,4 @@ document.addEventListener('submit', function(e) {
                 btnLoading.style.display = 'inline';
             }
         }
-    }
-    function toggleDarkMode() {
-  document.body.classList.toggle("dark-mode");
-
-  // Save preference
-  const mode = document.body.classList.contains("dark-mode") ? "dark" : "light";
-  localStorage.setItem("theme", mode);
-}
-}
 });
