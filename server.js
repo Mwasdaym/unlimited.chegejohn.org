@@ -19,32 +19,92 @@ const client = new PayHeroClient({
   authToken: process.env.AUTH_TOKEN
 });
 
-// Enhanced Subscription plans data with categories
-const subscriptionPlans = {
-  'streaming': {
+
+  const subscriptionPlans = {
+  streaming: {
     category: 'Streaming Services',
     icon: 'fas fa-play-circle',
     color: '#FF6B6B',
     plans: {
-      'netflix': { name: 'Netflix Premium', price: 220, duration: '1 Month', features: ['4K Ultra HD', '4 Screens', 'Unlimited Content'], popular: true },
-      'showmax': { name: 'Showmax Pro', price: 150, duration: '1 Month', features: ['Live Sports', 'Showmax Originals', 'Multiple Devices'] },
-      'primevideo': { name: 'Prime Video', price: 200, duration: '1 Month', features: ['4K Streaming', 'Amazon Originals', 'Offline Viewing'] },
-      'hdopremium': { name: 'HDO Box Premium', price: 150, duration: '1 Month', features: ['No Ads', 'All Content Unlocked', 'HD Streaming'] },
-      'disney': { name: 'Disney+', price: 200, duration: '1 Month', category: 'Streaming', features: ['Movies & Series', 'HD Streaming', 'Ad-Free'], popular: true },
-     'disneyyear': { name: 'Disney+ (1 Year)', price: 1000, duration: '1 Year', category: 'Streaming', features: ['Movies & Series', 'HD Streaming', 'Ad-Free'], popular: true },
-    'paramount': { name: 'Paramount+', price: 300, duration: '1 Month', category: 'Streaming', features: ['Exclusive Shows', 'Movies', 'HD Streaming'], popular: false },
-  'peacock': { name: 'Peacock Premium', price: 150, duration: '1 Month', category: 'Streaming', features: ['Exclusive Movies', 'NBC Shows', 'Ad-Free Streaming'], popular: false },
-  'crunchyroll': { name: 'Crunchyroll Premium', price: 250, duration: '1 Month', category: 'Streaming', features: ['Anime Streaming', 'Simulcast Episodes', 'Ad-Free HD Viewing'], popular: false },
-  'discoveryplus': { name: 'Discovery+', price: 200, duration: '1 Month', category: 'Streaming', features: ['Documentaries', 'Reality Shows', 'Ad-Free Experience'], popular: false },
-  'showtime': { name: 'Showtime Anytime', price: 250, duration: '1 Month', category: 'Streaming', features: ['Exclusive Shows', 'HD Streaming', 'No Ads'], popular: false },
-  'starzplay': { name: 'StarzPlay', price: 300, duration: '1 Month', category: 'Streaming', features: ['Movies & Series', 'HD Quality', 'Ad-Free Streaming'], popular: false },
-  'appletv': { name: 'Apple TV+', price: 350, duration: '1 Month', category: 'Streaming', features: ['Apple Originals', '4K Streaming', 'Family Sharing'], popular: false },
-  'lionsgate': { name: 'Lionsgate+', price: 250, duration: '1 Month', category: 'Streaming', features: ['Exclusive Series', 'HD Streaming', 'Ad-Free'], popular: false },
-  'betplus': { name: 'BET+', price: 200, duration: '1 Month', category: 'Streaming', features: ['Black Culture Entertainment', 'HD Streaming', 'Exclusive Content'], popular: false },
-  'curiositystream': { name: 'CuriosityStream', price: 150, duration: '1 Month', category: 'Streaming', features: ['Educational Documentaries', 'HD Streaming', 'No Ads'], popular: false },
+      'netflix': { name: 'Netflix', price: 400, duration: '1 Month', features: ['HD Streaming', 'Multiple Devices', 'Original Shows'], popular: true },
+      'peacock': { name: 'Peacock', price: 150, duration: '1 Month', features: ['Full HD Streaming', 'Exclusive NBC Content', 'No Ads Plan'] },
+      'paramount': { name: 'Paramount+', price: 300, duration: '1 Month', features: ['HD Streaming', 'Exclusive Paramount Content', 'Ad-Free Experience'] },
+      'disney': { name: 'Disney+', price: 1000, duration: '1 Year', features: ['HD Streaming', 'Disney Originals', 'Marvel, Pixar & Star Wars'] },
+      'hbomax': { name: 'HBO Max', price: 300, duration: '1 Month', features: ['HBO Originals', 'HD & 4K Streaming', 'Ad-Free'] },
+      'hulu': { name: 'Hulu', price: 250, duration: '1 Month', features: ['TV Shows & Movies', 'Ad-Free Option', 'Live TV'] },
+      'crunchyroll': { name: 'Crunchyroll Premium', price: 250, duration: '1 Month', features: ['Anime Streaming', 'Simulcast Episodes', 'Ad-Free HD Viewing'] },
+      'discoveryplus': { name: 'Discovery+', price: 200, duration: '1 Month', features: ['Documentaries', 'Reality Shows', 'Ad-Free Experience'] },
+      'showtime': { name: 'Showtime Anytime', price: 250, duration: '1 Month', features: ['Exclusive Shows', 'HD Streaming', 'No Ads'] },
+      'starzplay': { name: 'StarzPlay', price: 300, duration: '1 Month', features: ['Movies & Series', 'HD Quality', 'Ad-Free Streaming'] },
+      'appletv': { name: 'Apple TV+', price: 350, duration: '1 Month', features: ['Apple Originals', '4K Streaming', 'Family Sharing'] },
+      'lionsgate': { name: 'Lionsgate+', price: 250, duration: '1 Month', features: ['Exclusive Series', 'HD Streaming', 'Ad-Free'] },
+      'betplus': { name: 'BET+', price: 200, duration: '1 Month', features: ['Black Culture Entertainment', 'HD Streaming', 'Exclusive Content'] },
+      'curiositystream': { name: 'CuriosityStream', price: 150, duration: '1 Month', features: ['Educational Documentaries', 'HD Streaming', 'No Ads'] }
+    }
+  },
 
-   }
-  
+  music: {
+    category: 'Music & Audio',
+    icon: 'fas fa-music',
+    color: '#F7B801',
+    plans: {
+      'spotify': { name: 'Spotify Premium', price: 200, duration: '1 Month', features: ['Ad-Free Music', 'Offline Mode', 'High-Quality Audio'] },
+      'applemusic': { name: 'Apple Music', price: 250, duration: '1 Month', features: ['Ad-Free Music', 'Offline Listening', 'Lossless Audio'] },
+      'youtubepremium': { name: 'YouTube Premium', price: 300, duration: '1 Month', features: ['Ad-Free Videos', 'Background Play', 'YouTube Music'] },
+      'deezer': { name: 'Deezer Premium', price: 200, duration: '1 Month', features: ['Ad-Free Music', 'Offline Listening', 'High Quality Audio'] },
+      'tidal': { name: 'Tidal HiFi', price: 250, duration: '1 Month', features: ['HiFi Audio', 'Offline Mode', 'Ad-Free'] },
+      'soundcloud': { name: 'SoundCloud Go+', price: 150, duration: '1 Month', features: ['Ad-Free Music', 'Offline Access', 'Full Catalog'] },
+      'audible': { name: 'Audible Premium Plus', price: 400, duration: '1 Month', features: ['Audiobooks Access', 'Monthly Credits', 'Offline Listening'] }
+    }
+  },
+
+  productivity: {
+    category: 'Productivity Tools',
+    icon: 'fas fa-briefcase',
+    color: '#45B7D1',
+    plans: {
+      'canva': { name: 'Canva Pro', price: 300, duration: '1 Month', features: ['Premium Templates', 'Brand Kit', 'Background Remover'] },
+      'grammarly': { name: 'Grammarly Premium', price: 250, duration: '1 Month', features: ['Advanced Grammar', 'Tone Detection', 'Plagiarism Check'] },
+      'skillshare': { name: 'Skillshare Premium', price: 350, duration: '1 Month', features: ['Unlimited Classes', 'Offline Access', 'Creative Skills'] },
+      'masterclass': { name: 'MasterClass', price: 600, duration: '1 Month', features: ['Expert Instructors', 'Unlimited Lessons', 'Offline Access'] },
+      'duolingo': { name: 'Duolingo Super', price: 150, duration: '1 Month', features: ['Ad-Free Learning', 'Offline Lessons', 'Unlimited Hearts'] },
+      'notion': { name: 'Notion Plus', price: 200, duration: '1 Month', features: ['Unlimited Blocks', 'Collaboration Tools', 'File Uploads'] },
+      'microsoft365': { name: 'Microsoft 365', price: 500, duration: '1 Month', features: ['Office Apps', 'Cloud Storage', 'Collaboration Tools'] },
+      'googleone': { name: 'Google One', price: 250, duration: '1 Month', features: ['Cloud Storage', 'VPN Access', 'Family Sharing'] },
+      'adobecc': { name: 'Adobe Creative Cloud', price: 700, duration: '1 Month', features: ['Full Suite Access', 'Cloud Sync', 'Regular Updates'] }
+    }
+  },
+
+  vpn: {
+    category: 'VPN & Security',
+    icon: 'fas fa-shield-alt',
+    color: '#4ECDC4',
+    plans: {
+      'urbanvpn': { name: 'Urban VPN', price: 100, duration: '1 Month', features: ['Unlimited Bandwidth', 'Global Servers', 'Fast & Secure Connection'] },
+      'nordvpn': { name: 'NordVPN', price: 350, duration: '1 Month', features: ['Fast Servers', 'Secure Encryption', 'No Logs'] },
+      'expressvpn': { name: 'ExpressVPN', price: 400, duration: '1 Month', features: ['Ultra Fast', 'Global Servers', 'No Logs'] },
+      'surfshark': { name: 'Surfshark VPN', price: 200, duration: '1 Month', features: ['Unlimited Devices', 'Ad Blocker', 'Fast Servers'] },
+      'cyberghost': { name: 'CyberGhost VPN', price: 250, duration: '1 Month', features: ['Global Servers', 'Streaming Support', 'No Logs'] },
+      'ipvanish': { name: 'IPVanish', price: 200, duration: '1 Month', features: ['Unlimited Bandwidth', 'Strong Encryption', 'Fast Connections'] },
+      'protonvpn': { name: 'ProtonVPN Plus', price: 300, duration: '1 Month', features: ['Secure Core', 'No Logs', 'High-Speed Servers'] },
+      'windscribe': { name: 'Windscribe Pro', price: 150, duration: '1 Month', features: ['Unlimited Data', 'Global Servers', 'Ad Block'] }
+    }
+  },
+
+  gaming: {
+    category: 'Gaming Services',
+    icon: 'fas fa-gamepad',
+    color: '#A28BFE',
+    plans: {
+      'xbox': { name: 'Xbox Game Pass', price: 400, duration: '1 Month', features: ['100+ Games', 'Cloud Gaming', 'Exclusive Titles'] },
+      'playstation': { name: 'PlayStation Plus', price: 400, duration: '1 Month', features: ['Multiplayer Access', 'Monthly Games', 'Discounts'] },
+      'eaplay': { name: 'EA Play', price: 250, duration: '1 Month', features: ['EA Games Access', 'Early Trials', 'Member Rewards'] },
+      'ubisoft': { name: 'Ubisoft+', price: 300, duration: '1 Month', features: ['Ubisoft Games Library', 'New Releases', 'Cloud Play'] },
+      'geforcenow': { name: 'Nvidia GeForce Now', price: 350, duration: '1 Month', features: ['Cloud Gaming', 'High Performance', 'Cross-Device Access'] }
+    }
+  }
+};
+
 // Routes
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
