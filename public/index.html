@@ -1,365 +1,207 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHEGE Tech | Premium Digital Subscriptions</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CHEGE Tech | Premium Digital Subscriptions</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Chatbot Scripts -->
-    <script src="https://cdn.botpress.cloud/webchat/v3.3/inject.js" defer></script>
-    <script src="https://files.bpcontent.cloud/2025/11/04/16/20251104164803-6LBBK64W.js" defer></script>
+  <!-- Chatbot -->
+  <script src="https://cdn.botpress.cloud/webchat/v3.3/inject.js" defer></script>
+  <script src="https://files.bpcontent.cloud/2025/11/04/16/20251104164803-6LBBK64W.js" defer></script>
 
-    <style>
-        /* ===== MODERN CSS RESET & BASE STYLES ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <style>
+    * {margin:0;padding:0;box-sizing:border-box;}
+    :root {
+      --primary:#6366F1;--primary-dark:#4F46E5;--primary-light:#8B5CF6;
+      --secondary:#06D6A0;--accent:#FF6B6B;
+      --bg-primary:#0F172A;--bg-secondary:#1E293B;--bg-tertiary:#334155;
+      --text-primary:#F1F5F9;--text-secondary:#CBD5E1;--text-muted:#94A3B8;
+      --border-color:#475569;--card-bg:#1E293B;
+      --gradient-primary:linear-gradient(135deg,#6366F1 0%,#8B5CF6 100%);
+      --gradient-hero:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      --font-primary:'Inter',sans-serif;
+    }
+    body {font-family:var(--font-primary);background:var(--bg-primary);color:var(--text-primary);line-height:1.6;overflow-x:hidden;}
+    .container{max-width:1200px;margin:0 auto;padding:0 2rem;}
+    html{scroll-behavior:smooth;}
 
-        :root {
-            --primary: #6366F1;
-            --primary-dark: #4F46E5;
-            --primary-light: #8B5CF6;
-            --secondary: #06D6A0;
-            --accent: #FF6B6B;
-            --success: #10B981;
-            --warning: #F59E0B;
-            --error: #EF4444;
+    /* NAV */
+    .navbar{position:fixed;top:0;left:0;right:0;background:rgba(15,23,42,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border-color);z-index:1000;padding:1rem 0;}
+    .nav-container{display:flex;justify-content:space-between;align-items:center;}
+    .logo-icon{background:var(--gradient-primary);width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;}
+    .nav-logo{display:flex;align-items:center;gap:.75rem;font-size:1.5rem;font-weight:700;}
+    .nav-links{display:flex;gap:2rem;align-items:center;}
+    .nav-link{color:var(--text-secondary);text-decoration:none;font-weight:500;transition:.3s;}
+    .nav-link:hover{color:var(--primary);}
+    .support-btn{background:var(--secondary);color:white;padding:.75rem 1.5rem;border-radius:10px;text-decoration:none;display:flex;align-items:center;gap:.5rem;transition:.3s;}
+    .support-btn:hover{transform:translateY(-2px);}
 
-            --bg-primary: #0F172A;
-            --bg-secondary: #1E293B;
-            --bg-tertiary: #334155;
-            --text-primary: #F1F5F9;
-            --text-secondary: #CBD5E1;
-            --text-muted: #94A3B8;
-            --border-color: #475569;
-            --card-bg: #1E293B;
+    /* HERO */
+    .hero{padding:160px 0 100px;background:var(--gradient-hero);position:relative;text-align:center;}
+    .hero-content{position:relative;z-index:2;}
+    .hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,0.1);padding:.75rem 1.5rem;border-radius:50px;margin-bottom:2rem;}
+    .hero-title{font-size:3.5rem;font-weight:700;margin-bottom:1rem;}
+    .gradient-text{background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .hero-description{font-size:1.25rem;color:var(--text-secondary);margin-bottom:3rem;}
+    .hero-stats{display:flex;justify-content:center;gap:3rem;}
+    .stat-number{font-size:2.5rem;font-weight:700;color:var(--secondary);}
 
-            --gradient-primary: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
-            --gradient-secondary: linear-gradient(135deg, #06D6A0 0%, #10B981 100%);
-            --gradient-accent: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%);
-            --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* FEATURES */
+    .features{padding:100px 0;background:var(--bg-secondary);}
+    .features h2{text-align:center;font-size:2.5rem;font-weight:700;margin-bottom:3rem;}
+    .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:2rem;}
+    .feature-card{background:var(--card-bg);padding:2rem;border-radius:20px;text-align:center;transition:.3s;}
+    .feature-card:hover{transform:translateY(-5px);}
+    .feature-icon{font-size:2rem;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:1rem;}
+    .feature-card h3{font-size:1.25rem;margin-bottom:1rem;}
 
-            --shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.4);
-            --shadow-xl: 0 25px 50px rgba(0, 0, 0, 0.5);
+    /* PRICING */
+    .pricing{padding:100px 0;background:var(--bg-secondary);}
+    .pricing h2{text-align:center;font-size:2.5rem;font-weight:700;margin-bottom:1rem;}
+    .pricing p{text-align:center;color:var(--text-secondary);margin-bottom:4rem;}
+    .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;}
+    .plan-card{background:var(--card-bg);padding:2rem;border-radius:20px;box-shadow:0 5px 20px rgba(0,0,0,0.3);transition:.3s;}
+    .plan-card:hover{transform:translateY(-5px);}
+    .plan-card h3{font-size:1.5rem;font-weight:600;margin-bottom:.5rem;}
+    .plan-card .price{font-size:2rem;font-weight:700;margin:1.5rem 0;}
+    .plan-card ul{list-style:none;text-align:left;color:var(--text-secondary);margin-bottom:1.5rem;}
+    .plan-card li{padding:.3rem 0;}
+    .plan-featured{background:var(--gradient-primary);color:white;box-shadow:0 10px 25px rgba(99,102,241,0.3);}
+    .plan-btn{display:block;background:var(--secondary);color:white;text-decoration:none;padding:.75rem;border-radius:10px;font-weight:600;text-align:center;transition:.3s;}
+    .plan-btn:hover{background:var(--primary);}
 
-            --font-primary: 'Inter', sans-serif;
-        }
-
-        body {
-            font-family: var(--font-primary);
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        /* ===== NAVIGATION ===== */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-color);
-            z-index: 1000;
-            padding: 1rem 0;
-        }
-
-        .nav-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-weight: 700;
-            font-size: 1.5rem;
-            color: var(--text-primary);
-        }
-
-        .logo-icon {
-            background: var(--gradient-primary);
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .nav-link {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .nav-link:hover {
-            color: var(--primary);
-        }
-
-        .support-btn {
-            background: var(--gradient-secondary);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .support-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-
-        /* ===== HERO SECTION ===== */
-        .hero {
-            padding: 160px 0 100px;
-            background: var(--gradient-hero);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(6, 214, 160, 0.05) 0%, transparent 50%);
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            margin-bottom: 3rem;
-            font-weight: 500;
-        }
-
-        .hero-title {
-            font-size: 3.5rem;
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-        }
-
-        .gradient-text {
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-description {
-            font-size: 1.25rem;
-            color: #CBD5E1;
-            margin-bottom: 3rem;
-            line-height: 1.6;
-        }
-
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-        }
-
-        .stat {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--secondary);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: #94A3B8;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        /* ===== FOOTER ===== */
-        .footer {
-            background: var(--bg-tertiary);
-            padding: 4rem 0 2rem;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 3rem;
-            margin-bottom: 3rem;
-        }
-
-        .footer-logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .footer-brand p {
-            color: var(--text-secondary);
-            line-height: 1.6;
-            max-width: 300px;
-        }
-
-        .footer-column h4 {
-            color: var(--text-primary);
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
-        }
-
-        .footer-column a {
-            display: block;
-            color: var(--text-secondary);
-            text-decoration: none;
-            padding: 0.5rem 0;
-            transition: color 0.3s ease;
-        }
-
-        .footer-column a:hover {
-            color: var(--primary);
-        }
-
-        .footer-bottom {
-            border-top: 1px solid var(--border-color);
-            padding-top: 2rem;
-            text-align: center;
-            color: var(--text-muted);
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-    </style>
+    /* FOOTER */
+    .footer{background:var(--bg-tertiary);padding:4rem 0 2rem;}
+    .footer-content{display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;}
+    .footer-column a{display:block;color:var(--text-secondary);text-decoration:none;padding:.3rem 0;}
+    .footer-column a:hover{color:var(--primary);}
+    .footer-bottom{text-align:center;border-top:1px solid var(--border-color);padding-top:2rem;color:var(--text-muted);}
+  </style>
 </head>
 <body>
 
-    <!-- NAVBAR -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <div class="logo-icon">C</div>
-                CHEGE Tech
-            </div>
-            <div class="nav-links">
-                <a href="#features" class="nav-link">Features</a>
-                <a href="#pricing" class="nav-link">Pricing</a>
-                <a href="#contact" class="nav-link">Contact</a>
-            </div>
-            <a href="#support" class="support-btn">
-                <i class="fas fa-headset"></i> Support
-            </a>
-        </div>
-    </nav>
+  <!-- NAV -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <div class="nav-logo"><div class="logo-icon">C</div> CHEGE Tech</div>
+      <div class="nav-links">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </div>
+      <a href="#support" class="support-btn"><i class="fas fa-headset"></i> Support</a>
+    </div>
+  </nav>
 
-    <!-- HERO SECTION -->
-    <section class="hero">
-        <div class="hero-background"></div>
-        <div class="hero-content container">
-            <div class="hero-badge">Premium Digital Subscriptions</div>
-            <h1 class="hero-title">Welcome to <span class="gradient-text">CHEGE Tech</span></h1>
-            <p class="hero-description">
-                Access your favorite services instantly. Premium accounts for streaming, software, gaming, and more—all in one place.
-            </p>
-            <div class="hero-stats">
-                <div class="stat">
-                    <div class="stat-number">500+</div>
-                    <div class="stat-label">Services</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-number">10k+</div>
-                    <div class="stat-label">Users</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-number">99.9%</div>
-                    <div class="stat-label">Uptime</div>
-                </div>
-            </div>
-        </div>
-    </section>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content container">
+      <div class="hero-badge">Premium Digital Subscriptions</div>
+      <h1 class="hero-title">Welcome to <span class="gradient-text">CHEGE Tech</span></h1>
+      <p class="hero-description">Access your favorite services instantly. Premium accounts for streaming, software, gaming, and more—all in one place.</p>
+      <div class="hero-stats">
+        <div><div class="stat-number">500+</div><div>Services</div></div>
+        <div><div class="stat-number">10k+</div><div>Users</div></div>
+        <div><div class="stat-number">99.9%</div><div>Uptime</div></div>
+      </div>
+    </div>
+  </section>
 
-    <!-- CHATBOT CONTAINER -->
-    <div id="chatbot-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;"></div>
+  <!-- FEATURES -->
+  <section id="features" class="features">
+    <div class="container">
+      <h2>Our <span class="gradient-text">Features</span></h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+          <h3>Instant Delivery</h3>
+          <p>Access your premium accounts immediately after payment.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-lock"></i></div>
+          <h3>Secure Payments</h3>
+          <p>Pay safely with 3D and 2D secure gateways integrated for Kenya.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-headset"></i></div>
+          <h3>24/7 Support</h3>
+          <p>Our support team is always ready to assist you anytime.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><i class="fas fa-thumbs-up"></i></div>
+          <h3>Trusted by Thousands</h3>
+          <p>Over 10,000 satisfied users worldwide and growing.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <!-- FOOTER -->
-    <footer class="footer">
-        <div class="container footer-content">
-            <div class="footer-brand">
-                <div class="footer-logo">
-                    <div class="logo-icon">C</div>
-                    CHEGE Tech
-                </div>
-                <p>Premium digital subscriptions and accounts delivered instantly. Trusted by thousands worldwide.</p>
-            </div>
-            <div class="footer-column">
-                <h4>Quick Links</h4>
-                <a href="#features">Features</a>
-                <a href="#pricing">Pricing</a>
-                <a href="#contact">Contact</a>
-            </div>
-            <div class="footer-column">
-                <h4>Resources</h4>
-                <a href="#support">Support</a>
-                <a href="#faq">FAQ</a>
-            </div>
+  <!-- PRICING -->
+  <section id="pricing" class="pricing">
+    <div class="container">
+      <h2>Choose Your <span class="gradient-text">Plan</span></h2>
+      <p>Flexible and affordable premium subscriptions. Instant access after payment.</p>
+
+      <div class="pricing-grid">
+        <div class="plan-card">
+          <h3>Basic</h3>
+          <p>Perfect for starters</p>
+          <div class="price">Ksh 299</div>
+          <ul>
+            <li>✓ 1 Premium Account</li>
+            <li>✓ Instant Delivery</li>
+            <li>✓ Email Support</li>
+          </ul>
+          <a href="/checkout/basic" class="plan-btn">Subscribe</a>
         </div>
-        <div class="footer-bottom">
-            &copy; 2025 CHEGE Tech. All rights reserved.
+
+        <div class="plan-card plan-featured">
+          <h3>Standard</h3>
+          <p>Best for regular users</p>
+          <div class="price">Ksh 699</div>
+          <ul>
+            <li>✓ 3 Premium Accounts</li>
+            <li>✓ Priority Delivery</li>
+            <li>✓ 24/7 Support</li>
+          </ul>
+          <a href="/checkout/standard" class="plan-btn" style="background:white;color:#4F46E5;">Subscribe</a>
         </div>
-    </footer>
+
+        <div class="plan-card">
+          <h3>Premium</h3>
+          <p>For power users</p>
+          <div class="price">Ksh 1199</div>
+          <ul>
+            <li>✓ 5 Premium Accounts</li>
+            <li>✓ Instant Setup</li>
+            <li>✓ VIP Support</li>
+          </ul>
+          <a href="/checkout/premium" class="plan-btn">Subscribe</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="contact">
+    <div class="container footer-content">
+      <div>
+        <div class="nav-logo"><div class="logo-icon">C</div> CHEGE Tech</div>
+        <p>Premium digital subscriptions and accounts delivered instantly. Trusted by thousands worldwide.</p>
+      </div>
+      <div class="footer-column">
+        <h4>Quick Links</h4>
+        <a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#contact">Contact</a>
+      </div>
+      <div class="footer-column">
+        <h4>Resources</h4>
+        <a href="#support">Support</a><a href="#faq">FAQ</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2025 CHEGE Tech. All rights reserved.</div>
+  </footer>
 
 </body>
 </html>
