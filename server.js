@@ -43,40 +43,8 @@ const subscriptionPlans = {
   'betplus': { name: 'BET+', price: 200, duration: '1 Month', category: 'Streaming', features: ['Black Culture Entertainment', 'HD Streaming', 'Exclusive Content'], popular: false },
   'curiositystream': { name: 'CuriosityStream', price: 150, duration: '1 Month', category: 'Streaming', features: ['Educational Documentaries', 'HD Streaming', 'No Ads'], popular: false },
 
-    }
-  },
-  'adult sites': {
-    category: 'adult sites',
-    icon: 'fas fa-shield-alt',
-    color: '#4ECDC4',
-    plans: {
-  'pornhub': { name: 'Pornhub Premium', price: 200, duration: '1 Month', category: 'Adult', features: ['HD Videos', 'No Ads', 'Exclusive Content'], popular: false },
-  'brazzers': { name: 'Brazzers Lifetime', price: 900, duration: 'Lifetime', category: 'Adult', features: ['Unlimited Access', 'Full HD', 'No Ads'], popular: true }
-    },
-
-  'security': {
-    category: 'VPN & Security',
-    icon: 'fas fa-shield-alt',
-    color: '#4ECDC4',
-    plans: {
-      'expressvpn': { name: 'ExpressVPN', price: 150, duration: '1 Month', features: ['Lightning Fast', 'Secure Browsing', 'Global Servers'] },
-      'nordvpn': { name: 'NordVPN', price: 250, duration: '1 Month', features: ['Military Encryption', '6 Devices', 'No Logs Policy'], popular: true },
-      'surfshark': { name: 'Surfshark VPN', price: 300, duration: '1 Month', features: ['Unlimited Devices', 'CleanWeb', 'Whitelister'] }
-    }
-  },
-  'productivity': {
-    category: 'Productivity Tools',
-    icon: 'fas fa-briefcase',
-    color: '#45B7D1',
-    plans: {
-      'whatsappbot': { name: 'WhatsApp Bot', price: 60, duration: 'Lifetime', features: ['Auto Replies', 'Bulk Messaging', '24/7 Support'] },
-      'unlimitedpanels': { name: 'Unlimited Panels', price: 100, duration: 'Lifetime', features: ['All Services', 'Auto Updates', 'Premium Support'] },
-      'canvapro': { name: 'Canva Pro', price: 80, duration: '1 Month', features: ['Premium Templates', 'Background Remover', 'Magic Resize'] },
-      'capcutpro': { name: 'CapCut Pro', price: 300, duration: '1 Month', features: ['Premium Effects', 'No Watermark', 'Cloud Storage'], popular: true }
-    }
-  }
-};
-
+   }
+  
 // Routes
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
