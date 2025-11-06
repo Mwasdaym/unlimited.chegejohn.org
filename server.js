@@ -28,6 +28,11 @@ const client = new PayHeroClient({
     plans: {
       'netflix': { name: 'Netflix', price: 400, duration: '1 Month', features: ['HD Streaming', 'Multiple Devices', 'Original Shows'], popular: true },
       'dstv': { name: 'DStv Premium', price: 900, duration: '1 Month', features: ['Live TV', 'Sports & Movies', 'HD Channels', 'Catch-Up Shows'], popular: true }
+      'showmax_1m': { name: 'Showmax Pro (1 Month)', price: 100, duration: '1 Month', features: ['Live Sports', 'Showmax Originals', 'Multiple Devices'], logo: '/logos/showmax.png' },
+      'showmax_3m': { name: 'Showmax Pro (3 Months)', price: 250, duration: '3 Months', features: ['Live Sports', 'Showmax Originals', 'Multiple Devices'], logo: '/logos/showmax.png' },
+       'showmax_6m': { name: 'Showmax Pro (6 Months)', price: 500, duration: '6 Months', features: ['Live Sports', 'Showmax Originals', 'Multiple Devices'], logo: '/logos/showmax.png' },
+       'showmax_1y': { name: 'Showmax Pro (1 Year)', price: 900, duration: '1 Year', features: ['Live Sports', 'Showmax Originals', 'Multiple Devices'], logo: '/logos/showmax.png', popular: true },
+       'disney': { name: 'Disney+', price: 900, duration: '1 Year', features: ['Family Entertainment', 'Marvel, Pixar, Star Wars', 'Offline Downloads'], popular: true }
 
       'peacock': { name: 'Peacock', price: 150, duration: '1 Month', features: ['Full HD Streaming', 'Exclusive NBC Content', 'No Ads Plan'] },
       'paramount': { name: 'Paramount+', price: 300, duration: '1 Month', features: ['HD Streaming', 'Exclusive Paramount Content', 'Ad-Free Experience'] },
