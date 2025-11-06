@@ -194,7 +194,7 @@ app.post('/api/donate', async (req, res) => {
       provider: 'm-pesa',
       channel_id: process.env.CHANNEL_ID,
       external_reference: reference,
-      customer_name: customerName || 'Bera Tech Supporter'
+      customer_name: customerName || 'Chege Tech Supporter'
     };
 
     console.log('💝 Processing donation:', { amount: donationAmount, phone: formattedPhone });
@@ -273,7 +273,7 @@ app.get('/api/health', async (req, res) => {
     const balance = await client.serviceWalletBalance();
     res.json({
       success: true,
-      message: 'Bera Tech Premium Service is running optimally',
+      message: 'Chege Tech Premium Service is running optimally',
       data: {
         account_id: process.env.CHANNEL_ID,
         timestamp: new Date().toISOString(),
