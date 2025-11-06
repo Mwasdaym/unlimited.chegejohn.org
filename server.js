@@ -341,7 +341,7 @@ app.get('/api/health', async (req, res) => {
 
 // Start server
 app.listen(port, () => {
-  console.log('🚀 Bera Tech Premium Service Started');
+  console.log('🚀 Chege Tech Premium Service Started');
   console.log('📍 Port:', port);
   console.log('🔑 Account ID:', process.env.CHANNEL_ID);
   console.log('🌐 URL: http://localhost:' + port);
