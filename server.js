@@ -87,18 +87,19 @@ app.get('/api/plans', (req, res) => {
 app.post('/api/initiate-payment', async (req, res) => {
   try {
     const { planId, phoneNumber, customerName, email } = req.body;
-
-    // Find plan in categories
-    let plan = null;
-    let categoryName = '';
     
-    for (const [category, data] of Object.entries(subscriptionPlans)) {
-      if (data.plans[planId]) {
-        plan = data.plans[planId];
-        categoryName = data.category;
-        break;
-      }
-    }
+// Find plan directly in the flat list
+const plan = subscriptionPlans[planId];
+
+if (!plan) {
+  return res.status(400).json({
+    success: false,
+    error: 'Invalid subscription plan'
+  });
+}
+
+const categoryName = plan.category;
+
 
     if (!plan) {
       return res.status(400).json({
