@@ -1,1 +1,12 @@
+{
+  "netflix": ["user1@gmail.com:password123", "user2@gmail.com:pass456"],
+  "spotify": ["spotify1@gmail.com:pass789"],
+  "showmax": ["showmax1@gmail.com:pass123"],
+  "primevideo": ["prime1@gmail.com:pass555"],
+  "hdopremium": ["hdo1@gmail.com:hdopass"],
+  "expressvpn": ["vpn1@gmail.com:secure"],
+  "nordvpn": ["nord1@gmail.com:propass"],
+  "surfshark": ["surf1@gmail.com:sharkpass"],
+  "whatsappbot": ["bot1@gmail.com:botpass"],
+  "unlimitedpanels": ["panel1@gmail.com:panelpass"]
 
