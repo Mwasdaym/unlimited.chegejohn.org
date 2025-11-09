@@ -24,7 +24,7 @@ const subscriptionPlans = {
   streaming: {
     category: 'Streaming Services',
     icon: 'fas fa-play-circle',
-    color: '#FF6B6B',
+    color: '#4169E1',
     plans: {
       'netflix': { name: 'Netflix', price: 400, duration: '1 Month', features: ['HD Streaming', 'Multiple Devices', 'Original Shows'], popular: true },
       'primevideo': { name: 'Prime Video', price: 100, duration: '1 Month', features: ['HD Streaming', 'Amazon Originals', 'Offline Viewing'], popular: true },
