@@ -112,23 +112,7 @@ const subscriptionPlans = {
       'ubisoft': { name: 'Ubisoft+', price: 300, duration: '1 Month', features: ['Ubisoft Games Library', 'New Releases', 'Cloud Play'] },
       'geforcenow': { name: 'Nvidia GeForce Now', price: 350, duration: '1 Month', features: ['Cloud Gaming', 'High Performance', 'Cross-Device Access'] }
     }
-  },
-  
-  adult: {
-  category: 'Adult Entertainment',
-  icon: 'fas fa-heart',
-  color: '#FF3366',
-  plans: {
-    'brazzers': { name: 'Brazzers Premium', price: 1200, duration: 'lifetime', features: ['HD Streaming', 'Unlimited Access', 'Exclusive Content'], popular: true },
-    'bangbros': { name: 'BangBros Premium', price: 1000, duration: 'lifetime', features: ['HD Videos', 'Multiple Categories', 'Exclusive Scenes'] },
-    'realitykings': { name: 'Reality Kings Premium', price: 900, duration: '1 Month', features: ['Full HD Content', 'Unlimited Access', 'Ad-Free'] },
-    'miakhalifasite': { name: 'mia khalifa.com', price: 1000, duration: '1 year', features: ['Full HD Streaming', 'Exclusive Videos', 'No Ads'] },
-    'pornhub': { name: 'Pornhub Premium', price: 400, duration: '1 Month', features: ['Full HD Streaming', 'Exclusive Videos', 'No Ads'] }
-  }
-}
-
-};
-
+  };
 
 // Routes
 app.get('/', (req, res) => {
