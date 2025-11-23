@@ -1,0 +1,32 @@
+{
+  "spotify": [
+    {
+      "email": "user1@spotify.com",
+      "password": "spotify123",
+      "used": false,
+      "instructions": "Login at spotify.com using the credentials above"
+    },
+    {
+      "email": "user2@spotify.com",
+      "password": "spotify456",
+      "used": false,
+      "instructions": "Login at spotify.com using the credentials above"
+    }
+  ],
+  "netflix": [
+    {
+      "email": "netflix1@account.com",
+      "password": "netflix123",
+      "used": false,
+      "instructions": "Login at netflix.com using the credentials above"
+    }
+  ],
+  "showmax_1y": [
+    {
+      "activationCode": "SHOWMAX-123456",
+      "redeemLink": "https://showmax.com/redeem",
+      "used": false,
+      "instructions": "Go to the redeem link and enter your activation code"
+    }
+  ]
+}
