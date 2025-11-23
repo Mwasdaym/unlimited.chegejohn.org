@@ -122,7 +122,7 @@ const subscriptionPlans = {
     'brazzers': { name: 'Brazzers Premium', price: 1200, duration: 'lifetime', features: ['HD Streaming', 'Unlimited Access', 'Exclusive Content'], popular: true },
     'bangbros': { name: 'BangBros Premium', price: 1000, duration: 'lifetime', features: ['HD Videos', 'Multiple Categories', 'Exclusive Scenes'] },
     'realitykings': { name: 'Reality Kings Premium', price: 900, duration: '1 Month', features: ['Full HD Content', 'Unlimited Access', 'Ad-Free'] },
-    'mia khalifa.com': { name: 'Pornhub Premium', price: 400, duration: '1 year', features: ['Full HD Streaming', 'Exclusive Videos', 'No Ads'] },
+    'miakhalifasite': { name: 'Pornhub Premium', price: 1000, duration: '1 year', features: ['Full HD Streaming', 'Exclusive Videos', 'No Ads'] },
     'pornhub': { name: 'Pornhub Premium', price: 400, duration: '1 Month', features: ['Full HD Streaming', 'Exclusive Videos', 'No Ads'] }
   }
 }
