@@ -112,6 +112,7 @@ const subscriptionPlans = {
       'crunchyroll_1y': { name: 'Crunchyroll Premium (1 Year)', price: 900, duration: '1 Year', features: ['Anime Simulcasts', 'No Ads', 'Offline Viewing'], logo: '/logos/crunchyroll.png', popular: true },
       'paramount': { name: 'Paramount+', price: 300, duration: '1 Month', features: ['HD Streaming', 'Exclusive Paramount Content', 'Ad-Free Experience'] },
       'disney': { name: 'Disney+', price: 1000, duration: '1 Year', features: ['HD Streaming', 'Disney Originals', 'Marvel, Pixar & Star Wars'] },
+      'NBA League Pass', price: 299, duration: '1 Season', features: ['Live Games', 'All Teams', 'Full Replays', 'Condensed Games', 'No Blackouts'] },
       'hbomax': { name: 'HBO Max', price: 300, duration: '1 Month', features: ['HBO Originals', 'HD & 4K Streaming', 'Ad-Free'] },
       'hulu': { name: 'Hulu', price: 250, duration: '1 Month', features: ['TV Shows & Movies', 'Ad-Free Option', 'Live TV'] },
       'crunchyroll': { name: 'Crunchyroll Premium', price: 250, duration: '1 Month', features: ['Anime Streaming', 'Simulcast Episodes', 'Ad-Free HD Viewing'] },
