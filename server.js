@@ -130,7 +130,7 @@ const subscriptionPlans = {
     icon: 'fas fa-music',
     color: '#F7B801',
     plans: {
-      'spotify': { name: 'Spotify Premium', price: 1, duration: '3 Months', features: ['Ad-Free Music', 'Offline Mode', 'High-Quality Audio'] },
+      'spotify': { name: 'Spotify Premium', price: 400, duration: '3 Months', features: ['Ad-Free Music', 'Offline Mode', 'High-Quality Audio'] },
       'applemusic': { name: 'Apple Music', price: 250, duration: '1 Month', features: ['Ad-Free Music', 'Offline Listening', 'Lossless Audio'] },
       'youtubepremium': { name: 'YouTube Premium', price: 100, duration: '1 Month', features: ['Ad-Free Videos', 'Background Play', 'YouTube Music'] },
       'deezer': { name: 'Deezer Premium', price: 200, duration: '1 Month', features: ['Ad-Free Music', 'Offline Listening', 'High Quality Audio'] },
