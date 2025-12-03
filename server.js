@@ -327,7 +327,6 @@ const subscriptionPlans = {
     icon: 'fas fa-briefcase',
     color: '#45B7D1',
     plans: {
-<<<<<<< HEAD
       'canva': { name: 'Canva Pro', price: 300, duration: '1 Month', features: ['Premium Templates', 'Brand Kit', 'Background Remover'], shared: true, maxUsers: 5 },
       'grammarly': { name: 'Grammarly Premium', price: 250, duration: '1 Month', features: ['Advanced Grammar', 'Tone Detection', 'Plagiarism Check'], shared: true, maxUsers: 5 },
       'skillshare': { name: 'Skillshare Premium', price: 350, duration: '1 Month', features: ['Unlimited Classes', 'Offline Access', 'Creative Skills'], shared: true, maxUsers: 5 },
@@ -337,7 +336,6 @@ const subscriptionPlans = {
       'microsoft365': { name: 'Microsoft 365', price: 500, duration: '1 Month', features: ['Office Apps', 'Cloud Storage', 'Collaboration Tools'], shared: true, maxUsers: 5 },
       'googleone': { name: 'Google One', price: 250, duration: '1 Month', features: ['Cloud Storage', 'VPN Access', 'Family Sharing'], shared: true, maxUsers: 5 },
       'adobecc': { name: 'Adobe Creative Cloud', price: 700, duration: '1 Month', features: ['Full Suite Access', 'Cloud Sync', 'Regular Updates'], shared: true, maxUsers: 5 }
-=======
       'canva': { name: 'Canva Pro', price: 1, duration: '1 Month', features: ['Premium Templates', 'Brand Kit', 'Background Remover'] },
       'grammarly': { name: 'Grammarly Premium', price: 250, duration: '1 Month', features: ['Advanced Grammar', 'Tone Detection', 'Plagiarism Check'] },
       'skillshare': { name: 'Skillshare Premium', price: 350, duration: '1 Month', features: ['Unlimited Classes', 'Offline Access', 'Creative Skills'] },
@@ -347,7 +345,6 @@ const subscriptionPlans = {
       'microsoft365': { name: 'Microsoft 365', price: 500, duration: '1 Month', features: ['Office Apps', 'Cloud Storage', 'Collaboration Tools'] },
       'googleone': { name: 'Google One', price: 250, duration: '1 Month', features: ['Cloud Storage', 'VPN Access', 'Family Sharing'] },
       'adobecc': { name: 'Adobe Creative Cloud', price: 700, duration: '1 Month', features: ['Full Suite Access', 'Cloud Sync', 'Regular Updates'] }
->>>>>>> b2bde4b82aeb458e4c8b0af3f0b6a207cf87c45d
     }
   },
 
@@ -852,7 +849,6 @@ setInterval(() => {
   }
 }, 30 * 60 * 1000);
 
-// ==================== ADMIN WEB INTERFACE ====================
 app.get('/admin', (req, res) => {
   res.send(`
     <!DOCTYPE html>
