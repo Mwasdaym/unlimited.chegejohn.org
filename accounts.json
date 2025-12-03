@@ -1,32 +1,178 @@
 {
   "spotify": [
     {
-      "email": "user1@spotify.com",
-      "password": "spotify123",
-      "used": false,
-      "instructions": "Login at spotify.com using the credentials above"
-    },
-    {
-      "email": "user2@spotify.com",
-      "password": "spotify456",
-      "used": false,
-      "instructions": "Login at spotify.com using the credentials above"
+      "email": "dvon81763@gmail.com",
+      "password": "e2XM7Qe6*w9re+s",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-01T21:17:11.020Z"
     }
   ],
   "netflix": [
     {
-      "email": "netflix1@account.com",
-      "password": "netflix123",
-      "used": false,
-      "instructions": "Login at netflix.com using the credentials above"
+      "email": "chege123456789012@gmail.com",
+      "password": "Chege@254",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-01T21:17:45.835Z"
+    },
+    {
+      "email": "isaactrevis8@gmail.com",
+      "password": "IZOH5063",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-01T21:18:59.954Z"
     }
   ],
-  "showmax_1y": [
+  "showmax_1m": [
     {
-      "activationCode": "SHOWMAX-123456",
-      "redeemLink": "https://showmax.com/redeem",
-      "used": false,
-      "instructions": "Go to the redeem link and enter your activation code"
+      "email": "bryanopags@gmail.com",
+      "password": "3Zj5jW+YXZfgwG5",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-01T21:20:50.024Z"
+    },
+    {
+      "email": "influencerplanet7@gmail.com",
+      "password": "Mzush@9246",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-01T21:22:07.418Z"
+    }
+  ],
+  "primevideo": [
+    {
+      "email": "Jamesmlue04@gmail.com",
+      "password": "mnbvcxz@101",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-01T21:24:54.976Z"
+    }
+  ],
+  "primevideo_6m": [
+    {
+      "email": "wemzeerada@gmail.com",
+      "password": "wemzeerada",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-01T21:47:10.881Z"
+    }
+  ],
+  "peacock_tv": [
+    {
+      "email": "chege123456789012@gmail.com",
+      "password": "%u,eLE!6?_FP_eu",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 1,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [
+        {
+          "customerEmail": "felaieen2@gmail.com",
+          "customerName": "felix murimi felix",
+          "customerId": "CUST-1764629977776",
+          "assignedAt": "2025-12-01T22:59:37.776Z",
+          "slot": 1
+        }
+      ],
+      "addedAt": "2025-12-01T22:10:03.637Z"
+    },
+    {
+      "email": "rawale1337@cexch.com",
+      "password": "]P!K^Bp%W}PLb5J",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-01T22:44:23.711Z"
+    }
+  ],
+  "deezer": [
+    {
+      "email": "emenard27@gmail.com",
+      "password": "TiItouLeChat71",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-02T02:47:48.366Z"
+    },
+    {
+      "email": "emmadeordenana@gmail.com",
+      "password": "Emma2012",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-02T02:48:34.434Z"
+    },
+    {
+      "email": "vmonteirofilho@gmail.com",
+      "password": "Nem2mont@",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-02T02:49:26.393Z"
+    },
+    {
+      "email": "terstegensourced@gmail.com",
+      "password": "az09az09",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-02T02:50:21.836Z"
+    },
+    {
+      "email": "pierre.chargros@gmail.com",
+      "password": "!DYALYp3@n*Zb2*",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-02T02:52:06.991Z"
     }
   ]
 }
