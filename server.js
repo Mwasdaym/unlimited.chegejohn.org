@@ -145,7 +145,7 @@ const subscriptionPlans = {
     icon: 'fas fa-briefcase',
     color: '#45B7D1',
     plans: {
-      'canva': { name: 'Canva Pro', price: 300, duration: '1 Month', features: ['Premium Templates', 'Brand Kit', 'Background Remover'] },
+      'canva': { name: 'Canva Pro', price: 1, duration: '1 Month', features: ['Premium Templates', 'Brand Kit', 'Background Remover'] },
       'grammarly': { name: 'Grammarly Premium', price: 250, duration: '1 Month', features: ['Advanced Grammar', 'Tone Detection', 'Plagiarism Check'] },
       'skillshare': { name: 'Skillshare Premium', price: 350, duration: '1 Month', features: ['Unlimited Classes', 'Offline Access', 'Creative Skills'] },
       'masterclass': { name: 'MasterClass', price: 600, duration: '1 Month', features: ['Expert Instructors', 'Unlimited Lessons', 'Offline Access'] },
