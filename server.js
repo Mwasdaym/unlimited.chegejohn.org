@@ -110,6 +110,8 @@ class AccountManager {
             if (!account.maxUsers) account.maxUsers = 5;
             if (!account.usedBy) account.usedBy = [];
             if (!account.fullyUsed) account.fullyUsed = false;
+            // Add unique ID if not exists
+            if (!account.id) account.id = `${service}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
           });
         });
       } else {
@@ -191,6 +193,7 @@ class AccountManager {
 📧 <b>Account:</b> ${availableAccount.email || availableAccount.username}
 👥 <b>Users Reached:</b> ${availableAccount.currentUsers}/${availableAccount.maxUsers}
 ⏰ <b>Filled At:</b> ${new Date().toLocaleString()}
+🆔 <b>Account ID:</b> ${availableAccount.id}
 
 ⚠️ <i>This account is now full. Please add more accounts for ${service}.</i>
       `;
@@ -209,6 +212,98 @@ class AccountManager {
       totalSlots: availableAccount.maxUsers,
       userAssignment: userAssignment
     };
+  }
+
+  // Add unique ID when adding account
+  addAccount(service, accountData) {
+    if (!this.accounts[service]) {
+      this.accounts[service] = [];
+    }
+    
+    const newAccount = {
+      ...accountData,
+      id: `${service}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      currentUsers: 0,
+      maxUsers: 5,
+      fullyUsed: false,
+      usedBy: [],
+      addedAt: new Date().toISOString()
+    };
+    
+    this.accounts[service].push(newAccount);
+    this.saveAccounts();
+    
+    const telegramMessage = `
+🎯 <b>NEW ACCOUNT ADDED</b>
+
+📊 <b>Service:</b> ${service}
+📧 <b>Account:</b> ${accountData.email || accountData.username}
+👥 <b>Max Users:</b> 5
+⏰ <b>Added At:</b> ${new Date().toLocaleString()}
+🆔 <b>Account ID:</b> ${newAccount.id}
+
+✅ <i>Ready for 5 new customers!</i>
+    `;
+    
+    sendTelegramNotification(telegramMessage);
+    
+    return newAccount;
+  }
+
+  // NEW: Remove account by ID
+  removeAccount(accountId) {
+    let removedAccount = null;
+    let serviceName = null;
+    
+    // Find the account and its service
+    for (const [service, accounts] of Object.entries(this.accounts)) {
+      const accountIndex = accounts.findIndex(acc => acc.id === accountId);
+      
+      if (accountIndex !== -1) {
+        removedAccount = accounts[accountIndex];
+        serviceName = service;
+        
+        // Remove the account
+        accounts.splice(accountIndex, 1);
+        
+        // If service has no more accounts, remove the service
+        if (accounts.length === 0) {
+          delete this.accounts[service];
+        }
+        
+        this.saveAccounts();
+        break;
+      }
+    }
+    
+    if (removedAccount) {
+      const telegramMessage = `
+🗑️ <b>ACCOUNT REMOVED</b>
+
+📊 <b>Service:</b> ${serviceName}
+📧 <b>Account:</b> ${removedAccount.email || removedAccount.username}
+👥 <b>Active Users:</b> ${removedAccount.currentUsers || 0}/${removedAccount.maxUsers || 5}
+🆔 <b>Account ID:</b> ${accountId}
+⏰ <b>Removed At:</b> ${new Date().toLocaleString()}
+      
+⚠️ <i>This account has been permanently removed from the system.</i>
+      `;
+      
+      sendTelegramNotification(telegramMessage);
+    }
+    
+    return removedAccount;
+  }
+
+  // NEW: Get account by ID
+  getAccountById(accountId) {
+    for (const [service, accounts] of Object.entries(this.accounts)) {
+      const account = accounts.find(acc => acc.id === accountId);
+      if (account) {
+        return { ...account, service };
+      }
+    }
+    return null;
   }
 
   getAccountStats() {
@@ -235,49 +330,19 @@ class AccountManager {
         availableAccounts: availableAccounts,
         fullyUsedAccounts: serviceAccounts.filter(acc => acc.fullyUsed).length,
         accounts: serviceAccounts.map(acc => ({
+          id: acc.id,
           email: acc.email,
           username: acc.username,
           currentUsers: acc.currentUsers || 0,
           maxUsers: acc.maxUsers || 5,
           fullyUsed: acc.fullyUsed || false,
-          available: !acc.fullyUsed && (acc.currentUsers || 0) < (acc.maxUsers || 5)
+          available: !acc.fullyUsed && (acc.currentUsers || 0) < (acc.maxUsers || 5),
+          addedAt: acc.addedAt,
+          usedBy: acc.usedBy || []
         }))
       };
     });
     return stats;
-  }
-  
-  addAccount(service, accountData) {
-    if (!this.accounts[service]) {
-      this.accounts[service] = [];
-    }
-    
-    const newAccount = {
-      ...accountData,
-      currentUsers: 0,
-      maxUsers: 5,
-      fullyUsed: false,
-      usedBy: [],
-      addedAt: new Date().toISOString()
-    };
-    
-    this.accounts[service].push(newAccount);
-    this.saveAccounts();
-    
-    const telegramMessage = `
-🎯 <b>NEW ACCOUNT ADDED</b>
-
-📊 <b>Service:</b> ${service}
-📧 <b>Account:</b> ${accountData.email || accountData.username}
-👥 <b>Max Users:</b> 5
-⏰ <b>Added At:</b> ${new Date().toLocaleString()}
-
-✅ <i>Ready for 5 new customers!</i>
-    `;
-    
-    sendTelegramNotification(telegramMessage);
-    
-    return newAccount;
   }
 }
 
@@ -336,15 +401,6 @@ const subscriptionPlans = {
       'microsoft365': { name: 'Microsoft 365', price: 500, duration: '1 Month', features: ['Office Apps', 'Cloud Storage', 'Collaboration Tools'], shared: true, maxUsers: 5 },
       'googleone': { name: 'Google One', price: 250, duration: '1 Month', features: ['Cloud Storage', 'VPN Access', 'Family Sharing'], shared: true, maxUsers: 5 },
       'adobecc': { name: 'Adobe Creative Cloud', price: 700, duration: '1 Month', features: ['Full Suite Access', 'Cloud Sync', 'Regular Updates'], shared: true, maxUsers: 5 }
-      'canva': { name: 'Canva Pro', price: 1, duration: '1 Month', features: ['Premium Templates', 'Brand Kit', 'Background Remover'] },
-      'grammarly': { name: 'Grammarly Premium', price: 250, duration: '1 Month', features: ['Advanced Grammar', 'Tone Detection', 'Plagiarism Check'] },
-      'skillshare': { name: 'Skillshare Premium', price: 350, duration: '1 Month', features: ['Unlimited Classes', 'Offline Access', 'Creative Skills'] },
-      'masterclass': { name: 'MasterClass', price: 600, duration: '1 Month', features: ['Expert Instructors', 'Unlimited Lessons', 'Offline Access'] },
-      'duolingo': { name: 'Duolingo Super', price: 150, duration: '1 Month', features: ['Ad-Free Learning', 'Offline Lessons', 'Unlimited Hearts'] },
-      'notion': { name: 'Notion Plus', price: 200, duration: '1 Month', features: ['Unlimited Blocks', 'Collaboration Tools', 'File Uploads'] },
-      'microsoft365': { name: 'Microsoft 365', price: 500, duration: '1 Month', features: ['Office Apps', 'Cloud Storage', 'Collaboration Tools'] },
-      'googleone': { name: 'Google One', price: 250, duration: '1 Month', features: ['Cloud Storage', 'VPN Access', 'Family Sharing'] },
-      'adobecc': { name: 'Adobe Creative Cloud', price: 700, duration: '1 Month', features: ['Full Suite Access', 'Cloud Sync', 'Regular Updates'] }
     }
   },
 
@@ -849,248 +905,6 @@ setInterval(() => {
   }
 }, 30 * 60 * 1000);
 
-app.get('/admin', (req, res) => {
-  res.send(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>Chege Tech - Admin Panel</title>
-      <style>
-        body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h1 { color: #333; border-bottom: 2px solid #667eea; padding-bottom: 10px; }
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
-        button { background: #667eea; color: white; border: none; padding: 12px 24px; border-radius: 5px; cursor: pointer; }
-        button:hover { background: #5a67d8; }
-        .success { background: #10b981; color: white; padding: 10px; border-radius: 5px; margin: 10px 0; }
-        .error { background: #ef4444; color: white; padding: 10px; border-radius: 5px; margin: 10px 0; }
-        .stats { background: #f3f4f6; padding: 15px; border-radius: 5px; margin: 20px 0; }
-        .account-list { margin-top: 20px; }
-        .account-item { padding: 10px; border: 1px solid #ddd; margin-bottom: 10px; border-radius: 5px; }
-        .used { background: #fee2e2; }
-        .available { background: #dcfce7; }
-      </style>
-    </head>
-    <body>
-      <div class="container">
-        <h1>🔧 Chege Tech Admin Panel</h1>
-        
-        <div id="message"></div>
-        
-        <div class="stats">
-          <h3>📊 Current Stats</h3>
-          <div id="stats">Loading...</div>
-          <button onclick="loadStats()">🔄 Refresh Stats</button>
-        </div>
-        
-        <h3>➕ Add New Account</h3>
-        <form id="addAccountForm">
-          <div class="form-group">
-            <label>Admin Password:</label>
-            <input type="password" id="adminPassword" required>
-          </div>
-          
-          <div class="form-group">
-            <label>Service:</label>
-            <select id="service" required>
-              <option value="">Select Service</option>
-              <option value="spotify">Spotify Premium</option>
-             <option value="netflix">Netflix</option>
-            <option value="primevideo">Prime Video<  /option>
-            <option value="primevideo_3m">Prime Video (3 Months)</option>
-         <option value="primevideo_6m">Prime Video (6 Months)</option>
-           <option value="primevideo_1y">Prime Video (1 Year)</option>
-       <option value="showmax_1m">Showmax Pro (1 Month)</option>
-     <option value="showmax_3m">Showmax Pro (3 Months)</option>
-<option value="showmax_6m">Showmax Pro (6 Months)</option>
-<option value="showmax_1y">Showmax Pro (1 Year)</option>
-<option value="youtubepremium">YouTube Premium</option>
-<option value="applemusic">Apple Music</option>
-<option value="canva">Canva Pro</option>
-<option value="grammarly">Grammarly Premium</option>
-<option value="urbanvpn">Urban VPN</option>
-<option value="nordvpn">NordVPN</option>
-<option value="xbox">Xbox Game Pass</option>
-<option value="playstation">PlayStation Plus</option>
-<option value="deezer">Deezer Premium</option>
-<option value="tidal">Tidal HiFi</option>
-<option value="soundcloud">SoundCloud Go+</option>
-<option value="audible">Audible Premium Plus</option>
-<option value="skillshare">Skillshare Premium</option>
-<option value="masterclass">MasterClass</option>
-<option value="duolingo">Duolingo Super</option>
-<option value="notion">Notion Plus</option>
-<option value="microsoft365">Microsoft 365</option>
-<option value="googleone">Google One</option>
-<option value="adobecc">Adobe Creative Cloud</option>
-<option value="expressvpn">ExpressVPN</option>
-<option value="surfshark">Surfshark VPN</option>
-<option value="cyberghost">CyberGhost VPN</option>
-<option value="ipvanish">IPVanish</option>
-<option value="protonvpn">ProtonVPN Plus</option>
-<option value="windscribe">Windscribe Pro</option>
-<option value="eaplay">EA Play</option>
-<option value="ubisoft">Ubisoft+</option>
-<option value="geforcenow">Nvidia GeForce Now</option>
-<option value="peacock_tv">Peacock TV</option>
-<option value="appletv">Apple TV+</option>
-<option value="surfsharkvpn">Surfshark VPN</option>
-            </select>
-          </div>
-          
-          <div class="form-group">
-            <label>Email:</label>
-            <input type="email" id="email" required>
-          </div>
-          
-          <div class="form-group">
-            <label>Password:</label>
-            <input type="text" id="password" required>
-          </div>
-          
-          <div class="form-group">
-            <label>Username (optional):</label>
-            <input type="text" id="username">
-          </div>
-          
-          <div class="form-group">
-            <label>Instructions:</label>
-            <textarea id="instructions" rows="3">Login using provided credentials. Do not change password.</textarea>
-          </div>
-          
-          <button type="submit">➕ Add Account</button>
-        </form>
-        
-        <div class="account-list" id="accountList"></div>
-      </div>
-      
-      <script>
-        async function loadStats() {
-          const password = document.getElementById('adminPassword').value || 'chegetech123';
-          try {
-            const response = await fetch(\`/api/admin/stats?password=\${encodeURIComponent(password)}\`);
-            const data = await response.json();
-            
-            if (data.success) {
-              let html = '';
-              Object.entries(data.stats).forEach(([service, stats]) => {
-                html += \`
-                  <div style="margin-bottom: 15px; padding: 10px; border-left: 4px solid #667eea; background: white;">
-                    <strong>\${service}:</strong><br>
-                    Total Accounts: \${stats.totalAccounts}<br>
-                    Used Slots: \${stats.usedSlots}/\${stats.totalSlots}<br>
-                    Available Slots: \${stats.availableSlots}<br>
-                    Available Accounts: \${stats.availableAccounts}<br>
-                    Fully Used Accounts: \${stats.fullyUsedAccounts}
-                  </div>
-                \`;
-              });
-              document.getElementById('stats').innerHTML = html;
-              
-              // Load account details
-              loadAccountDetails(password);
-            } else {
-              document.getElementById('stats').innerHTML = \`Error: \${data.error}\`;
-            }
-          } catch (error) {
-            document.getElementById('stats').innerHTML = 'Error loading stats';
-          }
-        }
-        
-        async function loadAccountDetails(password) {
-          try {
-            const response = await fetch(\`/api/admin/accounts?password=\${encodeURIComponent(password)}\`);
-            const data = await response.json();
-            
-            if (data.success) {
-              let html = '<h3>📋 Account Details</h3>';
-              Object.entries(data.accounts).forEach(([service, accounts]) => {
-                html += \`<h4>\${service}</h4>\`;
-                accounts.forEach(account => {
-                  const statusClass = account.fullyUsed ? 'used' : 'available';
-                  html += \`
-                    <div class="account-item \${statusClass}">
-                      <strong>Email:</strong> \${account.email || 'N/A'}<br>
-                      <strong>Username:</strong> \${account.username || 'N/A'}<br>
-                      <strong>Status:</strong> \${account.fullyUsed ? 'FULLY USED' : 'AVAILABLE'}<br>
-                      <strong>Users:</strong> \${account.currentUsers}/\${account.maxUsers}<br>
-                      <strong>Added:</strong> \${new Date(account.addedAt).toLocaleString()}
-                    </div>
-                  \`;
-                });
-              });
-              document.getElementById('accountList').innerHTML = html;
-            }
-          } catch (error) {
-            console.log('Error loading account details:', error);
-          }
-        }
-        
-        document.getElementById('addAccountForm').addEventListener('submit', async (e) => {
-          e.preventDefault();
-          
-          const formData = {
-            service: document.getElementById('service').value,
-            account: {
-              email: document.getElementById('email').value,
-              password: document.getElementById('password').value,
-              username: document.getElementById('username').value || '',
-              instructions: document.getElementById('instructions').value
-            },
-            adminPassword: document.getElementById('adminPassword').value
-          };
-          
-          try {
-            const response = await fetch('/api/admin/add-account', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(formData)
-            });
-            
-            const result = await response.json();
-            
-            const messageDiv = document.getElementById('message');
-            if (result.success) {
-              messageDiv.innerHTML = \`
-                <div class="success">
-                  ✅ Account added successfully!<br>
-                  Service: \${formData.service}<br>
-                  Email: \${formData.account.email}<br>
-                  Telegram notification sent.
-                </div>
-              \`;
-              // Clear form
-              document.getElementById('email').value = '';
-              document.getElementById('password').value = '';
-              document.getElementById('username').value = '';
-              // Reload stats
-              loadStats();
-            } else {
-              messageDiv.innerHTML = \`
-                <div class="error">
-                  ❌ Error: \${result.error}
-                </div>
-              \`;
-            }
-          } catch (error) {
-            document.getElementById('message').innerHTML = \`
-              <div class="error">
-                ❌ Network error: \${error.message}
-              </div>
-            \`;
-          }
-        });
-        
-        // Load stats on page load
-        loadStats();
-      </script>
-    </body>
-    </html>
-  `);
-});
-
 // Admin API routes
 app.post('/api/admin/add-account', (req, res) => {
   const { service, account, adminPassword } = req.body;
@@ -1111,6 +925,55 @@ app.post('/api/admin/add-account', (req, res) => {
     message: `Account added to ${service}`,
     data: newAccount,
     stats: accountManager.getAccountStats()[service]
+  });
+});
+
+// NEW: Remove account API
+app.post('/api/admin/remove-account', (req, res) => {
+  const { accountId, adminPassword } = req.body;
+  
+  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'chegeadmin123';
+  if (adminPassword !== ADMIN_PASSWORD) {
+    return res.status(401).json({ success: false, error: 'Unauthorized' });
+  }
+  
+  if (!accountId) {
+    return res.status(400).json({ success: false, error: 'Account ID is required' });
+  }
+  
+  const removedAccount = accountManager.removeAccount(accountId);
+  
+  if (!removedAccount) {
+    return res.status(404).json({ success: false, error: 'Account not found' });
+  }
+  
+  res.json({
+    success: true,
+    message: 'Account removed successfully',
+    removedAccount: removedAccount,
+    stats: accountManager.getAccountStats()
+  });
+});
+
+// NEW: Get account by ID
+app.get('/api/admin/account/:accountId', (req, res) => {
+  const { password } = req.query;
+  const { accountId } = req.params;
+  
+  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'chegeadmin123';
+  if (password !== ADMIN_PASSWORD) {
+    return res.status(401).json({ success: false, error: 'Unauthorized' });
+  }
+  
+  const account = accountManager.getAccountById(accountId);
+  
+  if (!account) {
+    return res.status(404).json({ success: false, error: 'Account not found' });
+  }
+  
+  res.json({
+    success: true,
+    account: account
   });
 });
 
@@ -1168,6 +1031,508 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Admin Panel
+app.get('/admin', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Chege Tech - Admin Panel</title>
+      <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; border-bottom: 2px solid #667eea; padding-bottom: 10px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        button { background: #667eea; color: white; border: none; padding: 12px 24px; border-radius: 5px; cursor: pointer; margin-right: 10px; margin-bottom: 10px; }
+        button:hover { background: #5a67d8; }
+        button.danger { background: #ef4444; }
+        button.danger:hover { background: #dc2626; }
+        button.success { background: #10b981; }
+        button.success:hover { background: #059669; }
+        .success { background: #10b981; color: white; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        .error { background: #ef4444; color: white; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        .warning { background: #f59e0b; color: white; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        .info { background: #3b82f6; color: white; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        .stats { background: #f3f4f6; padding: 15px; border-radius: 5px; margin: 20px 0; }
+        .account-list { margin-top: 20px; }
+        .account-item { padding: 15px; border: 1px solid #ddd; margin-bottom: 15px; border-radius: 5px; }
+        .used { background: #fee2e2; }
+        .available { background: #dcfce7; }
+        .actions { margin-top: 10px; display: flex; gap: 10px; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; }
+        .modal-content { background: white; margin: 10% auto; padding: 20px; border-radius: 10px; width: 400px; max-width: 90%; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .close { font-size: 24px; cursor: pointer; }
+        .tabs { display: flex; border-bottom: 1px solid #ddd; margin-bottom: 20px; }
+        .tab { padding: 10px 20px; cursor: pointer; border-bottom: 2px solid transparent; }
+        .tab.active { border-bottom: 2px solid #667eea; font-weight: bold; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        @media (max-width: 768px) {
+          .grid { grid-template-columns: 1fr; }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h1>🔧 Chege Tech Admin Panel</h1>
+        
+        <div class="tabs">
+          <div class="tab active" onclick="showTab('stats')">📊 Statistics</div>
+          <div class="tab" onclick="showTab('add')">➕ Add Account</div>
+          <div class="tab" onclick="showTab('manage')">📋 Manage Accounts</div>
+        </div>
+        
+        <div id="message"></div>
+        
+        <!-- Statistics Tab -->
+        <div id="stats-tab" class="tab-content">
+          <div class="stats">
+            <h3>📊 Current System Stats</h3>
+            <div id="stats">Loading...</div>
+            <button onclick="loadStats()">🔄 Refresh Stats</button>
+          </div>
+          
+          <div id="pending-transactions">
+            <h3>⏳ Pending Transactions</h3>
+            <div id="transactions-list">Loading...</div>
+          </div>
+        </div>
+        
+        <!-- Add Account Tab -->
+        <div id="add-tab" class="tab-content" style="display: none;">
+          <h3>➕ Add New Account</h3>
+          <form id="addAccountForm">
+            <div class="form-group">
+              <label>Admin Password:</label>
+              <input type="password" id="adminPassword" required placeholder="Enter admin password">
+            </div>
+            
+            <div class="grid">
+              <div>
+                <div class="form-group">
+                  <label>Service:</label>
+                  <select id="service" required>
+                    <option value="">Select Service</option>
+                    <option value="spotify">Spotify Premium</option>
+                    <option value="netflix">Netflix</option>
+                    <option value="primevideo">Prime Video</option>
+                    <option value="primevideo_3m">Prime Video (3 Months)</option>
+                    <option value="primevideo_6m">Prime Video (6 Months)</option>
+                    <option value="primevideo_1y">Prime Video (1 Year)</option>
+                    <option value="showmax_1m">Showmax Pro (1 Month)</option>
+                    <option value="showmax_3m">Showmax Pro (3 Months)</option>
+                    <option value="showmax_6m">Showmax Pro (6 Months)</option>
+                    <option value="showmax_1y">Showmax Pro (1 Year)</option>
+                    <option value="youtubepremium">YouTube Premium</option>
+                    <option value="applemusic">Apple Music</option>
+                    <option value="canva">Canva Pro</option>
+                    <option value="grammarly">Grammarly Premium</option>
+                    <option value="urbanvpn">Urban VPN</option>
+                    <option value="nordvpn">NordVPN</option>
+                    <option value="xbox">Xbox Game Pass</option>
+                    <option value="playstation">PlayStation Plus</option>
+                    <option value="deezer">Deezer Premium</option>
+                    <option value="tidal">Tidal HiFi</option>
+                    <option value="soundcloud">SoundCloud Go+</option>
+                    <option value="audible">Audible Premium Plus</option>
+                    <option value="skillshare">Skillshare Premium</option>
+                    <option value="masterclass">MasterClass</option>
+                    <option value="duolingo">Duolingo Super</option>
+                    <option value="notion">Notion Plus</option>
+                    <option value="microsoft365">Microsoft 365</option>
+                    <option value="googleone">Google One</option>
+                    <option value="adobecc">Adobe Creative Cloud</option>
+                    <option value="expressvpn">ExpressVPN</option>
+                    <option value="surfshark">Surfshark VPN</option>
+                    <option value="cyberghost">CyberGhost VPN</option>
+                    <option value="ipvanish">IPVanish</option>
+                    <option value="protonvpn">ProtonVPN Plus</option>
+                    <option value="windscribe">Windscribe Pro</option>
+                    <option value="eaplay">EA Play</option>
+                    <option value="ubisoft">Ubisoft+</option>
+                    <option value="geforcenow">Nvidia GeForce Now</option>
+                    <option value="peacock_tv">Peacock TV</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label>Email:</label>
+                  <input type="email" id="email" required placeholder="account@example.com">
+                </div>
+                
+                <div class="form-group">
+                  <label>Password:</label>
+                  <input type="text" id="password" required placeholder="Account password">
+                </div>
+              </div>
+              
+              <div>
+                <div class="form-group">
+                  <label>Username (optional):</label>
+                  <input type="text" id="username" placeholder="Username if different from email">
+                </div>
+                
+                <div class="form-group">
+                  <label>Instructions:</label>
+                  <textarea id="instructions" rows="6" placeholder="Special instructions for customers...">Login using provided credentials. Do not change password.</textarea>
+                </div>
+                
+                <button type="submit" class="success">➕ Add Account</button>
+                <button type="button" onclick="resetForm()">🗑️ Clear Form</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        
+        <!-- Manage Accounts Tab -->
+        <div id="manage-tab" class="tab-content" style="display: none;">
+          <h3>📋 Manage Accounts</h3>
+          <div class="form-group">
+            <label>Admin Password:</label>
+            <input type="password" id="managePassword" placeholder="Enter admin password to view accounts">
+            <button onclick="loadAccounts()">🔍 Load Accounts</button>
+          </div>
+          
+          <div class="account-list" id="accountList">
+            <p>Enter password and click "Load Accounts" to view accounts.</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Remove Account Modal -->
+      <div id="removeModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>⚠️ Remove Account</h3>
+            <span class="close" onclick="closeModal()">&times;</span>
+          </div>
+          <p id="modalMessage">Are you sure you want to remove this account?</p>
+          <div id="accountDetails"></div>
+          <div class="actions">
+            <button class="danger" onclick="confirmRemove()">🗑️ Remove Account</button>
+            <button onclick="closeModal()">❌ Cancel</button>
+          </div>
+        </div>
+      </div>
+      
+      <script>
+        let currentTab = 'stats';
+        let accountsData = {};
+        let accountToRemove = null;
+        let adminPassword = '';
+        
+        function showTab(tabName) {
+          document.querySelectorAll('.tab').forEach(tab => {
+            tab.classList.remove('active');
+          });
+          document.querySelectorAll('.tab-content').forEach(content => {
+            content.style.display = 'none';
+          });
+          
+          document.querySelectorAll('.tab')[tabName === 'stats' ? 0 : tabName === 'add' ? 1 : 2].classList.add('active');
+          document.getElementById(tabName + '-tab').style.display = 'block';
+          currentTab = tabName;
+          
+          if (tabName === 'stats') {
+            loadStats();
+          } else if (tabName === 'manage') {
+            document.getElementById('accountList').innerHTML = '<p>Enter password and click "Load Accounts" to view accounts.</p>';
+          }
+        }
+        
+        async function loadStats() {
+          const password = document.getElementById('adminPassword').value || document.getElementById('managePassword').value || 'chegeadmin123';
+          adminPassword = password;
+          
+          try {
+            // Load system stats
+            const response = await fetch(\`/api/admin/stats?password=\${encodeURIComponent(password)}\`);
+            const data = await response.json();
+            
+            if (data.success) {
+              let html = '';
+              Object.entries(data.stats).forEach(([service, stats]) => {
+                html += \`
+                  <div style="margin-bottom: 15px; padding: 15px; border-left: 4px solid #667eea; background: white; border-radius: 5px;">
+                    <strong>\${service}:</strong><br>
+                    📊 Total Accounts: \${stats.totalAccounts}<br>
+                    👥 Used Slots: \${stats.usedSlots}/\${stats.totalSlots}<br>
+                    ✅ Available Slots: \${stats.availableSlots}<br>
+                    📋 Available Accounts: \${stats.availableAccounts}<br>
+                    🚫 Fully Used Accounts: \${stats.fullyUsedAccounts}
+                  </div>
+                \`;
+              });
+              
+              // Add pending transactions info
+              html += \`<div style="margin-top: 20px; padding: 10px; background: #fff3cd; border-radius: 5px;">
+                <strong>⏳ Pending Transactions:</strong> \${data.pendingTransactions}<br>
+                <strong>⏰ Server Time:</strong> \${new Date(data.serverTime).toLocaleString()}
+              </div>\`;
+              
+              document.getElementById('stats').innerHTML = html;
+            } else {
+              document.getElementById('stats').innerHTML = \`<div class="error">Error: \${data.error}</div>\`;
+            }
+          } catch (error) {
+            document.getElementById('stats').innerHTML = '<div class="error">Error loading stats</div>';
+          }
+        }
+        
+        async function loadAccounts() {
+          const password = document.getElementById('managePassword').value;
+          adminPassword = password;
+          
+          if (!password) {
+            showMessage('Please enter admin password', 'error');
+            return;
+          }
+          
+          try {
+            const response = await fetch(\`/api/admin/accounts?password=\${encodeURIComponent(password)}\`);
+            const data = await response.json();
+            
+            if (data.success) {
+              accountsData = data.accounts;
+              renderAccounts();
+            } else {
+              showMessage('Error: ' + data.error, 'error');
+              document.getElementById('accountList').innerHTML = '<div class="error">Authentication failed</div>';
+            }
+          } catch (error) {
+            showMessage('Error loading accounts', 'error');
+          }
+        }
+        
+        function renderAccounts() {
+          let html = '';
+          
+          Object.entries(accountsData).forEach(([service, accounts]) => {
+            html += \`<h4>\${service} (\${accounts.length} accounts)</h4>\`;
+            
+            accounts.forEach(account => {
+              const statusClass = account.fullyUsed ? 'used' : 'available';
+              const statusText = account.fullyUsed ? 'FULLY USED' : 'AVAILABLE';
+              const statusIcon = account.fullyUsed ? '🚫' : '✅';
+              
+              html += \`
+                <div class="account-item \${statusClass}" id="account-\${account.id}">
+                  <div style="display: flex; justify-content: space-between; align-items: start;">
+                    <div>
+                      <strong>\${statusIcon} \${statusText}</strong><br>
+                      <strong>Email:</strong> \${account.email || 'N/A'}<br>
+                      <strong>Username:</strong> \${account.username || 'N/A'}<br>
+                      <strong>Users:</strong> \${account.currentUsers || 0}/\${account.maxUsers || 5}<br>
+                      <strong>Added:</strong> \${new Date(account.addedAt).toLocaleString()}<br>
+                      <strong>Account ID:</strong> <code>\${account.id}</code>
+                    </div>
+                    <div class="actions">
+                      <button class="danger" onclick="showRemoveModal('\${account.id}')">🗑️ Remove</button>
+                    </div>
+                  </div>
+                  
+                  \${account.usedBy && account.usedBy.length > 0 ? \`
+                    <div style="margin-top: 10px; padding: 10px; background: #f1f5f9; border-radius: 5px;">
+                      <strong>Used By (\${account.usedBy.length}):</strong>
+                      <ul style="margin: 5px 0; padding-left: 20px;">
+                        \${account.usedBy.map(user => \`
+                          <li>\${user.customerName} (\${user.customerEmail}) - \${new Date(user.assignedAt).toLocaleString()}</li>
+                        \`).join('')}
+                      </ul>
+                    </div>
+                  \` : ''}
+                </div>
+              \`;
+            });
+          });
+          
+          document.getElementById('accountList').innerHTML = html || '<p>No accounts found.</p>';
+        }
+        
+        function showRemoveModal(accountId) {
+          if (!adminPassword) {
+            adminPassword = document.getElementById('managePassword').value || document.getElementById('adminPassword').value;
+          }
+          
+          const account = findAccountById(accountId);
+          if (!account) return;
+          
+          accountToRemove = accountId;
+          
+          document.getElementById('accountDetails').innerHTML = \`
+            <div style="background: #fef2f2; padding: 10px; border-radius: 5px; margin: 10px 0;">
+              <strong>Service:</strong> \${account.service}<br>
+              <strong>Email:</strong> \${account.email || 'N/A'}<br>
+              <strong>Username:</strong> \${account.username || 'N/A'}<br>
+              <strong>Current Users:</strong> \${account.currentUsers || 0}<br>
+              <strong>Account ID:</strong> <code>\${account.id}</code>
+            </div>
+            <div class="warning">
+              ⚠️ Warning: This action cannot be undone! This account will be permanently removed.
+              \${account.currentUsers > 0 ? '<br>⚠️ This account has active users!' : ''}
+            </div>
+          \`;
+          
+          document.getElementById('removeModal').style.display = 'block';
+        }
+        
+        function closeModal() {
+          document.getElementById('removeModal').style.display = 'none';
+          accountToRemove = null;
+        }
+        
+        async function confirmRemove() {
+          if (!accountToRemove || !adminPassword) {
+            showMessage('Missing information', 'error');
+            return;
+          }
+          
+          try {
+            const response = await fetch('/api/admin/remove-account', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                accountId: accountToRemove,
+                adminPassword: adminPassword
+              })
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+              showMessage(\`Account removed successfully! Telegram notification sent.\`, 'success');
+              
+              // Remove from UI
+              const accountElement = document.getElementById('account-' + accountToRemove);
+              if (accountElement) {
+                accountElement.remove();
+              }
+              
+              // Remove from local data
+              removeAccountFromData(accountToRemove);
+              
+              closeModal();
+              
+              // Reload stats
+              loadStats();
+            } else {
+              showMessage('Error: ' + result.error, 'error');
+            }
+          } catch (error) {
+            showMessage('Network error: ' + error.message, 'error');
+          }
+        }
+        
+        function findAccountById(accountId) {
+          for (const [service, accounts] of Object.entries(accountsData)) {
+            const account = accounts.find(acc => acc.id === accountId);
+            if (account) {
+              return { ...account, service };
+            }
+          }
+          return null;
+        }
+        
+        function removeAccountFromData(accountId) {
+          for (const [service, accounts] of Object.entries(accountsData)) {
+            const index = accounts.findIndex(acc => acc.id === accountId);
+            if (index !== -1) {
+              accounts.splice(index, 1);
+              if (accounts.length === 0) {
+                delete accountsData[service];
+              }
+              break;
+            }
+          }
+        }
+        
+        document.getElementById('addAccountForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          
+          const formData = {
+            service: document.getElementById('service').value,
+            account: {
+              email: document.getElementById('email').value,
+              password: document.getElementById('password').value,
+              username: document.getElementById('username').value || '',
+              instructions: document.getElementById('instructions').value
+            },
+            adminPassword: document.getElementById('adminPassword').value
+          };
+          
+          if (!formData.adminPassword) {
+            showMessage('Please enter admin password', 'error');
+            return;
+          }
+          
+          try {
+            const response = await fetch('/api/admin/add-account', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(formData)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+              showMessage(\`
+                ✅ Account added successfully!<br>
+                <strong>Service:</strong> \${formData.service}<br>
+                <strong>Email:</strong> \${formData.account.email}<br>
+                <strong>Account ID:</strong> \${result.data.id}<br>
+                Telegram notification sent.
+              \`, 'success');
+              
+              // Clear form
+              document.getElementById('email').value = '';
+              document.getElementById('password').value = '';
+              document.getElementById('username').value = '';
+              
+              // Reload stats
+              loadStats();
+            } else {
+              showMessage('Error: ' + result.error, 'error');
+            }
+          } catch (error) {
+            showMessage('Network error: ' + error.message, 'error');
+          }
+        });
+        
+        function resetForm() {
+          document.getElementById('addAccountForm').reset();
+        }
+        
+        function showMessage(message, type) {
+          const messageDiv = document.getElementById('message');
+          messageDiv.innerHTML = \`
+            <div class="\${type}">
+              \${message}
+            </div>
+          \`;
+          
+          setTimeout(() => {
+            messageDiv.innerHTML = '';
+          }, 5000);
+        }
+        
+        // Load stats on page load
+        loadStats();
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+          const modal = document.getElementById('removeModal');
+          if (event.target === modal) {
+            closeModal();
+          }
+        };
+      </script>
+    </body>
+    </html>
+  `);
+});
+
 // Start server
 app.listen(port, () => {
   console.log('🚀 Chege Tech Premium Service Started');
@@ -1180,21 +1545,23 @@ app.listen(port, () => {
   }
   console.log('✅ Fixed: Accounts assigned ONLY when status is "SUCCESS"');
   console.log('✅ Fixed: QUEUED status handled correctly (no account assigned)');
+  console.log('✅ Added: Account removal functionality');
   console.log('🧹 Auto-cleanup: Old transactions removed after 1 hour');
   console.log('🔧 Admin Panel: http://localhost:' + port + '/admin');
   console.log('🌐 URL: http://localhost:' + port);
   
   const startupMessage = `
-🚀 <b>CHEGE TECH SERVER STARTED (CORRECTED VERSION)</b>
+🚀 <b>CHEGE TECH SERVER STARTED (WITH ACCOUNT REMOVAL)</b>
 
 📍 <b>Port:</b> ${port}
+✅ <b>New Feature:</b> Account removal capability
 ✅ <b>Fixed:</b> Accounts assigned ONLY when status is "SUCCESS"
 ✅ <b>Fixed:</b> QUEUED status handled correctly
 🧹 <b>Cleanup:</b> Old transactions auto-removed after 1 hour
 🔧 <b>Admin Panel:</b> http://localhost:${port}/admin
 ⏰ <b>Time:</b> ${new Date().toLocaleString()}
 
-✅ <i>Server is ready with CORRECT payment flow!</i>
+✅ <i>Server is ready with enhanced admin features!</i>
   `;
   
   sendTelegramNotification(startupMessage);
