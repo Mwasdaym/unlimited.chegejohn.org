@@ -595,7 +595,7 @@ function getServicePrice(service) {
 
 // ==================== AUTHENTICATION MIDDLEWARE ====================
 function requireAuth(req, res, next) {
-  const sessionId = req.cookies?.sessionId || req.headers['x-session-id'] || req.query.sessionId;
+  const sessionId = (req.cookies && req.cookies.sessionId) || req.headers['x-session-id'] || req.query.sessionId;
   const username = validateSession(sessionId);
   
   if (username) {
@@ -837,7 +837,7 @@ app.post('/api/admin/logout', (req, res) => {
 });
 
 app.get('/api/admin/check-auth', (req, res) => {
-  const sessionId = req.cookies?.sessionId || req.headers['x-session-id'] || req.query.sessionId;
+  const sessionId = (req.cookies && req.cookies.sessionId) || req.headers['x-session-id'] || req.query.sessionId;
   const username = validateSession(sessionId);
   
   if (username) {
@@ -1448,7 +1448,7 @@ app.get('/api/admin/transactions', requireAuth, (req, res) => {
   });
 });
 
-// ==================== ADMIN PANEL ROUTE ====================
+// ==================== ADMIN PANEL ROUTE (FIXED - ALL SERVICES) ====================
 app.get('/admin', (req, res) => {
   res.send(`
     <!DOCTYPE html>
@@ -2009,21 +2009,54 @@ app.get('/admin', (req, res) => {
                   <label for="service">Service:</label>
                   <select id="service" class="form-control" required>
                     <option value="">Select Service</option>
-                    <option value="spotify">Spotify Premium</option>
-                    <option value="netflix">Netflix</option>
-                    <option value="primevideo">Prime Video</option>
-                    <option value="showmax_1m">Showmax Pro (1 Month)</option>
-                    <option value="showmax_3m">Showmax Pro (3 Months)</option>
-                    <option value="showmax_6m">Showmax Pro (6 Months)</option>
-                    <option value="showmax_1y">Showmax Pro (1 Year)</option>
-                    <option value="youtubepremium">YouTube Premium</option>
-                    <option value="applemusic">Apple Music</option>
-                    <option value="canva">Canva Pro</option>
-                    <option value="grammarly">Grammarly Premium</option>
-                    <option value="urbanvpn">Urban VPN</option>
-                    <option value="nordvpn">NordVPN</option>
-                    <option value="xbox">Xbox Game Pass</option>
-                    <option value="playstation">PlayStation Plus</option>
+                    <!-- Streaming Services -->
+                    <option value="spotify">Spotify Premium (KES 400)</option>
+                    <option value="netflix">Netflix (KES 150)</option>
+                    <option value="primevideo">Prime Video 1 Month (KES 100)</option>
+                    <option value="primevideo_3m">Prime Video 3 Months (KES 250)</option>
+                    <option value="primevideo_6m">Prime Video 6 Months (KES 550)</option>
+                    <option value="primevideo_1y">Prime Video 1 Year (KES 1000)</option>
+                    <option value="showmax_1m">Showmax Pro 1 Month (KES 100)</option>
+                    <option value="showmax_3m">Showmax Pro 3 Months (KES 250)</option>
+                    <option value="showmax_6m">Showmax Pro 6 Months (KES 500)</option>
+                    <option value="showmax_1y">Showmax Pro 1 Year (KES 900)</option>
+                    <option value="youtubepremium">YouTube Premium (KES 100)</option>
+                    <option value="peacock_tv">Peacock TV (KES 50)</option>
+                    
+                    <!-- Music Services -->
+                    <option value="applemusic">Apple Music (KES 250)</option>
+                    <option value="deezer">Deezer Premium (KES 200)</option>
+                    <option value="tidal">Tidal HiFi (KES 250)</option>
+                    <option value="soundcloud">SoundCloud Go+ (KES 150)</option>
+                    <option value="audible">Audible Premium Plus (KES 400)</option>
+                    
+                    <!-- Productivity Tools -->
+                    <option value="canva">Canva Pro (KES 300)</option>
+                    <option value="grammarly">Grammarly Premium (KES 250)</option>
+                    <option value="skillshare">Skillshare Premium (KES 350)</option>
+                    <option value="masterclass">MasterClass (KES 600)</option>
+                    <option value="duolingo">Duolingo Super (KES 150)</option>
+                    <option value="notion">Notion Plus (KES 200)</option>
+                    <option value="microsoft365">Microsoft 365 (KES 500)</option>
+                    <option value="googleone">Google One (KES 250)</option>
+                    <option value="adobecc">Adobe Creative Cloud (KES 700)</option>
+                    
+                    <!-- VPN Services -->
+                    <option value="urbanvpn">Urban VPN (KES 100)</option>
+                    <option value="nordvpn">NordVPN (KES 350)</option>
+                    <option value="expressvpn">ExpressVPN (KES 400)</option>
+                    <option value="surfshark">Surfshark VPN (KES 200)</option>
+                    <option value="cyberghost">CyberGhost VPN (KES 250)</option>
+                    <option value="ipvanish">IPVanish (KES 200)</option>
+                    <option value="protonvpn">ProtonVPN Plus (KES 300)</option>
+                    <option value="windscribe">Windscribe Pro (KES 150)</option>
+                    
+                    <!-- Gaming Services -->
+                    <option value="xbox">Xbox Game Pass (KES 400)</option>
+                    <option value="playstation">PlayStation Plus (KES 400)</option>
+                    <option value="eaplay">EA Play (KES 250)</option>
+                    <option value="ubisoft">Ubisoft+ (KES 300)</option>
+                    <option value="geforcenow">Nvidia GeForce Now (KES 350)</option>
                   </select>
                 </div>
                 
@@ -2284,7 +2317,7 @@ app.get('/admin', (req, res) => {
           document.getElementById('lastUpdated').textContent = 
             new Date(data.lastUpdated).toLocaleString();
           
-          // Update revenue chart
+          // Update revenue chart (FIXED: Only shows ≥ 50 KSH)
           updateRevenueChart(data.revenue.monthlyRevenue);
           
           // Update accounts table
@@ -2294,7 +2327,7 @@ app.get('/admin', (req, res) => {
           updateTransactionsTable(data.transactions.recent);
         }
         
-        // Update revenue chart
+        // Update revenue chart (FIXED: Only shows revenue ≥ 50 KSH)
         function updateRevenueChart(monthlyRevenue) {
           const ctx = document.getElementById('revenueChart').getContext('2d');
           
@@ -2302,15 +2335,35 @@ app.get('/admin', (req, res) => {
             revenueChart.destroy();
           }
           
-          const months = Object.keys(monthlyRevenue);
-          const revenue = Object.values(monthlyRevenue);
+          // Filter months with revenue ≥ 50 KSH
+          const filteredMonths = {};
+          Object.keys(monthlyRevenue).forEach(month => {
+            if (monthlyRevenue[month] >= 50) {
+              filteredMonths[month] = monthlyRevenue[month];
+            }
+          });
+          
+          const months = Object.keys(filteredMonths);
+          const revenue = Object.values(filteredMonths);
+          
+          // If no months have ≥ 50 KSH, show a message
+          if (months.length === 0) {
+            document.getElementById('revenueChart').parentElement.innerHTML = \`
+              <h3>📈 Revenue Chart (≥ 50 KSH only)</h3>
+              <div style="text-align: center; padding: 40px; color: #666;">
+                <p>No revenue data ≥ 50 KSH yet</p>
+                <p>Revenue chart will appear when monthly revenue reaches 50 KSH</p>
+              </div>
+            \`;
+            return;
+          }
           
           revenueChart = new Chart(ctx, {
             type: 'line',
             data: {
               labels: months,
               datasets: [{
-                label: 'Monthly Revenue',
+                label: 'Monthly Revenue (≥ 50 KSH)',
                 data: revenue,
                 borderColor: '#667eea',
                 backgroundColor: 'rgba(102, 126, 234, 0.1)',
@@ -2325,6 +2378,7 @@ app.get('/admin', (req, res) => {
               scales: {
                 y: {
                   beginAtZero: true,
+                  min: 50, // Start from 50 KSH
                   ticks: {
                     callback: function(value) {
                       return 'KES ' + value.toLocaleString();
@@ -2565,9 +2619,10 @@ app.get('/admin', (req, res) => {
           document.getElementById('maxUsers').value = 5;
         }
         
-        // Get service price
+        // Get service price (FIXED: Includes ALL services)
         function getServicePrice(service) {
           const prices = {
+            // Streaming Services
             'spotify': 400,
             'netflix': 150,
             'primevideo': 100,
@@ -2579,11 +2634,16 @@ app.get('/admin', (req, res) => {
             'showmax_6m': 500,
             'showmax_1y': 900,
             'youtubepremium': 100,
+            'peacock_tv': 50,
+            
+            // Music Services
             'applemusic': 250,
             'deezer': 200,
             'tidal': 250,
             'soundcloud': 150,
             'audible': 400,
+            
+            // Productivity Tools
             'canva': 300,
             'grammarly': 250,
             'skillshare': 350,
@@ -2593,6 +2653,8 @@ app.get('/admin', (req, res) => {
             'microsoft365': 500,
             'googleone': 250,
             'adobecc': 700,
+            
+            // VPN Services
             'urbanvpn': 100,
             'nordvpn': 350,
             'expressvpn': 400,
@@ -2601,12 +2663,13 @@ app.get('/admin', (req, res) => {
             'ipvanish': 200,
             'protonvpn': 300,
             'windscribe': 150,
+            
+            // Gaming Services
             'xbox': 400,
             'playstation': 400,
             'eaplay': 250,
             'ubisoft': 300,
-            'geforcenow': 350,
-            'peacock_tv': 50
+            'geforcenow': 350
           };
           
           return prices[service] || 100;
@@ -2711,6 +2774,10 @@ app.listen(port, async () => {
   console.log('🔐 Admin Password:', ADMIN_PASSWORD);
   console.log('💰 Transaction Tracking: ✅ ONLY counts SUCCESSFUL transactions ≥ 50 KSH');
   console.log('📊 Revenue Dashboard: Enabled');
+  console.log('✅ Admin Panel FIXES Applied:');
+  console.log('   • ALL services now available in dropdown');
+  console.log('   • Prime Video shows ALL options: 1M, 3M, 6M, 1Y');
+  console.log('   • Revenue chart starts from 50 KSH only');
   
   if (!process.env.TELEGRAM_CHAT_ID || process.env.TELEGRAM_CHAT_ID === 'YOUR_CHAT_ID') {
     console.log('⚠️ Telegram Chat ID not configured. Set TELEGRAM_CHAT_ID in .env file');
@@ -2728,19 +2795,19 @@ app.listen(port, async () => {
   await transactionManager.initialize();
   
   const startupMessage = `
-🚀 <b>CHEGE TECH SERVER STARTED (WITH FIXED REVENUE COUNTING)</b>
+🚀 <b>CHEGE TECH SERVER STARTED (WITH ALL FIXES)</b>
 
 📍 <b>Port:</b> ${port}
-✅ <b>Fixed Revenue Counting:</b>
-   • Only SUCCESS transactions counted
-   • Only transactions ≥ 50 KSH counted
-   • Auto-filled login credentials
+✅ <b>All Admin Panel Fixes Applied:</b>
+   • ALL services available in dropdown
+   • Prime Video: 1M, 3M, 6M, 1Y all options
+   • Revenue chart shows only ≥ 50 KSH
 👤 <b>Admin Login:</b> ${ADMIN_USERNAME} / ${ADMIN_PASSWORD}
 💰 <b>Revenue Min:</b> 50 KSH
 🔧 <b>Admin Panel:</b> http://localhost:${port}/admin
 ⏰ <b>Time:</b> ${new Date().toLocaleString()}
 
-✅ <i>Server now correctly counts only successful transactions from 50 KSH!</i>
+✅ <i>Admin panel now shows ALL services and revenue starts from 50 KSH!</i>
   `;
   
   sendTelegramNotification(startupMessage);
