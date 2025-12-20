@@ -165,13 +165,14 @@ class TransactionManager {
   }
 
   getRevenueStats() {
-    const successful = this.transactions.filter(t => t.status === 'SUCCESS');
+    // FIXED: ONLY count SUCCESS transactions that are 50 KSH or more
+    const successful = this.transactions.filter(t => t.status === 'SUCCESS' && (t.amount || 0) >= 50);
     const failed = this.transactions.filter(t => t.status === 'FAILED' || t.status === 'CANCELLED');
     const pending = this.transactions.filter(t => t.status === 'PENDING' || t.status === 'QUEUED');
     
     const totalRevenue = successful.reduce((sum, txn) => sum + (txn.amount || 0), 0);
     
-    // Calculate monthly revenue
+    // Calculate monthly revenue (only >= 50 KSH)
     const monthlyRevenue = {};
     successful.forEach(txn => {
       const month = txn.month || 'Unknown';
@@ -200,14 +201,14 @@ class TransactionManager {
     
     return {
       totalTransactions: this.transactions.length,
-      successfulTransactions: successful.length,
+      successfulTransactions: successful.length, // Only counts >= 50 KSH
       failedTransactions: failed.length,
       pendingTransactions: pending.length,
-      totalRevenue,
+      totalRevenue, // Only counts >= 50 KSH
       monthlyRevenue,
       dailyRevenue,
       serviceRevenue,
-      transactions: this.transactions.slice(-100).reverse() // Last 100 transactions
+      transactions: successful.slice(-100).reverse() // Last 100 successful transactions
     };
   }
 
@@ -880,11 +881,11 @@ app.get('/api/admin/dashboard/stats', requireAuth, async (req, res) => {
     );
     
     const thisMonthRevenue = thisMonthTransactions
-      .filter(t => t.status === 'SUCCESS')
+      .filter(t => t.status === 'SUCCESS' && (t.amount || 0) >= 50)
       .reduce((sum, t) => sum + (t.amount || 0), 0);
     
     const lastMonthRevenue = lastMonthTransactions
-      .filter(t => t.status === 'SUCCESS')
+      .filter(t => t.status === 'SUCCESS' && (t.amount || 0) >= 50)
       .reduce((sum, t) => sum + (t.amount || 0), 0);
     
     const monthlyGrowth = lastMonthRevenue > 0 
@@ -1900,10 +1901,12 @@ app.get('/admin', (req, res) => {
         <h2>🔒 Admin Dashboard Login</h2>
         <div id="loginError" class="error-message"></div>
         <input type="text" id="username" class="login-input" placeholder="Username" value="admin">
-        <input type="password" id="password" class="login-input" placeholder="Password" value="chegeadmin123">
+        <input type="text" id="password" class="login-input" placeholder="Password" value="chegeadmin123" style="-webkit-text-security: disc;">
         <button onclick="login()" class="login-btn">Login</button>
         <p style="margin-top: 20px; color: #666; font-size: 0.9rem;">
-          Enter the admin password to access the dashboard
+          Username: <strong>admin</strong><br>
+          Password: <strong>chegeadmin123</strong><br>
+          (Password is pre-filled - just click Login)
         </p>
       </div>
       
@@ -2706,7 +2709,7 @@ app.listen(port, async () => {
   console.log('🤖 Telegram Bot:', TELEGRAM_BOT_TOKEN ? 'Configured' : 'Not configured');
   console.log('👤 Admin Username:', ADMIN_USERNAME);
   console.log('🔐 Admin Password:', ADMIN_PASSWORD);
-  console.log('💰 Transaction Tracking: Enabled');
+  console.log('💰 Transaction Tracking: ✅ ONLY counts SUCCESSFUL transactions ≥ 50 KSH');
   console.log('📊 Revenue Dashboard: Enabled');
   
   if (!process.env.TELEGRAM_CHAT_ID || process.env.TELEGRAM_CHAT_ID === 'YOUR_CHAT_ID') {
@@ -2715,8 +2718,8 @@ app.listen(port, async () => {
   
   console.log('✅ Accounts system: Enabled');
   console.log('✅ Add/Remove accounts: Enabled');
-  console.log('✅ Username/Password authentication: Enabled');
-  console.log('✅ Complete revenue tracking: Enabled');
+  console.log('✅ Auto-filled login: admin / chegeadmin123');
+  console.log('✅ Revenue starts from 50 KSH only');
   console.log('🧹 Auto-cleanup: Old transactions removed after 1 hour');
   console.log('🔧 Admin Panel: http://localhost:' + port + '/admin');
   console.log('🌐 Main URL: http://localhost:' + port);
@@ -2725,22 +2728,19 @@ app.listen(port, async () => {
   await transactionManager.initialize();
   
   const startupMessage = `
-🚀 <b>CHEGE TECH SERVER STARTED (COMPLETE ADMIN PANEL)</b>
+🚀 <b>CHEGE TECH SERVER STARTED (WITH FIXED REVENUE COUNTING)</b>
 
 📍 <b>Port:</b> ${port}
-✅ <b>Complete Features:</b>
-   • Username/Password authentication (${ADMIN_USERNAME})
-   • Revenue tracking dashboard
-   • Add/Remove accounts
-   • Transaction history
-   • Monthly revenue reports
-   • Account management
-   • Telegram notifications
+✅ <b>Fixed Revenue Counting:</b>
+   • Only SUCCESS transactions counted
+   • Only transactions ≥ 50 KSH counted
+   • Auto-filled login credentials
+👤 <b>Admin Login:</b> ${ADMIN_USERNAME} / ${ADMIN_PASSWORD}
+💰 <b>Revenue Min:</b> 50 KSH
 🔧 <b>Admin Panel:</b> http://localhost:${port}/admin
-💰 <b>Revenue Tracking:</b> Enabled
 ⏰ <b>Time:</b> ${new Date().toLocaleString()}
 
-✅ <i>Complete admin panel with all features is ready!</i>
+✅ <i>Server now correctly counts only successful transactions from 50 KSH!</i>
   `;
   
   sendTelegramNotification(startupMessage);
