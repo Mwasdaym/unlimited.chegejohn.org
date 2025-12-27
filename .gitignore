@@ -6,3 +6,10 @@ server.js.backup
 
 echo ".env" >> .gitignore
 echo "node_modules/" >> .gitignore
+*.backup
+*.backup.*
+*.save
+*.broken
+*.minimal
+100755
+.env
