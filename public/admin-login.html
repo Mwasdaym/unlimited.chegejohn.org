@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chege Tech - Admin Login</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .login-container {
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      width: 100%;
+      max-width: 450px;
+      text-align: center;
+    }
+    .logo {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 30px;
+      color: #333;
+    }
+    .logo span {
+      color: #667eea;
+    }
+    h2 {
+      color: #333;
+      margin-bottom: 30px;
+      font-size: 24px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+      font-weight: 500;
+    }
+    input {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s;
+    }
+    input:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    .login-btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 16px;
+      width: 100%;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 10px;
+    }
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+    .error-message {
+      background: #fee;
+      color: #e74c3c;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .error-message.show {
+      display: block;
+    }
+    .success-message {
+      background: #d4edda;
+      color: #155724;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .success-message.show {
+      display: block;
+    }
+    .forgot-password {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+    .security-note {
+      margin-top: 30px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #666;
+      text-align: left;
+    }
+    .security-note h4 {
+      color: #333;
+      margin-bottom: 8px;
+    }
+    .logout-link {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .logout-link a {
+      color: #667eea;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="logo">🔧 Chege <span>Tech</span> Admin</div>
+    <h2>🔐 Admin Login</h2>
+    
+    <div id="errorMessage" class="error-message"></div>
+    <div id="successMessage" class="success-message"></div>
+    
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="username">👤 Username:</label>
+        <input type="text" id="username" name="username" required 
+               placeholder="Enter admin username" autocomplete="off">
+      </div>
+      
+      <div class="form-group">
+        <label for="password">🔑 Password:</label>
+        <input type="password" id="password" name="password" required 
+               placeholder="Enter admin password" autocomplete="off">
+      </div>
+      
+      <button type="submit" class="login-btn">🚀 Login to Dashboard</button>
+    </form>
+    
+    <div class="forgot-password">
+      <p>Forgot password? Contact system administrator</p>
+    </div>
+    
+    <div class="security-note">
+      <h4>⚠️ Security Notice:</h4>
+      <p>• This is a restricted access area</p>
+      <p>• All login attempts are logged</p>
+      <p>• Do not share your credentials</p>
+      <p>• Log out after each session</p>
+    </div>
+    
+    <div class="logout-link">
+      <a href="/">← Back to Main Site</a>
+    </div>
+  </div>
+  
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      // Clear messages
+      document.getElementById('errorMessage').className = 'error-message';
+      document.getElementById('successMessage').className = 'success-message';
+      
+      try {
+        const response = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          // Show success message
+          document.getElementById('successMessage').textContent = '✅ Login successful! Redirecting...';
+          document.getElementById('successMessage').className = 'success-message show';
+          
+          // Clear form
+          document.getElementById('username').value = '';
+          document.getElementById('password').value = '';
+          
+          // Redirect after 1 second
+          setTimeout(() => {
+            window.location.href = '/admin/dashboard';
+          }, 1000);
+        } else {
+          // Show error message
+          document.getElementById('errorMessage').textContent = '❌ ' + result.error;
+          document.getElementById('errorMessage').className = 'error-message show';
+          
+          // Shake animation for error
+          document.getElementById('loginForm').style.animation = 'none';
+          setTimeout(() => {
+            document.getElementById('loginForm').style.animation = 'shake 0.5s';
+          }, 10);
+        }
+      } catch (error) {
+        document.getElementById('errorMessage').textContent = '❌ Network error. Please try again.';
+        document.getElementById('errorMessage').className = 'error-message show';
+      }
+    });
+    
+    // Add shake animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+        20%, 40%, 60%, 80% { transform: translateX(5px); }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // Check for session timeout or logout
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('logout') === 'success') {
+      document.getElementById('successMessage').textContent = '✅ Successfully logged out!';
+      document.getElementById('successMessage').className = 'success-message show';
+    }
+  </script>
+</body>
+</html>

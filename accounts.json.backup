@@ -1,0 +1,164 @@
+{
+  "showmax_1m": [
+    {
+      "email": "bryanopags@gmail.com",
+      "password": "3Zj5jW+YXZfgwG5",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-01T21:20:50.024Z",
+      "id": "showmax_1m_1766217672781_02pmzqj4m"
+    },
+    {
+      "email": "influencerplanet7@gmail.com",
+      "password": "Mzush@9246",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-01T21:22:07.418Z",
+      "id": "showmax_1m_1766217672781_n4wcyb9o4"
+    },
+    {
+      "email": "minister2enjoyment@gmail.com",
+      "password": "Anonymous#12",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "id": "showmax_1m_1766217791164_e589brkl1",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-20T08:03:11.164Z"
+    }
+  ],
+  "primevideo": [
+    {
+      "email": "Jamesmlue04@gmail.com",
+      "password": "mnbvcxz@101",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-01T21:24:54.976Z",
+      "id": "primevideo_1766217672781_w0snqb4xw"
+    }
+  ],
+  "primevideo_6m": [
+    {
+      "email": "wemzeerada@gmail.com",
+      "password": "wemzeerada",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-01T21:47:10.881Z",
+      "id": "primevideo_6m_1766217672781_qmn4vclfp"
+    }
+  ],
+  "peacock_tv": [
+    {
+      "email": "chege123456789012@gmail.com",
+      "password": "%u,eLE!6?_FP_eu",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 1,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [
+        {
+          "customerEmail": "felaieen2@gmail.com",
+          "customerName": "felix murimi felix",
+          "customerId": "CUST-1764629977776",
+          "assignedAt": "2025-12-01T22:59:37.776Z",
+          "slot": 1
+        }
+      ],
+      "addedAt": "2025-12-01T22:10:03.637Z",
+      "id": "peacock_tv_1766217672781_uow4yfvqw"
+    },
+    {
+      "email": "rawale1337@cexch.com",
+      "password": "]P!K^Bp%W}PLb5J",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-01T22:44:23.711Z",
+      "id": "peacock_tv_1766217672781_9dfmgsdn3"
+    }
+  ],
+  "deezer": [
+    {
+      "email": "emenard27@gmail.com",
+      "password": "TiItouLeChat71",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-02T02:47:48.366Z",
+      "id": "deezer_1766217672781_hujx7uwd7"
+    },
+    {
+      "email": "emmadeordenana@gmail.com",
+      "password": "Emma2012",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-02T02:48:34.434Z",
+      "id": "deezer_1766217672781_jbm4c9vcy"
+    },
+    {
+      "email": "vmonteirofilho@gmail.com",
+      "password": "Nem2mont@",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-02T02:49:26.393Z",
+      "id": "deezer_1766217672781_asin95528"
+    },
+    {
+      "email": "terstegensourced@gmail.com",
+      "password": "az09az09",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-02T02:50:21.836Z",
+      "id": "deezer_1766217672781_4szzgjo09"
+    },
+    {
+      "email": "pierre.chargros@gmail.com",
+      "password": "!DYALYp3@n*Zb2*",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-02T02:52:06.991Z",
+      "id": "deezer_1766217672781_jieii16n5"
+    }
+  ]
+}

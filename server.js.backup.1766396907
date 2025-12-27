@@ -1,0 +1,808 @@
+// Helper function to serve the admin panel HTML
+function serveAdminPanel(res) {
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Chege Tech - Admin Panel</title>
+      <style>
+        body { 
+          font-family: Arial, sans-serif; 
+          margin: 40px; 
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          min-height: 100vh;
+        }
+        .container { 
+          max-width: 1200px; 
+          margin: 0 auto; 
+          background: white; 
+          padding: 30px; 
+          border-radius: 10px; 
+          box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 { 
+          color: #333; 
+          border-bottom: 2px solid #667eea; 
+          padding-bottom: 10px; 
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .dashboard {
+          margin: 30px 0;
+        }
+        .dashboard-buttons {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 20px;
+          margin-bottom: 30px;
+        }
+        .dashboard-button {
+          background: white;
+          border: 1px solid #ddd;
+          border-radius: 10px;
+          padding: 30px;
+          text-align: center;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .dashboard-button:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+          border-color: #667eea;
+        }
+        .dashboard-button i {
+          font-size: 40px;
+          margin-bottom: 15px;
+          color: #667eea;
+        }
+        .dashboard-button h3 {
+          margin: 0 0 10px 0;
+          color: #333;
+        }
+        .dashboard-button p {
+          color: #666;
+          margin: 0;
+        }
+        .stats-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 20px;
+          margin-bottom: 30px;
+        }
+        .stat-card {
+          background: white;
+          border: 1px solid #ddd;
+          border-radius: 10px;
+          padding: 20px;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .stat-card h4 {
+          margin: 0 0 15px 0;
+          color: #333;
+          font-size: 16px;
+        }
+        .stat-value {
+          font-size: 28px;
+          font-weight: bold;
+          color: #667eea;
+        }
+        .stat-label {
+          font-size: 14px;
+          color: #666;
+          margin-top: 5px;
+        }
+        .content-area {
+          background: #f9f9f9;
+          border-radius: 10px;
+          padding: 20px;
+          margin-top: 20px;
+          display: none;
+        }
+        .active-content {
+          display: block;
+        }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
+        input, textarea, select { 
+          width: 100%; 
+          padding: 12px; 
+          border: 1px solid #ddd; 
+          border-radius: 5px; 
+          font-size: 16px;
+          box-sizing: border-box;
+        }
+        input:focus, textarea:focus, select:focus {
+          border-color: #667eea;
+          outline: none;
+          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        button { 
+          background: #667eea; 
+          color: white; 
+          border: none; 
+          padding: 12px 24px; 
+          border-radius: 5px; 
+          cursor: pointer; 
+          margin-right: 10px; 
+          margin-bottom: 10px;
+          font-size: 16px;
+          font-weight: bold;
+          transition: background 0.3s;
+        }
+        button:hover { background: #5a67d8; }
+        button.danger { background: #ef4444; }
+        button.danger:hover { background: #dc2626; }
+        button.success { background: #10b981; }
+        button.success:hover { background: #059669; }
+        button.secondary { background: #6c757d; }
+        button.secondary:hover { background: #5a6268; }
+        .success { background: #10b981; color: white; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        .error { background: #ef4444; color: white; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        .warning { background: #f59e0b; color: white; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        .info { background: #3b82f6; color: white; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        .stats { background: #f3f4f6; padding: 15px; border-radius: 5px; margin: 20px 0; }
+        .account-list { margin-top: 20px; }
+        .account-item { 
+          padding: 15px; 
+          border: 1px solid #ddd; 
+          margin-bottom: 15px; 
+          border-radius: 5px; 
+          background: white;
+        }
+        .used { background: #fee2e2; }
+        .available { background: #dcfce7; }
+        .actions { margin-top: 10px; display: flex; gap: 10px; }
+        .modal { 
+          display: none; 
+          position: fixed; 
+          top: 0; 
+          left: 0; 
+          width: 100%; 
+          height: 100%; 
+          background: rgba(0,0,0,0.5); 
+          z-index: 1000; 
+          align-items: center;
+          justify-content: center;
+        }
+        .modal-content { 
+          background: white; 
+          padding: 30px; 
+          border-radius: 10px; 
+          width: 90%; 
+          max-width: 500px;
+          box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .modal-header { 
+          display: flex; 
+          justify-content: space-between; 
+          align-items: center; 
+          margin-bottom: 20px; 
+          border-bottom: 1px solid #ddd;
+          padding-bottom: 15px;
+        }
+        .close { 
+          font-size: 24px; 
+          cursor: pointer; 
+          color: #666;
+        }
+        .close:hover { color: #333; }
+        .grid { 
+          display: grid; 
+          grid-template-columns: 1fr 1fr; 
+          gap: 30px; 
+        }
+        @media (max-width: 768px) {
+          .grid { grid-template-columns: 1fr; }
+          .dashboard-buttons { grid-template-columns: 1fr; }
+          .stats-grid { grid-template-columns: 1fr; }
+          body { margin: 20px; }
+          .container { padding: 20px; }
+        }
+        .back-button {
+          display: inline-block;
+          margin-bottom: 20px;
+          color: #667eea;
+          text-decoration: none;
+          font-weight: bold;
+        }
+        .back-button:hover {
+          text-decoration: underline;
+        }
+      </style>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    </head>
+    <body>
+      <div class="container">
+        <h1>
+          <span>🔧 Chege Tech Admin Panel</span>
+          <button onclick="logout()" class="danger">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </h1>
+        
+        <div class="dashboard">
+          <div class="dashboard-buttons">
+            <div class="dashboard-button" onclick="showContent('stats')">
+              <i class="fas fa-chart-bar"></i>
+              <h3>📊 View Statistics</h3>
+              <p>View system statistics and account usage</p>
+            </div>
+            
+            <div class="dashboard-button" onclick="showContent('add')">
+              <i class="fas fa-plus-circle"></i>
+              <h3>➕ Add Accounts</h3>
+              <p>Add new shared accounts for services</p>
+            </div>
+            
+            <div class="dashboard-button" onclick="showContent('manage')">
+              <i class="fas fa-cog"></i>
+              <h3>📋 Manage Accounts</h3>
+              <p>View and remove existing accounts</p>
+            </div>
+          </div>
+          
+          <div id="message"></div>
+          
+          <!-- Quick Stats -->
+          <div class="stats-grid" id="quickStats">
+            <div class="stat-card">
+              <h4>Total Services</h4>
+              <div class="stat-value" id="totalServices">0</div>
+              <div class="stat-label">Active services with accounts</div>
+            </div>
+            
+            <div class="stat-card">
+              <h4>Total Accounts</h4>
+              <div class="stat-value" id="totalAccounts">0</div>
+              <div class="stat-label">All shared accounts</div>
+            </div>
+            
+            <div class="stat-card">
+              <h4>Active Users</h4>
+              <div class="stat-value" id="activeUsers">0</div>
+              <div class="stat-label">Currently using accounts</div>
+            </div>
+            
+            <div class="stat-card">
+              <h4>Available Slots</h4>
+              <div class="stat-value" id="availableSlots">0</div>
+              <div class="stat-label">Slots ready for new customers</div>
+            </div>
+          </div>
+          
+          <!-- Statistics Content -->
+          <div id="stats-content" class="content-area">
+            <a href="javascript:void(0)" class="back-button" onclick="showDashboard()">
+              ← Back to Dashboard
+            </a>
+            <h2>📊 System Statistics</h2>
+            <div class="stats">
+              <h3>Detailed Statistics</h3>
+              <div id="detailedStats">Loading...</div>
+              <button onclick="loadDetailedStats()">🔄 Refresh Statistics</button>
+            </div>
+            
+            <div id="pending-transactions">
+              <h3>⏳ Pending Transactions</h3>
+              <div id="transactions-list">Loading...</div>
+            </div>
+          </div>
+          
+          <!-- Add Account Content -->
+          <div id="add-content" class="content-area">
+            <a href="javascript:void(0)" class="back-button" onclick="showDashboard()">
+              ← Back to Dashboard
+            </a>
+            <h2>➕ Add New Account</h2>
+            <form id="addAccountForm">
+              <div class="grid">
+                <div>
+                  <div class="form-group">
+                    <label>Service:</label>
+                    <select id="service" required>
+                      <option value="">Select Service</option>
+                      <option value="spotify">Spotify Premium</option>
+                      <option value="netflix">Netflix</option>
+                      <option value="primevideo">Prime Video</option>
+                      <option value="primevideo_3m">Prime Video (3 Months)</option>
+                      <option value="primevideo_6m">Prime Video (6 Months)</option>
+                      <option value="primevideo_1y">Prime Video (1 Year)</option>
+                      <option value="showmax_1m">Showmax Pro (1 Month)</option>
+                      <option value="showmax_3m">Showmax Pro (3 Months)</option>
+                      <option value="showmax_6m">Showmax Pro (6 Months)</option>
+                      <option value="showmax_1y">Showmax Pro (1 Year)</option>
+                      <option value="youtubepremium">YouTube Premium</option>
+                      <option value="applemusic">Apple Music</option>
+                      <option value="canva">Canva Pro</option>
+                      <option value="grammarly">Grammarly Premium</option>
+                      <option value="urbanvpn">Urban VPN</option>
+                      <option value="nordvpn">NordVPN</option>
+                      <option value="xbox">Xbox Game Pass</option>
+                      <option value="playstation">PlayStation Plus</option>
+                      <option value="deezer">Deezer Premium</option>
+                      <option value="tidal">Tidal HiFi</option>
+                      <option value="soundcloud">SoundCloud Go+</option>
+                      <option value="audible">Audible Premium Plus</option>
+                      <option value="skillshare">Skillshare Premium</option>
+                      <option value="masterclass">MasterClass</option>
+                      <option value="duolingo">Duolingo Super</option>
+                      <option value="notion">Notion Plus</option>
+                      <option value="microsoft365">Microsoft 365</option>
+                      <option value="googleone">Google One</option>
+                      <option value="adobecc">Adobe Creative Cloud</option>
+                      <option value="expressvpn">ExpressVPN</option>
+                      <option value="surfshark">Surfshark VPN</option>
+                      <option value="cyberghost">CyberGhost VPN</option>
+                      <option value="ipvanish">IPVanish</option>
+                      <option value="protonvpn">ProtonVPN Plus</option>
+                      <option value="windscribe">Windscribe Pro</option>
+                      <option value="eaplay">EA Play</option>
+                      <option value="ubisoft">Ubisoft+</option>
+                      <option value="geforcenow">Nvidia GeForce Now</option>
+                      <option value="peacock_tv">Peacock TV</option>
+                    </select>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" id="email" required placeholder="account@example.com">
+                  </div>
+                  
+                  <div class="form-group">
+                    <label>Password:</label>
+                    <input type="text" id="password" required placeholder="Account password">
+                  </div>
+                </div>
+                
+                <div>
+                  <div class="form-group">
+                    <label>Username (optional):</label>
+                    <input type="text" id="username" placeholder="Username if different from email">
+                  </div>
+                  
+                  <div class="form-group">
+                    <label>Instructions:</label>
+                    <textarea id="instructions" rows="6" placeholder="Special instructions for customers...">Login using provided credentials. Do not change password.</textarea>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label>Admin Password (for verification):</label>
+                    <input type="password" id="adminPassword" required placeholder="Enter admin password">
+                  </div>
+                  
+                  <button type="submit" class="success">
+                    <i class="fas fa-plus"></i> Add Account
+                  </button>
+                  <button type="button" onclick="resetForm()" class="secondary">
+                    <i class="fas fa-trash"></i> Clear Form
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          
+          <!-- Manage Accounts Content -->
+          <div id="manage-content" class="content-area">
+            <a href="javascript:void(0)" class="back-button" onclick="showDashboard()">
+              ← Back to Dashboard
+            </a>
+            <h2>📋 Manage Accounts</h2>
+            <div class="form-group">
+              <label>Search Accounts:</label>
+              <input type="text" id="searchAccount" placeholder="Search by email, username, or service..." onkeyup="searchAccounts()">
+            </div>
+            
+            <div class="account-list" id="accountList">
+              <p>Loading accounts...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Remove Account Modal -->
+      <div id="removeModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>⚠️ Remove Account</h3>
+            <span class="close" onclick="closeModal()">&times;</span>
+          </div>
+          <p id="modalMessage">Are you sure you want to remove this account?</p>
+          <div id="accountDetails"></div>
+          <div class="actions">
+            <button class="danger" onclick="confirmRemove()">
+              <i class="fas fa-trash"></i> Remove Account
+            </button>
+            <button onclick="closeModal()" class="secondary">
+              <i class="fas fa-times"></i> Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <script>
+        // Check authentication on admin panel load
+        if (sessionStorage.getItem('adminLoggedIn') !== 'true') {
+          window.location.href = '/admin-login';
+        }
+        
+        let accountsData = {};
+        let accountToRemove = null;
+        let adminPassword = sessionStorage.getItem('adminPassword') || '';
+        
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+          loadQuickStats();
+          loadAccounts();
+        });
+        
+        function showDashboard() {
+          // Hide all content areas
+          document.querySelectorAll('.content-area').forEach(el => {
+            el.classList.remove('active-content');
+          });
+          // Show quick stats
+          document.getElementById('quickStats').style.display = 'grid';
+        }
+        
+        function showContent(contentId) {
+          // Hide quick stats
+          document.getElementById('quickStats').style.display = 'none';
+          
+          // Hide all content areas
+          document.querySelectorAll('.content-area').forEach(el => {
+            el.classList.remove('active-content');
+          });
+          
+          // Show selected content
+          document.getElementById(contentId + '-content').classList.add('active-content');
+          
+          // Load data for the selected section
+          if (contentId === 'stats') {
+            loadDetailedStats();
+          } else if (contentId === 'manage') {
+            loadAccounts();
+          }
+        }
+        
+        async function loadQuickStats() {
+          try {
+            const response = await fetch(\`/api/admin/stats?password=\${encodeURIComponent(adminPassword)}\`);
+            const data = await response.json();
+            
+            if (data.success) {
+              let totalServices = 0;
+              let totalAccounts = 0;
+              let activeUsers = 0;
+              let availableSlots = 0;
+              
+              Object.entries(data.stats).forEach(([service, stats]) => {
+                totalServices++;
+                totalAccounts += stats.totalAccounts;
+                activeUsers += stats.usedSlots;
+                availableSlots += stats.availableSlots;
+              });
+              
+              document.getElementById('totalServices').textContent = totalServices;
+              document.getElementById('totalAccounts').textContent = totalAccounts;
+              document.getElementById('activeUsers').textContent = activeUsers;
+              document.getElementById('availableSlots').textContent = availableSlots;
+            }
+          } catch (error) {
+            console.error('Error loading quick stats:', error);
+          }
+        }
+        
+        async function loadDetailedStats() {
+          try {
+            const response = await fetch(\`/api/admin/stats?password=\${encodeURIComponent(adminPassword)}\`);
+            const data = await response.json();
+            
+            if (data.success) {
+              let html = '';
+              Object.entries(data.stats).forEach(([service, stats]) => {
+                html += \`
+                  <div style="margin-bottom: 15px; padding: 15px; border-left: 4px solid #667eea; background: white; border-radius: 5px;">
+                    <strong>\${service}:</strong><br>
+                    📊 Total Accounts: \${stats.totalAccounts}<br>
+                    👥 Used Slots: \${stats.usedSlots}/\${stats.totalSlots}<br>
+                    ✅ Available Slots: \${stats.availableSlots}<br>
+                    📋 Available Accounts: \${stats.availableAccounts}<br>
+                    🚫 Fully Used Accounts: \${stats.fullyUsedAccounts}
+                  </div>
+                \`;
+              });
+              
+              // Add pending transactions info
+              html += \`<div style="margin-top: 20px; padding: 10px; background: #fff3cd; border-radius: 5px;">
+                <strong>⏳ Pending Transactions:</strong> \${data.pendingTransactions}<br>
+                <strong>⏰ Server Time:</strong> \${new Date(data.serverTime).toLocaleString()}
+              </div>\`;
+              
+              document.getElementById('detailedStats').innerHTML = html;
+            } else {
+              document.getElementById('detailedStats').innerHTML = \`<div class="error">Error: \${data.error}</div>\`;
+            }
+          } catch (error) {
+            document.getElementById('detailedStats').innerHTML = '<div class="error">Error loading stats</div>';
+          }
+        }
+        
+        async function loadAccounts() {
+          try {
+            const response = await fetch(\`/api/admin/accounts?password=\${encodeURIComponent(adminPassword)}\`);
+            const data = await response.json();
+            
+            if (data.success) {
+              accountsData = data.accounts;
+              renderAccounts();
+            } else {
+              showMessage('Error: ' + data.error, 'error');
+              document.getElementById('accountList').innerHTML = '<div class="error">Authentication failed</div>';
+            }
+          } catch (error) {
+            showMessage('Error loading accounts', 'error');
+          }
+        }
+        
+        function renderAccounts(filter = '') {
+          let html = '';
+          
+          Object.entries(accountsData).forEach(([service, accounts]) => {
+            const filteredAccounts = accounts.filter(account => {
+              if (!filter) return true;
+              const searchTerm = filter.toLowerCase();
+              return (
+                (account.email && account.email.toLowerCase().includes(searchTerm)) ||
+                (account.username && account.username.toLowerCase().includes(searchTerm)) ||
+                service.toLowerCase().includes(searchTerm) ||
+                account.id.toLowerCase().includes(searchTerm)
+              );
+            });
+            
+            if (filteredAccounts.length === 0) return;
+            
+            html += \`<h4>${service} (${filteredAccounts.length} accounts)</h4>\`;
+            
+            filteredAccounts.forEach(account => {
+              const statusClass = account.fullyUsed ? 'used' : 'available';
+              const statusText = account.fullyUsed ? 'FULLY USED' : 'AVAILABLE';
+              const statusIcon = account.fullyUsed ? '🚫' : '✅';
+              
+              html += \`
+                <div class="account-item \${statusClass}" id="account-\${account.id}">
+                  <div style="display: flex; justify-content: space-between; align-items: start;">
+                    <div style="flex: 1;">
+                      <strong>\${statusIcon} \${statusText}</strong><br>
+                      <strong>Email:</strong> \${account.email || 'N/A'}<br>
+                      <strong>Username:</strong> \${account.username || 'N/A'}<br>
+                      <strong>Users:</strong> \${account.currentUsers || 0}/\${account.maxUsers || 5}<br>
+                      <strong>Added:</strong> \${new Date(account.addedAt).toLocaleString()}<br>
+                      <strong>Account ID:</strong> <code>\${account.id}</code>
+                    </div>
+                    <div class="actions">
+                      <button class="danger" onclick="showRemoveModal('\${account.id}')">
+                        <i class="fas fa-trash"></i> Remove
+                      </button>
+                    </div>
+                  </div>
+                  
+                  \${account.usedBy && account.usedBy.length > 0 ? \`
+                    <div style="margin-top: 10px; padding: 10px; background: #f1f5f9; border-radius: 5px;">
+                      <strong>Used By (\${account.usedBy.length}):</strong>
+                      <ul style="margin: 5px 0; padding-left: 20px;">
+                        \${account.usedBy.map(user => \`
+                          <li>\${user.customerName} (\${user.customerEmail}) - \${new Date(user.assignedAt).toLocaleString()}</li>
+                        \`).join('')}
+                      </ul>
+                    </div>
+                  \` : ''}
+                </div>
+              \`;
+            });
+          });
+          
+          if (html === '') {
+            html = '<div class="info">No accounts found' + (filter ? ' matching your search' : '') + '</div>';
+          }
+          
+          document.getElementById('accountList').innerHTML = html;
+        }
+        
+        function searchAccounts() {
+          const searchTerm = document.getElementById('searchAccount').value;
+          renderAccounts(searchTerm);
+        }
+        
+        function showRemoveModal(accountId) {
+          const account = findAccountById(accountId);
+          if (!account) return;
+          
+          accountToRemove = accountId;
+          
+          document.getElementById('accountDetails').innerHTML = \`
+            <div style="background: #fef2f2; padding: 10px; border-radius: 5px; margin: 10px 0;">
+              <strong>Service:</strong> \${account.service}<br>
+              <strong>Email:</strong> \${account.email || 'N/A'}<br>
+              <strong>Username:</strong> \${account.username || 'N/A'}<br>
+              <strong>Current Users:</strong> \${account.currentUsers || 0}<br>
+              <strong>Account ID:</strong> <code>\${account.id}</code>
+            </div>
+            <div class="warning">
+              ⚠️ Warning: This action cannot be undone! This account will be permanently removed.
+              \${account.currentUsers > 0 ? '<br>⚠️ This account has active users!' : ''}
+            </div>
+          \`;
+          
+          document.getElementById('removeModal').style.display = 'flex';
+        }
+        
+        function closeModal() {
+          document.getElementById('removeModal').style.display = 'none';
+          accountToRemove = null;
+        }
+        
+        async function confirmRemove() {
+          if (!accountToRemove || !adminPassword) {
+            showMessage('Missing information', 'error');
+            return;
+          }
+          
+          try {
+            const response = await fetch('/api/admin/remove-account', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                accountId: accountToRemove,
+                adminPassword: adminPassword
+              })
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+              showMessage(\`Account removed successfully! Telegram notification sent.\`, 'success');
+              
+              // Remove from UI
+              const accountElement = document.getElementById('account-' + accountToRemove);
+              if (accountElement) {
+                accountElement.remove();
+              }
+              
+              // Remove from local data
+              removeAccountFromData(accountToRemove);
+              
+              closeModal();
+              
+              // Reload stats
+              loadQuickStats();
+              loadDetailedStats();
+            } else {
+              showMessage('Error: ' + result.error, 'error');
+            }
+          } catch (error) {
+            showMessage('Network error: ' + error.message, 'error');
+          }
+        }
+        
+        function findAccountById(accountId) {
+          for (const [service, accounts] of Object.entries(accountsData)) {
+            const account = accounts.find(acc => acc.id === accountId);
+            if (account) {
+              return { ...account, service };
+            }
+          }
+          return null;
+        }
+        
+        function removeAccountFromData(accountId) {
+          for (const [service, accounts] of Object.entries(accountsData)) {
+            const index = accounts.findIndex(acc => acc.id === accountId);
+            if (index !== -1) {
+              accounts.splice(index, 1);
+              if (accounts.length === 0) {
+                delete accountsData[service];
+              }
+              break;
+            }
+          }
+        }
+        
+        document.getElementById('addAccountForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+          
+          const formData = {
+            service: document.getElementById('service').value,
+            account: {
+              email: document.getElementById('email').value,
+              password: document.getElementById('password').value,
+              username: document.getElementById('username').value || '',
+              instructions: document.getElementById('instructions').value
+            },
+            adminPassword: document.getElementById('adminPassword').value || adminPassword
+          };
+          
+          if (!formData.adminPassword) {
+            showMessage('Please enter admin password', 'error');
+            return;
+          }
+          
+          try {
+            const response = await fetch('/api/admin/add-account', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(formData)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+              showMessage(\`
+                ✅ Account added successfully!<br>
+                <strong>Service:</strong> \${formData.service}<br>
+                <strong>Email:</strong> \${formData.account.email}<br>
+                <strong>Account ID:</strong> \${result.data.id}<br>
+                Telegram notification sent.
+              \`, 'success');
+              
+              // Clear form
+              document.getElementById('email').value = '';
+              document.getElementById('password').value = '';
+              document.getElementById('username').value = '';
+              document.getElementById('instructions').value = 'Login using provided credentials. Do not change password.';
+              
+              // Reload stats and accounts
+              loadQuickStats();
+              loadAccounts();
+            } else {
+              showMessage('Error: ' + result.error, 'error');
+            }
+          } catch (error) {
+            showMessage('Network error: ' + error.message, 'error');
+          }
+        });
+        
+        function resetForm() {
+          document.getElementById('addAccountForm').reset();
+          document.getElementById('instructions').value = 'Login using provided credentials. Do not change password.';
+        }
+        
+        function showMessage(message, type) {
+          const messageDiv = document.getElementById('message');
+          messageDiv.innerHTML = \`
+            <div class="\${type}">
+              \${message}
+            </div>
+          \`;
+          
+          setTimeout(() => {
+            messageDiv.innerHTML = '';
+          }, 5000);
+        }
+        
+        function logout() {
+          sessionStorage.removeItem('adminLoggedIn');
+          sessionStorage.removeItem('adminPassword');
+          window.location.href = '/admin-login';
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+          const modal = document.getElementById('removeModal');
+          if (event.target === modal) {
+            closeModal();
+          }
+        };
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+          if (event.key === 'Escape') {
+            closeModal();
+          }
+        });
+      </script>
+    </body>
+    </html>
+  `);
+}

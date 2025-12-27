@@ -1,53 +1,5 @@
 {
-  "spotify": [
-    {
-      "email": "dvon81763@gmail.com",
-      "password": "e2XM7Qe6*w9re+s",
-      "username": "",
-      "instructions": "Login using provided credentials. Do not change password.",
-      "currentUsers": 0,
-      "maxUsers": 5,
-      "fullyUsed": false,
-      "usedBy": [],
-      "addedAt": "2025-12-01T21:17:11.020Z"
-    }
-  ],
-  "netflix": [
-    {
-      "email": "chege123456789012@gmail.com",
-      "password": "Chege@254",
-      "username": "",
-      "instructions": "Login using provided credentials. Do not change password.",
-      "currentUsers": 0,
-      "maxUsers": 5,
-      "fullyUsed": false,
-      "usedBy": [],
-      "addedAt": "2025-12-01T21:17:45.835Z"
-    },
-    {
-      "email": "isaactrevis8@gmail.com",
-      "password": "IZOH5063",
-      "username": "",
-      "instructions": "Login using provided credentials. Do not change password.",
-      "currentUsers": 0,
-      "maxUsers": 5,
-      "fullyUsed": false,
-      "usedBy": [],
-      "addedAt": "2025-12-01T21:18:59.954Z"
-    }
-  ],
   "showmax_1m": [
-    {
-      "email": "bryanopags@gmail.com",
-      "password": "3Zj5jW+YXZfgwG5",
-      "username": "",
-      "instructions": "Login using provided credentials. Do not change password.",
-      "currentUsers": 0,
-      "maxUsers": 5,
-      "fullyUsed": false,
-      "usedBy": [],
-      "addedAt": "2025-12-01T21:20:50.024Z"
-    },
     {
       "email": "influencerplanet7@gmail.com",
       "password": "Mzush@9246",
@@ -57,7 +9,20 @@
       "maxUsers": 5,
       "fullyUsed": false,
       "usedBy": [],
-      "addedAt": "2025-12-01T21:22:07.418Z"
+      "addedAt": "2025-12-01T21:22:07.418Z",
+      "id": "showmax_1m_1766395091905_jitdmk7rc"
+    },
+    {
+      "email": "minister2enjoyment@gmail.com",
+      "password": "Anonymous#12",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "id": "showmax_1m_1766469200443_t68di1xjm",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-23T05:53:20.443Z"
     }
   ],
   "primevideo": [
@@ -70,20 +35,8 @@
       "maxUsers": 5,
       "fullyUsed": false,
       "usedBy": [],
-      "addedAt": "2025-12-01T21:24:54.976Z"
-    }
-  ],
-  "primevideo_6m": [
-    {
-      "email": "wemzeerada@gmail.com",
-      "password": "wemzeerada",
-      "username": "",
-      "instructions": "Login using provided credentials. Do not change password.",
-      "currentUsers": 0,
-      "maxUsers": 5,
-      "fullyUsed": false,
-      "usedBy": [],
-      "addedAt": "2025-12-01T21:47:10.881Z"
+      "addedAt": "2025-12-01T21:24:54.976Z",
+      "id": "primevideo_1766395091905_luq4tee2v"
     }
   ],
   "peacock_tv": [
@@ -104,7 +57,8 @@
           "slot": 1
         }
       ],
-      "addedAt": "2025-12-01T22:10:03.637Z"
+      "addedAt": "2025-12-01T22:10:03.637Z",
+      "id": "peacock_tv_1766395091905_1l2kxn7b1"
     },
     {
       "email": "rawale1337@cexch.com",
@@ -115,7 +69,8 @@
       "maxUsers": 5,
       "fullyUsed": false,
       "usedBy": [],
-      "addedAt": "2025-12-01T22:44:23.711Z"
+      "addedAt": "2025-12-01T22:44:23.711Z",
+      "id": "peacock_tv_1766395091905_ckh091wi1"
     }
   ],
   "deezer": [
@@ -128,7 +83,8 @@
       "maxUsers": 5,
       "fullyUsed": false,
       "usedBy": [],
-      "addedAt": "2025-12-02T02:47:48.366Z"
+      "addedAt": "2025-12-02T02:47:48.366Z",
+      "id": "deezer_1766395091905_66skynsmp"
     },
     {
       "email": "emmadeordenana@gmail.com",
@@ -139,7 +95,8 @@
       "maxUsers": 5,
       "fullyUsed": false,
       "usedBy": [],
-      "addedAt": "2025-12-02T02:48:34.434Z"
+      "addedAt": "2025-12-02T02:48:34.434Z",
+      "id": "deezer_1766395091905_zxi0gdacu"
     },
     {
       "email": "vmonteirofilho@gmail.com",
@@ -150,7 +107,8 @@
       "maxUsers": 5,
       "fullyUsed": false,
       "usedBy": [],
-      "addedAt": "2025-12-02T02:49:26.393Z"
+      "addedAt": "2025-12-02T02:49:26.393Z",
+      "id": "deezer_1766395091905_dyu85ieoq"
     },
     {
       "email": "terstegensourced@gmail.com",
@@ -161,7 +119,8 @@
       "maxUsers": 5,
       "fullyUsed": false,
       "usedBy": [],
-      "addedAt": "2025-12-02T02:50:21.836Z"
+      "addedAt": "2025-12-02T02:50:21.836Z",
+      "id": "deezer_1766395091905_rpto7urh1"
     },
     {
       "email": "pierre.chargros@gmail.com",
@@ -172,7 +131,76 @@
       "maxUsers": 5,
       "fullyUsed": false,
       "usedBy": [],
-      "addedAt": "2025-12-02T02:52:06.991Z"
+      "addedAt": "2025-12-02T02:52:06.991Z",
+      "id": "deezer_1766395091905_w1tq1873p"
+    }
+  ],
+  "spotify": [
+    {
+      "email": "Personalityright49@gmail.com",
+      "password": "Chege@254_1",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "id": "spotify_1766414626425_0ger4iqai",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-22T14:43:46.425Z"
+    }
+  ],
+  "nordvpn": [
+    {
+      "email": "Southlax43@gmail.com",
+      "password": "2010SuperDuty",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "id": "nordvpn_1766430375806_4us4aa63c",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-22T19:06:15.807Z"
+    }
+  ],
+  "youtubepremium": [
+    {
+      "email": "realchege12@gmail.com",
+      "password": "Anonymous#12",
+      "username": "",
+      "instructions": "Send your email address here for invite +254781287381",
+      "id": "youtubepremium_1766439678291_m0py3x4dx",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-22T21:41:18.291Z"
+    }
+  ],
+  "netflix": [
+    {
+      "email": "juliana.wbld1801@gmail.com",
+      "password": "Juliana041828",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "id": "netflix_1766477423229_eodsv9k5v",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-23T08:10:23.229Z"
+    },
+    {
+      "email": "chege123456789012@gmail.com",
+      "password": "Chege@254",
+      "username": "",
+      "instructions": "Login using provided credentials. Do not change password.",
+      "id": "netflix_1766765996591_8lsymwcjr",
+      "currentUsers": 0,
+      "maxUsers": 5,
+      "fullyUsed": false,
+      "usedBy": [],
+      "addedAt": "2025-12-26T16:19:56.591Z"
     }
   ]
 }

@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chege Tech - Admin Dashboard</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: #f5f7fa;
+      min-height: 100vh;
+    }
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .user-info span {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    .logout-btn {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 8px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+    .logout-btn:hover {
+      background: rgba(255,255,255,0.3);
+      transform: translateY(-2px);
+    }
+    .container {
+      max-width: 1400px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+    .welcome-card {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      margin-bottom: 30px;
+    }
+    .welcome-card h1 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .welcome-card p {
+      color: #666;
+      line-height: 1.6;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+    .stat-card {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      transition: all 0.3s;
+    }
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+    }
+    .stat-card h3 {
+      color: #555;
+      margin-bottom: 15px;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .stat-number {
+      font-size: 36px;
+      font-weight: bold;
+      color: #667eea;
+      margin-bottom: 10px;
+    }
+    .stat-desc {
+      color: #888;
+      font-size: 14px;
+    }
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid #e0e0e0;
+      margin-bottom: 30px;
+      background: white;
+      border-radius: 10px 10px 0 0;
+      overflow: hidden;
+    }
+    .tab {
+      padding: 18px 30px;
+      cursor: pointer;
+      font-weight: 500;
+      color: #666;
+      transition: all 0.3s;
+      border-bottom: 3px solid transparent;
+    }
+    .tab:hover {
+      background: #f8f9fa;
+      color: #667eea;
+    }
+    .tab.active {
+      color: #667eea;
+      border-bottom: 3px solid #667eea;
+      background: #f8f9fa;
+    }
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .dashboard-content {
+      background: white;
+      padding: 30px;
+      border-radius: 0 15px 15px 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      min-height: 500px;
+    }
+    .form-group {
+      margin-bottom: 25px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 10px;
+      color: #333;
+      font-weight: 500;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    .btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+    .btn-secondary {
+      background: #6c757d;
+    }
+    .btn-secondary:hover {
+      box-shadow: 0 10px 20px rgba(108, 117, 125, 0.3);
+    }
+    .btn-danger {
+      background: #ef4444;
+    }
+    .btn-danger:hover {
+      box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3);
+    }
+    .message {
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .message.success {
+      background: #d4edda;
+      color: #155724;
+      display: block;
+    }
+    .message.error {
+      background: #fee;
+      color: #e74c3c;
+      display: block;
+    }
+    .message.warning {
+      background: #fff3cd;
+      color: #856404;
+      display: block;
+    }
+    .account-list {
+      margin-top: 20px;
+    }
+    .account-item {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      border-left: 4px solid #667eea;
+    }
+    .account-item.full {
+      border-left-color: #ef4444;
+      background: #fee;
+    }
+    .account-item.available {
+      border-left-color: #10b981;
+      background: #d4edda;
+    }
+    .account-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 15px;
+    }
+    .account-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .account-details {
+      color: #555;
+      line-height: 1.6;
+    }
+    .account-details strong {
+      color: #333;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal.show {
+      display: flex;
+    }
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: modalFadeIn 0.3s;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .modal-header h3 {
+      color: #333;
+    }
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #666;
+    }
+    .close-modal:hover {
+      color: #333;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+    }
+    @media (max-width: 768px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .tabs { flex-wrap: wrap; }
+      .tab { flex: 1; text-align: center; padding: 15px; }
+    }
+    .security-info {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 30px;
+      border-left: 4px solid #f59e0b;
+    }
+    .security-info h4 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+    .security-info p {
+      color: #666;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <i class="fas fa-cogs"></i>
+      <span>Chege Tech Admin</span>
+    </div>
+    <div class="user-info">
+      <span id="usernameDisplay">👤 Loading...</span>
+      <span id="loginTime">⏰ Loading...</span>
+      <a href="/api/admin/logout" class="logout-btn">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </a>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div class="welcome-card">
+      <h1 id="welcomeMessage">👋 Welcome!</h1>
+      <p>You are now in the Chege Tech Premium Admin Dashboard. Manage accounts, view statistics, and monitor transactions.</p>
+    </div>
+    
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3><i class="fas fa-wallet"></i> Today's Revenue</h3>
+        <div class="stat-number" id="todayRevenue">KES 0</div>
+        <div class="stat-desc">Total revenue from successful transactions today</div>
+      </div>
+      <div class="stat-card">
+        <h3><i class="fas fa-users"></i> Active Accounts</h3>
+        <div class="stat-number" id="activeAccounts">0</div>
+        <div class="stat-desc">Total accounts in the system</div>
+      </div>
+      <div class="stat-card">
+        <h3><i class="fas fa-shopping-cart"></i> Pending Transactions</h3>
+        <div class="stat-number" id="pendingTransactions">0</div>
+        <div class="stat-desc">Transactions awaiting payment</div>
+      </div>
+      <div class="stat-card">
+        <h3><i class="fas fa-chart-line"></i> Success Rate</h3>
+        <div class="stat-number" id="successRate">0%</div>
+        <div class="stat-desc">Percentage of successful transactions</div>
+      </div>
+    </div>
+    
+    <div class="tabs">
+      <div class="tab active" onclick="showTab('overview')">
+        <i class="fas fa-home"></i> Overview
+      </div>
+      <div class="tab" onclick="showTab('add')">
+        <i class="fas fa-plus-circle"></i> Add Account
+      </div>
+      <div class="tab" onclick="showTab('manage')">
+        <i class="fas fa-list"></i> Manage Accounts
+      </div>
+      <div class="tab" onclick="showTab('transactions')">
+        <i class="fas fa-exchange-alt"></i> Transactions
+      </div>
+      <div class="tab" onclick="showTab('settings')">
+        <i class="fas fa-cog"></i> Settings
+      </div>
+    </div>
+    
+    <div class="dashboard-content">
+      <!-- Overview Tab -->
+      <div id="overview-tab" class="tab-content active">
+        <h2><i class="fas fa-chart-bar"></i> System Overview</h2>
+        <div id="overviewContent">Loading system overview...</div>
+      </div>
+      
+      <!-- Add Account Tab -->
+      <div id="add-tab" class="tab-content">
+        <h2><i class="fas fa-plus-circle"></i> Add New Account</h2>
+        <div id="addMessage" class="message"></div>
+        <form id="addAccountForm">
+          <div class="grid-2">
+            <div>
+              <div class="form-group">
+                <label><i class="fas fa-stream"></i> Service:</label>
+                <select id="service" required>
+                  <option value="">Select Service</option>
+                  <option value="spotify">Spotify Premium</option>
+                  <option value="netflix">Netflix</option>
+                  <option value="primevideo">Prime Video</option>
+                  <option value="primevideo_3m">Prime Video (3 Months)</option>
+                  <option value="primevideo_6m">Prime Video (6 Months)</option>
+                  <option value="primevideo_1y">Prime Video (1 Year)</option>
+                  <option value="showmax_1m">Showmax Pro (1 Month)</option>
+                  <option value="showmax_3m">Showmax Pro (3 Months)</option>
+                  <option value="showmax_6m">Showmax Pro (6 Months)</option>
+                  <option value="showmax_1y">Showmax Pro (1 Year)</option>
+                  <option value="youtubepremium">YouTube Premium</option>
+                  <option value="applemusic">Apple Music</option>
+                  <option value="canva">Canva Pro</option>
+                  <option value="grammarly">Grammarly Premium</option>
+                  <option value="urbanvpn">Urban VPN</option>
+                  <option value="nordvpn">NordVPN</option>
+                  <option value="xbox">Xbox Game Pass</option>
+                  <option value="playstation">PlayStation Plus</option>
+                  <option value="deezer">Deezer Premium</option>
+                  <option value="tidal">Tidal HiFi</option>
+                  <option value="soundcloud">SoundCloud Go+</option>
+                  <option value="audible">Audible Premium Plus</option>
+                  <option value="skillshare">Skillshare Premium</option>
+                  <option value="masterclass">MasterClass</option>
+                  <option value="duolingo">Duolingo Super</option>
+                  <option value="notion">Notion Plus</option>
+                  <option value="microsoft365">Microsoft 365</option>
+                  <option value="googleone">Google One</option>
+                  <option value="adobecc">Adobe Creative Cloud</option>
+                  <option value="expressvpn">ExpressVPN</option>
+                  <option value="surfshark">Surfshark VPN</option>
+                  <option value="cyberghost">CyberGhost VPN</option>
+                  <option value="ipvanish">IPVanish</option>
+                  <option value="protonvpn">ProtonVPN Plus</option>
+                  <option value="windscribe">Windscribe Pro</option>
+                  <option value="eaplay">EA Play</option>
+                  <option value="ubisoft">Ubisoft+</option>
+                  <option value="geforcenow">Nvidia GeForce Now</option>
+                  <option value="peacock_tv">Peacock TV</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label><i class="fas fa-envelope"></i> Email:</label>
+                <input type="email" id="email" required placeholder="account@example.com">
+              </div>
+              
+              <div class="form-group">
+                <label><i class="fas fa-key"></i> Password:</label>
+                <input type="text" id="password" required placeholder="Account password">
+              </div>
+            </div>
+            
+            <div>
+              <div class="form-group">
+                <label><i class="fas fa-user"></i> Username (optional):</label>
+                <input type="text" id="username" placeholder="Username if different from email">
+              </div>
+              
+              <div class="form-group">
+                <label><i class="fas fa-info-circle"></i> Instructions:</label>
+                <textarea id="instructions" rows="8" placeholder="Special instructions for customers...">Login using provided credentials. Do not change password or email.</textarea>
+              </div>
+              
+              <button type="submit" class="btn">
+                <i class="fas fa-plus"></i> Add Account
+              </button>
+              <button type="button" class="btn btn-secondary" onclick="resetAddForm()">
+                <i class="fas fa-trash"></i> Clear Form
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Manage Accounts Tab -->
+      <div id="manage-tab" class="tab-content">
+        <h2><i class="fas fa-list"></i> Manage Accounts</h2>
+        <div id="manageMessage" class="message"></div>
+        <div class="account-list" id="accountList">
+          <p><i class="fas fa-spinner fa-spin"></i> Loading accounts...</p>
+        </div>
+      </div>
+      
+      <!-- Transactions Tab -->
+      <div id="transactions-tab" class="tab-content">
+        <h2><i class="fas fa-exchange-alt"></i> Recent Transactions</h2>
+        <div id="transactionsList">
+          <p><i class="fas fa-spinner fa-spin"></i> Loading transactions...</p>
+        </div>
+      </div>
+      
+      <!-- Settings Tab -->
+      <div id="settings-tab" class="tab-content">
+        <h2><i class="fas fa-cog"></i> Admin Settings</h2>
+        <div id="settingsMessage" class="message"></div>
+        
+        <div class="grid-2">
+          <div>
+            <h3><i class="fas fa-user-shield"></i> Security Settings</h3>
+            <div class="form-group">
+              <label>Session Timeout (minutes):</label>
+              <input type="number" id="sessionTimeout" value="60" min="5" max="480">
+            </div>
+            <button class="btn" onclick="updateSessionSettings()">
+              <i class="fas fa-save"></i> Save Settings
+            </button>
+          </div>
+          
+          <div>
+            <h3><i class="fas fa-bell"></i> Notifications</h3>
+            <div class="form-group">
+              <label>
+                <input type="checkbox" id="telegramNotifications" checked>
+                Enable Telegram notifications
+              </label>
+            </div>
+            <div class="form-group">
+              <label>
+                <input type="checkbox" id="emailNotifications" checked>
+                Enable email notifications
+              </label>
+            </div>
+          </div>
+        </div>
+        
+        <div class="security-info">
+          <h4><i class="fas fa-exclamation-triangle"></i> Security Information</h4>
+          <p id="lastLoginInfo">• Last login: Loading...</p>
+          <p>• Session will expire automatically after 60 minutes of inactivity</p>
+          <p>• All admin actions are logged and monitored</p>
+          <p>• Change your password regularly for security</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Remove Account Modal -->
+  <div id="removeModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-exclamation-triangle"></i> Remove Account</h3>
+        <button class="close-modal" onclick="closeModal()">&times;</button>
+      </div>
+      <div id="modalMessage" class="message"></div>
+      <div id="accountDetails"></div>
+      <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: flex-end;">
+        <button class="btn btn-danger" onclick="confirmRemove()">
+          <i class="fas fa-trash"></i> Remove Account
+        </button>
+        <button class="btn btn-secondary" onclick="closeModal()">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    let currentTab = 'overview';
+    let accountsData = {};
+    let accountToRemove = null;
+    let userSessionData = {};
+    
+    // Check session and load user data
+    async function loadUserSession() {
+      try {
+        const response = await fetch('/api/admin/session-check');
+        if (!response.ok) {
+          window.location.href = '/admin/login?session=expired';
+          return;
+        }
+        
+        const data = await response.json();
+        userSessionData = data;
+        
+        // Update UI with user info
+        document.getElementById('usernameDisplay').textContent = `👤 ${data.username}`;
+        document.getElementById('loginTime').textContent = `⏰ ${new Date(data.loginTime).toLocaleTimeString()}`;
+        document.getElementById('welcomeMessage').textContent = `👋 Welcome, ${data.username}!`;
+        document.getElementById('lastLoginInfo').textContent = `• Last login: ${new Date(data.loginTime).toLocaleString()}`;
+      } catch (error) {
+        window.location.href = '/admin/login?session=error';
+      }
+    }
+    
+    // Show tab function
+    function showTab(tabName) {
+      currentTab = tabName;
+      
+      // Update active tab
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      
+      const tabIndex = {
+        'overview': 0,
+        'add': 1,
+        'manage': 2,
+        'transactions': 3,
+        'settings': 4
+      }[tabName];
+      
+      document.querySelectorAll('.tab')[tabIndex].classList.add('active');
+      document.getElementById(tabName + '-tab').classList.add('active');
+      
+      // Load data for the tab
+      if (tabName === 'overview') {
+        loadOverview();
+      } else if (tabName === 'manage') {
+        loadAccounts();
+      } else if (tabName === 'transactions') {
+        loadTransactions();
+      }
+    }
+    
+    // Load overview data
+    async function loadOverview() {
+      try {
+        const response = await fetch('/api/admin/stats');
+        const data = await response.json();
+        
+        if (data.success) {
+          let html = '<div class="grid-2">';
+          
+          let totalAccounts = 0;
+          let totalUsedSlots = 0;
+          let totalSlots = 0;
+          
+          Object.entries(data.stats).forEach(([service, stats]) => {
+            totalAccounts += stats.totalAccounts;
+            totalUsedSlots += stats.usedSlots;
+            totalSlots += stats.totalSlots;
+            
+            html += `
+              <div class="account-item ${stats.availableAccounts === 0 ? 'full' : 'available'}">
+                <div class="account-header">
+                  <h4>${service}</h4>
+                  <span>${stats.availableAccounts} / ${stats.totalAccounts} available</span>
+                </div>
+                <div class="account-details">
+                  <p><strong>Total Accounts:</strong> ${stats.totalAccounts}</p>
+                  <p><strong>Used Slots:</strong> ${stats.usedSlots} / ${stats.totalSlots}</p>
+                  <p><strong>Available Slots:</strong> ${stats.availableSlots}</p>
+                  <p><strong>Fully Used:</strong> ${stats.fullyUsedAccounts} accounts</p>
+                </div>
+              </div>
+            `;
+          });
+          
+          html += '</div>';
+          
+          document.getElementById('overviewContent').innerHTML = html;
+          document.getElementById('activeAccounts').textContent = totalAccounts;
+          document.getElementById('pendingTransactions').textContent = data.pendingTransactions;
+          
+          const successRate = totalSlots > 0 ? Math.round((totalUsedSlots / totalSlots) * 100) : 0;
+          document.getElementById('successRate').textContent = successRate + '%';
+          
+        } else {
+          document.getElementById('overviewContent').innerHTML = 
+            '<div class="message error">Error loading overview data</div>';
+        }
+      } catch (error) {
+        document.getElementById('overviewContent').innerHTML = 
+          '<div class="message error">Network error loading data</div>';
+      }
+    }
+    
+    // Load accounts
+    async function loadAccounts() {
+      try {
+        const response = await fetch('/api/admin/accounts');
+        const data = await response.json();
+        
+        if (data.success) {
+          accountsData = data.accounts;
+          renderAccounts();
+        } else {
+          showMessage('manageMessage', 'Error: ' + data.error, 'error');
+        }
+      } catch (error) {
+        showMessage('manageMessage', 'Error loading accounts', 'error');
+      }
+    }
+    
+    // Render accounts list
+    function renderAccounts() {
+      let html = '';
+      
+      if (Object.keys(accountsData).length === 0) {
+        html = '<div class="message warning">No accounts found. Add some accounts to get started.</div>';
+      } else {
+        Object.entries(accountsData).forEach(([service, accounts]) => {
+          html += `<h3 style="margin-top: 20px; color: #333;">${service} (${accounts.length} accounts)</h3>`;
+          
+          accounts.forEach(account => {
+            const statusClass = account.fullyUsed ? 'full' : 'available';
+            const statusText = account.fullyUsed ? 'FULL' : 'AVAILABLE';
+            const statusIcon = account.fullyUsed ? '🚫' : '✅';
+            
+            html += `
+              <div class="account-item ${statusClass}">
+                <div class="account-header">
+                  <div>
+                    <strong>${statusIcon} ${statusText}</strong>
+                    <div style="font-size: 12px; color: #666; margin-top: 5px;">
+                      ID: <code>${account.id}</code>
+                    </div>
+                  </div>
+                  <div class="account-actions">
+                    <button class="btn btn-danger" onclick="showRemoveModal('${account.id}')">
+                      <i class="fas fa-trash"></i> Remove
+                    </button>
+                  </div>
+                </div>
+                <div class="account-details">
+                  <p><strong>Email:</strong> ${account.email || 'N/A'}</p>
+                  ${account.username ? `<p><strong>Username:</strong> ${account.username}</p>` : ''}
+                  <p><strong>Users:</strong> ${account.currentUsers || 0} / ${account.maxUsers || 5}</p>
+                  <p><strong>Added:</strong> ${new Date(account.addedAt).toLocaleString()}</p>
+                  
+                  ${account.usedBy && account.usedBy.length > 0 ? `
+                    <div style="margin-top: 10px; padding: 10px; background: rgba(0,0,0,0.05); border-radius: 5px;">
+                      <strong>Used By (${account.usedBy.length}):</strong>
+                      <ul style="margin: 5px 0; padding-left: 20px; font-size: 14px;">
+                        ${account.usedBy.map(user => `
+                          <li>${user.customerName} (${user.customerEmail}) - ${new Date(user.assignedAt).toLocaleString()}</li>
+                        `).join('')}
+                      </ul>
+                    </div>
+                  ` : ''}
+                </div>
+              </div>
+            `;
+          });
+        });
+      }
+      
+      document.getElementById('accountList').innerHTML = html;
+    }
+    
+    // Show remove modal
+    function showRemoveModal(accountId) {
+      const account = findAccountById(accountId);
+      if (!account) {
+        showMessage('manageMessage', 'Account not found', 'error');
+        return;
+      }
+      
+      accountToRemove = accountId;
+      
+      document.getElementById('accountDetails').innerHTML = `
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 15px 0;">
+          <p><strong>Service:</strong> ${account.service}</p>
+          <p><strong>Email:</strong> ${account.email || 'N/A'}</p>
+          <p><strong>Username:</strong> ${account.username || 'N/A'}</p>
+          <p><strong>Current Users:</strong> ${account.currentUsers || 0}</p>
+          <p><strong>Max Users:</strong> ${account.maxUsers || 5}</p>
+          <p><strong>Account ID:</strong> <code>${account.id}</code></p>
+        </div>
+        ${account.currentUsers > 0 ? `
+          <div class="message warning">
+            <i class="fas fa-exclamation-triangle"></i> This account has ${account.currentUsers} active users!
+            Removing it will affect these users.
+          </div>
+        ` : ''}
+      `;
+      
+      document.getElementById('removeModal').classList.add('show');
+    }
+    
+    // Close modal
+    function closeModal() {
+      document.getElementById('removeModal').classList.remove('show');
+      accountToRemove = null;
+      document.getElementById('modalMessage').className = 'message';
+    }
+    
+    // Confirm remove account
+    async function confirmRemove() {
+      if (!accountToRemove) return;
+      
+      try {
+        const response = await fetch('/api/admin/remove-account', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            accountId: accountToRemove
+          })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          showMessage('modalMessage', `
+            <i class="fas fa-check-circle"></i> Account removed successfully!
+            Telegram notification has been sent.
+          `, 'success');
+          
+          setTimeout(() => {
+            closeModal();
+            loadAccounts();
+            loadOverview();
+          }, 2000);
+        } else {
+          showMessage('modalMessage', 'Error: ' + result.error, 'error');
+        }
+      } catch (error) {
+        showMessage('modalMessage', 'Network error: ' + error.message, 'error');
+      }
+    }
+    
+    // Find account by ID
+    function findAccountById(accountId) {
+      for (const [service, accounts] of Object.entries(accountsData)) {
+        const account = accounts.find(acc => acc.id === accountId);
+        if (account) {
+          return { ...account, service };
+        }
+      }
+      return null;
+    }
+    
+    // Add account form submission
+    document.getElementById('addAccountForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = {
+        service: document.getElementById('service').value,
+        account: {
+          email: document.getElementById('email').value,
+          password: document.getElementById('password').value,
+          username: document.getElementById('username').value || '',
+          instructions: document.getElementById('instructions').value
+        }
+      };
+      
+      try {
+        const response = await fetch('/api/admin/add-account', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          showMessage('addMessage', `
+            <i class="fas fa-check-circle"></i> Account added successfully!
+            <br><strong>Service:</strong> ${formData.service}
+            <br><strong>Email:</strong> ${formData.account.email}
+            <br><strong>Account ID:</strong> ${result.data.id}
+            <br>Telegram notification has been sent.
+          `, 'success');
+          
+          // Reset form
+          document.getElementById('email').value = '';
+          document.getElementById('password').value = '';
+          document.getElementById('username').value = '';
+          
+          // Refresh data
+          loadOverview();
+          loadAccounts();
+        } else {
+          showMessage('addMessage', 'Error: ' + result.error, 'error');
+        }
+      } catch (error) {
+        showMessage('addMessage', 'Network error: ' + error.message, 'error');
+      }
+    });
+    
+    // Reset add form
+    function resetAddForm() {
+      document.getElementById('addAccountForm').reset();
+      document.getElementById('addMessage').className = 'message';
+    }
+    
+    // Load transactions
+    async function loadTransactions() {
+      try {
+        const response = await fetch('/api/admin/transactions');
+        const data = await response.json();
+        
+        if (data.success) {
+          let html = '';
+          
+          if (data.transactions.length === 0) {
+            html = '<div class="message warning">No transactions found.</div>';
+          } else {
+            data.transactions.forEach(tx => {
+              const statusColor = {
+                'completed': '#10b981',
+                'failed': '#ef4444',
+                'processing': '#f59e0b',
+                'pending': '#6b7280'
+              }[tx.status] || '#6b7280';
+              
+              html += `
+                <div class="account-item" style="border-left-color: ${statusColor}">
+                  <div class="account-header">
+                    <div>
+                      <strong>${tx.planName || 'Unknown Plan'}</strong>
+                      <div style="font-size: 12px; color: #666; margin-top: 5px;">
+                        Reference: <code>${tx.reference}</code>
+                      </div>
+                    </div>
+                    <span style="color: ${statusColor}; font-weight: bold">
+                      ${tx.status || 'pending'}
+                    </span>
+                  </div>
+                  <div class="account-details">
+                    <p><strong>Customer:</strong> ${tx.customerName || 'Anonymous'}</p>
+                    <p><strong>Email:</strong> ${tx.customerEmail || 'N/A'}</p>
+                    <p><strong>Amount:</strong> KES ${tx.amount || 0}</p>
+                    <p><strong>Phone:</strong> ${tx.phoneNumber || 'N/A'}</p>
+                    <p><strong>Created:</strong> ${new Date(tx.createdAt).toLocaleString()}</p>
+                  </div>
+                </div>
+              `;
+            });
+          }
+          
+          document.getElementById('transactionsList').innerHTML = html;
+        }
+      } catch (error) {
+        document.getElementById('transactionsList').innerHTML = 
+          '<div class="message error">Error loading transactions</div>';
+      }
+    }
+    
+    // Update session settings
+    async function updateSessionSettings() {
+      const timeout = document.getElementById('sessionTimeout').value;
+      const telegramNotif = document.getElementById('telegramNotifications').checked;
+      const emailNotif = document.getElementById('emailNotifications').checked;
+      
+      try {
+        // For now, just show success message
+        showMessage('settingsMessage', `
+          <i class="fas fa-check-circle"></i> Settings updated successfully!
+          <br>• Session timeout: ${timeout} minutes
+          <br>• Telegram notifications: ${telegramNotif ? 'ON' : 'OFF'}
+          <br>• Email notifications: ${emailNotif ? 'ON' : 'OFF'}
+        `, 'success');
+      } catch (error) {
+        showMessage('settingsMessage', 'Error saving settings', 'error');
+      }
+    }
+    
+    // Show message function
+    function showMessage(elementId, message, type) {
+      const element = document.getElementById(elementId);
+      element.innerHTML = message;
+      element.className = `message ${type}`;
+      
+      // Auto-hide success messages after 5 seconds
+      if (type === 'success') {
+        setTimeout(() => {
+          element.className = 'message';
+        }, 5000);
+      }
+    }
+    
+    // Auto-refresh data every 30 seconds
+    setInterval(() => {
+      if (currentTab === 'overview') loadOverview();
+      if (currentTab === 'manage') loadAccounts();
+      if (currentTab === 'transactions') loadTransactions();
+    }, 30000);
+    
+    // Check session every minute
+    setInterval(async () => {
+      try {
+        const response = await fetch('/api/admin/session-check');
+        if (!response.ok) {
+          window.location.href = '/admin/login?session=expired';
+        }
+      } catch (error) {
+        console.log('Session check failed');
+      }
+    }, 60000);
+    
+    // Auto-logout after 1 hour of inactivity
+    let inactivityTimer;
+    function resetInactivityTimer() {
+      clearTimeout(inactivityTimer);
+      inactivityTimer = setTimeout(() => {
+        window.location.href = '/api/admin/logout';
+      }, 60 * 60 * 1000);
+    }
+    
+    // Set up activity listeners
+    document.addEventListener('mousemove', resetInactivityTimer);
+    document.addEventListener('keypress', resetInactivityTimer);
+    document.addEventListener('click', resetInactivityTimer);
+    
+    // Initial setup
+    loadUserSession();
+    resetInactivityTimer();
+    loadOverview();
+    loadAccounts();
+    loadTransactions();
+  </script>
+</body>
+</html>
