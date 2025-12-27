@@ -13,3 +13,10 @@ echo "node_modules/" >> .gitignore
 *.minimal
 100755
 .env
+*.backup
+*.backup.*
+*.save
+*.broken
+*.minimal
+100755
+.env
